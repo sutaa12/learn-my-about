@@ -18,7 +18,7 @@
 - [x] エージェント向け指示ファイルを追加
 - [x] サンプルの `index.html` と `description.md` を追加
 - [x] ローカル生成物の確認とスクリーンショット取得
-- [ ] 最終レビュー・セキュリティ確認・履歴更新
+- [x] 最終レビュー・セキュリティ確認・履歴更新
 
 ## 再開メモ
 - 生成コマンド: `python3 scripts/generate_branch_pages.py --output-dir /tmp/learn-my-about-site --repository sutaa12/learn-my-about`

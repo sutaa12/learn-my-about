@@ -172,10 +172,14 @@ def discover_branch_sources() -> list[tuple[str, str]]:
 
 
 def safe_extract_tar(archive_path: Path, destination: Path) -> None:
+    destination_root = destination.resolve()
     with tarfile.open(archive_path) as archive:
         for member in archive.getmembers():
+            if member.issym() or member.islnk():
+                raise ValueError(f"Refused to extract link entry: {member.name}")
             member_path = destination / member.name
-            if destination.resolve() not in member_path.resolve().parents and member_path.resolve() != destination.resolve():
+            resolved_member = member_path.resolve()
+            if destination_root not in resolved_member.parents and resolved_member != destination_root:
                 raise ValueError(f"Refused to extract outside destination: {member.name}")
             archive.extract(member, destination)
 
