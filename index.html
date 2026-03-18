@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>learn-my-about | ブランチサイトハブの見本ページ</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f8f9ff;
+        --panel: #ffffff;
+        --line: #d6ddff;
+        --text: #1f2440;
+        --muted: #5e6687;
+        --brand: #5f6fff;
+        --brand-2: #ff8b5f;
+        --brand-3: #52c6c0;
+        --shadow: 0 18px 40px rgba(95, 111, 255, 0.12);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: linear-gradient(180deg, #f3f5ff 0%, #ffffff 45%);
+        color: var(--text);
+      }
+      main {
+        width: min(1100px, calc(100% - 2rem));
+        margin: 0 auto;
+        padding: 1.2rem 0 4rem;
+      }
+      .hero {
+        background: radial-gradient(circle at top right, rgba(255, 139, 95, 0.22), transparent 30%),
+          radial-gradient(circle at top left, rgba(95, 111, 255, 0.2), transparent 34%),
+          var(--panel);
+        border: 1px solid rgba(95, 111, 255, 0.18);
+        border-radius: 2rem;
+        padding: clamp(1.5rem, 4vw, 3rem);
+        box-shadow: var(--shadow);
+      }
+      .pill {
+        display: inline-flex;
+        padding: 0.4rem 0.85rem;
+        border-radius: 999px;
+        background: #eef1ff;
+        color: #4251d4;
+        font-weight: 800;
+      }
+      h1 {
+        margin: 1rem 0 0.8rem;
+        font-size: clamp(2.1rem, 6vw, 4rem);
+        line-height: 1.05;
+      }
+      p {
+        line-height: 1.75;
+        color: var(--muted);
+      }
+      .hero-grid,
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+      .hero-grid { margin-top: 1.5rem; }
+      .card,
+      .diagram-step,
+      .history {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 1.4rem;
+        padding: 1.1rem;
+        box-shadow: 0 10px 25px rgba(79, 92, 167, 0.08);
+      }
+      .card strong,
+      .diagram-step strong {
+        display: block;
+        margin-bottom: 0.45rem;
+        color: var(--text);
+      }
+      section { margin-top: 1.5rem; }
+      .section-title {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: end;
+        justify-content: space-between;
+        gap: 0.7rem;
+        margin-bottom: 0.9rem;
+      }
+      .section-title h2 {
+        margin: 0;
+        font-size: clamp(1.4rem, 4vw, 2rem);
+      }
+      .diagram {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 0.9rem;
+        position: relative;
+      }
+      .diagram-step {
+        position: relative;
+        overflow: hidden;
+      }
+      .diagram-step::after {
+        content: "";
+        position: absolute;
+        inset: auto -30% -45% auto;
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(circle, rgba(82, 198, 192, 0.16), transparent 70%);
+        animation: floatPulse 4s ease-in-out infinite;
+      }
+      @keyframes floatPulse {
+        0%, 100% { transform: translateY(0); opacity: 0.5; }
+        50% { transform: translateY(-8px); opacity: 1; }
+      }
+      ul {
+        margin: 0.6rem 0 0;
+        padding-left: 1.2rem;
+        color: var(--muted);
+      }
+      .history {
+        border-left: 6px solid var(--brand-2);
+      }
+      .badge-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.45rem 0.75rem;
+        border-radius: 999px;
+        background: #fef4ef;
+        color: #b4552f;
+        font-weight: 700;
+      }
+      @media (max-width: 720px) {
+        main { width: min(100% - 1rem, 1100px); }
+        .hero { border-radius: 1.3rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <span class="pill">GitHub Pages の静的サイト見本</span>
+        <h1>ブランチ別サイトを、迷わず見つけられる入口をつくる。</h1>
+        <p>
+          このページは、ブランチごとに用意した <code>index.html</code> を GitHub Action で集約し、
+          ひとつのトップページから辿れるようにするための見本ページです。知識がない人でも流れを追いやすいように、
+          何が起きているかを順番に噛み砕いて紹介しています。
+        </p>
+        <div class="hero-grid">
+          <div class="card">
+            <strong>どんなときに便利？</strong>
+            <span>実験的な案・派生ページ・ブランチごとの比較を、リンク探しで迷わず確認できます。</span>
+          </div>
+          <div class="card">
+            <strong>description.md の役割</strong>
+            <span>各ブランチの説明文をトップページに載せられるので、開く前に内容を判断しやすくなります。</span>
+          </div>
+          <div class="card">
+            <strong>スマホ対応</strong>
+            <span>カードや図解の幅が自動調整されるので、縦長の画面でも読みやすく保てます。</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h2>しくみを 3 ステップで図解</h2>
+          <div class="badge-row">
+            <span class="badge">ライトモード前提</span>
+            <span class="badge">カラフル</span>
+            <span class="badge">モバイル対応</span>
+          </div>
+        </div>
+        <div class="diagram">
+          <article class="diagram-step">
+            <strong>1. ブランチにページを置く</strong>
+            <p>それぞれのブランチのルートに <code>index.html</code> を置きます。説明文を加えたいときは <code>description.md</code> も一緒に置きます。</p>
+          </article>
+          <article class="diagram-step">
+            <strong>2. GitHub Action がまとめる</strong>
+            <p>ワークフローが全ブランチを確認し、見つかった静的ファイルを GitHub Pages 用の 1 つの成果物に整理します。</p>
+          </article>
+          <article class="diagram-step">
+            <strong>3. トップページから移動する</strong>
+            <p>ブランチ名の階層を見やすく並べたトップページから、見たいブランチの <code>index.html</code> をそのまま開けます。</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h2>このページで意識したこと</h2>
+        </div>
+        <div class="card-grid">
+          <article class="card">
+            <strong>元情報を省略しすぎない</strong>
+            <ul>
+              <li>どのファイルを置けば公開対象になるかを明示</li>
+              <li>GitHub Pages 向けの静的サイト前提と説明</li>
+              <li>階層ブランチや description.md の扱いも紹介</li>
+            </ul>
+          </article>
+          <article class="card">
+            <strong>見た目で流れが分かる</strong>
+            <ul>
+              <li>大きな見出しで目的を先に伝える</li>
+              <li>カードと図解で手順を視覚化</li>
+              <li>色の役割を絞って情報を整理</li>
+            </ul>
+          </article>
+          <article class="card">
+            <strong>GitHub Pages で扱いやすい</strong>
+            <ul>
+              <li>HTML と CSS だけで表示できる構成</li>
+              <li>相対パス中心で静的配信に馴染む</li>
+              <li>外部依存を増やさずに軽量に公開</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="history">
+        <div class="section-title">
+          <h2>更新履歴</h2>
+        </div>
+        <p>2026-03-18: ブランチの <code>index.html</code> を集約する GitHub Action と、説明付きトップページの仕組みを追加しました。</p>
+      </section>
+    </main>
+  </body>
+</html>
