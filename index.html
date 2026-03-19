@@ -1572,14 +1572,7 @@ footer {
 const completedSteps = new Set();
 const totalSteps = 8; // step1-5 + quiz1-3
 
-// ========== Navigation ==========
-const hamburgerBtn = document.getElementById('hamburgerBtn');
-const navDrawer = document.getElementById('navDrawer');
-
-hamburgerBtn.addEventListener('click', () => {
-  navDrawer.classList.toggle('open');
-});
-
+// ========== Utilities ==========
 function shuffleArray(arr) {
   const shuffled = [...arr];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -1588,6 +1581,14 @@ function shuffleArray(arr) {
   }
   return shuffled;
 }
+
+// ========== Navigation ==========
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const navDrawer = document.getElementById('navDrawer');
+
+hamburgerBtn.addEventListener('click', () => {
+  navDrawer.classList.toggle('open');
+});
 
 function closeDrawer() {
   navDrawer.classList.remove('open');
