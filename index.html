@@ -879,7 +879,7 @@ footer {
       <a href="#quiz">クイズ</a>
     </div>
     <span class="nav-progress-text" id="navProgressText">0 / 8 完了</span>
-    <button class="hamburger" id="hamburgerBtn" aria-label="メニュー">☰</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">☰</button>
   </div>
 </nav>
 
@@ -1555,7 +1555,7 @@ footer {
 </main>
 
 <!-- Back to Top -->
-<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="トップに戻る">↑</button>
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
 
 <!-- Footer -->
 <footer>
@@ -1581,12 +1581,12 @@ hamburgerBtn.addEventListener('click', () => {
 });
 
 function shuffleArray(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
+  const shuffled = [...arr];
+  for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
-  return a;
+  return shuffled;
 }
 
 function closeDrawer() {
