@@ -1580,8 +1580,7 @@ hamburgerBtn.addEventListener('click', () => {
   navDrawer.classList.toggle('open');
 });
 
-// Fisher-Yates shuffle
-function shuffle(arr) {
+function shuffleArray(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -1721,7 +1720,7 @@ function populateWordBank(idx) {
   bankEl.innerHTML = '';
   areaEl.innerHTML = '';
 
-  const shuffled = shuffle(builderExercises[idx].words);
+  const shuffled = shuffleArray(builderExercises[idx].words);
 
   shuffled.forEach((word) => {
     const chip = document.createElement('button');
@@ -1836,7 +1835,7 @@ function initQuiz1() {
   });
 }
 
-const quizSelections = { quiz1: {}, quiz3: {} };
+const quizSelections = { quiz1: {}, quiz3: {} }; // quiz2 uses matchState instead
 
 function selectOption(quizId, qIdx, optIdx) {
   const buttons = document.querySelectorAll('[data-quiz="' + quizId + '"][data-q="' + qIdx + '"]');
@@ -1926,13 +1925,13 @@ const quiz2Data = [
   { ja: 'の（所有）', en: 'of / \'s', jaFull: '私の本', enFull: 'my book / book of mine' }
 ];
 
-let matchState = { selectedLeft: null, matchedPairs: [], wrongPair: null };
+let matchState = { selectedLeft: null, matchedPairs: [] };
 
 function initQuiz2() {
-  matchState = { selectedLeft: null, matchedPairs: [], wrongPair: null };
+  matchState = { selectedLeft: null, matchedPairs: [] };
   const container = document.getElementById('quiz2-container');
 
-  const shuffledRight = shuffle(quiz2Data);
+  const shuffledRight = shuffleArray(quiz2Data);
 
   let html = '<div class="matching-grid">';
   html += '<div class="matching-column"><h4>🇯🇵 日本語の助詞</h4>';
@@ -1954,8 +1953,7 @@ function initQuiz2() {
 }
 
 function handleMatch(side, idx) {
-  if (matchState.matchedPairs.includes(idx) && side === 'left') return;
-  if (matchState.matchedPairs.some(p => p === idx) && side === 'right') return;
+  if (matchState.matchedPairs.includes(idx)) return;
 
   const el = document.getElementById('match-' + (side === 'left' ? 'l' : 'r') + '-' + idx);
   if (el.classList.contains('matched')) return;
