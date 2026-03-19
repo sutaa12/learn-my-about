@@ -1186,13 +1186,13 @@ footer {
         <tr>
           <td><span class="p-part">に</span></td>
           <td>方向・時間</td>
-          <td><span class="particle-popup-trigger" data-popup="popup-ni"><strong>to / at / in</strong> 📖</span></td>
+          <td><span class="particle-popup-trigger" data-popup="popup-ni" role="button" tabindex="0" aria-label="に の使い分けを表示"><strong>to / at / in</strong> 📖</span></td>
           <td>東京<span class="p-part">に</span>行く</td>
         </tr>
         <tr>
           <td><span class="p-part">で</span></td>
           <td>手段・場所</td>
-          <td><span class="particle-popup-trigger" data-popup="popup-de"><strong>by / at / in</strong> 📖</span></td>
+          <td><span class="particle-popup-trigger" data-popup="popup-de" role="button" tabindex="0" aria-label="で の使い分けを表示"><strong>by / at / in</strong> 📖</span></td>
           <td>電車<span class="p-part">で</span>行く</td>
         </tr>
         <tr>
@@ -1204,19 +1204,19 @@ footer {
         <tr>
           <td><span class="p-part">まで</span></td>
           <td>終点（Until/To）</td>
-          <td><span class="particle-popup-trigger" data-popup="popup-made"><strong>to / until</strong> 📖</span></td>
+          <td><span class="particle-popup-trigger" data-popup="popup-made" role="button" tabindex="0" aria-label="まで の使い分けを表示"><strong>to / until</strong> 📖</span></td>
           <td>家<span class="p-part">まで</span></td>
         </tr>
         <tr>
           <td><span class="p-part">と</span></td>
           <td>並列・共同</td>
-          <td><span class="particle-popup-trigger" data-popup="popup-to"><strong>and / with</strong> 📖</span></td>
+          <td><span class="particle-popup-trigger" data-popup="popup-to" role="button" tabindex="0" aria-label="と の使い分けを表示"><strong>and / with</strong> 📖</span></td>
           <td>友達<span class="p-part">と</span></td>
         </tr>
         <tr>
           <td><span class="p-part">の</span></td>
           <td>所有（Possession）</td>
-          <td><span class="particle-popup-trigger" data-popup="popup-no"><strong>'s / of</strong> 📖</span></td>
+          <td><span class="particle-popup-trigger" data-popup="popup-no" role="button" tabindex="0" aria-label="の の使い分けを表示"><strong>'s / of</strong> 📖</span></td>
           <td>私<span class="p-part">の</span>本</td>
         </tr>
       </tbody>
@@ -2006,6 +2006,7 @@ document.addEventListener('click', (e) => {
 });
 
 // ========== Particle Popups ==========
+let lastPopupTrigger = null;
 function openPopup(id) {
   document.getElementById('popupOverlay').classList.add('show');
   document.getElementById(id).classList.add('show');
@@ -2013,10 +2014,15 @@ function openPopup(id) {
 function closePopup() {
   document.getElementById('popupOverlay').classList.remove('show');
   document.querySelectorAll('.particle-popup.show').forEach(p => p.classList.remove('show'));
+  if (lastPopupTrigger) {
+    lastPopupTrigger.focus();
+    lastPopupTrigger = null;
+  }
 }
 document.getElementById('popupOverlay').addEventListener('click', closePopup);
 document.querySelectorAll('.particle-popup-trigger').forEach(trigger => {
-  trigger.addEventListener('click', () => openPopup(trigger.dataset.popup));
+  trigger.addEventListener('click', () => { lastPopupTrigger = trigger; openPopup(trigger.dataset.popup); });
+  trigger.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); lastPopupTrigger = trigger; openPopup(trigger.dataset.popup); } });
 });
 
 // ========== Progress Bar ==========
