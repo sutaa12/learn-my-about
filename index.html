@@ -1,0 +1,2508 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日英文法ビジュアル比較 | Japanese-English Grammar Visual Comparison</title>
+<style>
+/* ========== CSS Custom Properties ========== */
+:root {
+  --primary: #2563EB;
+  --primary-light: #3B82F6;
+  --primary-bg: #EFF6FF;
+  --secondary: #7C3AED;
+  --secondary-light: #8B5CF6;
+  --secondary-bg: #F5F3FF;
+  --accent: #F59E0B;
+  --accent-light: #FBBF24;
+  --accent-bg: #FFFBEB;
+  --success: #10B981;
+  --success-bg: #ECFDF5;
+  --error: #EF4444;
+  --error-bg: #FEF2F2;
+  --text: #1E293B;
+  --text-light: #64748B;
+  --bg: #F8FAFC;
+  --white: #FFFFFF;
+  --border: #E2E8F0;
+  --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+  --radius: 16px;
+  --radius-sm: 8px;
+  --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --subject-color: #2563EB;
+  --verb-color: #EF4444;
+  --object-color: #10B981;
+  --particle-color: #F59E0B;
+}
+
+/* ========== Reset & Base ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+a { color: var(--primary); text-decoration: none; }
+button { cursor: pointer; font-family: var(--font); }
+
+/* ========== Progress Bar ========== */
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  z-index: 1001;
+  transition: width 0.5s ease;
+  width: 0%;
+}
+
+/* ========== Sticky Navigation ========== */
+nav {
+  position: fixed;
+  top: 4px;
+  left: 0;
+  right: 0;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  padding: 0;
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+}
+.nav-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  white-space: nowrap;
+}
+.nav-links {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.nav-links a {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  color: var(--text-light);
+  transition: all 0.3s;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.nav-links a:hover, .nav-links a.active {
+  background: var(--primary-bg);
+  color: var(--primary);
+}
+.nav-progress-text {
+  font-size: 0.7rem;
+  color: var(--text-light);
+  white-space: nowrap;
+  margin-left: 8px;
+}
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text);
+  padding: 4px;
+}
+
+/* ========== Main Container ========== */
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 80px 20px 60px;
+}
+
+/* ========== Hero Section ========== */
+.hero {
+  text-align: center;
+  padding: 60px 20px 40px;
+}
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.hero p {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  max-width: 600px;
+  margin: 0 auto 24px;
+}
+.hero-badges {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.hero-badge.blue { background: var(--primary-bg); color: var(--primary); }
+.hero-badge.purple { background: var(--secondary-bg); color: var(--secondary); }
+.hero-badge.amber { background: var(--accent-bg); color: var(--accent); }
+
+/* ========== Section Styles ========== */
+.section {
+  margin-bottom: 48px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.section-header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 24px 28px;
+  border-radius: var(--radius) var(--radius) 0 0;
+  position: relative;
+  overflow: hidden;
+}
+.section-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 200px;
+  height: 200px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+}
+.section-header .step-num {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+.section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+}
+.section-header .subtitle {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+.section-body {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+
+/* ========== Cards ========== */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.card-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ========== Example Boxes ========== */
+.example-box {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  border-left: 4px solid var(--primary);
+}
+.example-box.alt { border-left-color: var(--secondary); }
+.example-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.example-row:last-child { margin-bottom: 0; }
+.lang-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  min-width: 30px;
+  text-align: center;
+}
+.lang-label.ja { background: var(--error-bg); color: var(--error); }
+.lang-label.en { background: var(--primary-bg); color: var(--primary); }
+
+/* ========== Color-coded parts ========== */
+.s-part { color: var(--subject-color); font-weight: 700; }
+.v-part { color: var(--verb-color); font-weight: 700; }
+.o-part { color: var(--object-color); font-weight: 700; }
+.p-part { color: var(--particle-color); font-weight: 700; background: var(--accent-bg); padding: 1px 6px; border-radius: 4px; }
+.highlight-box {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+.highlight-box.subject { background: #DBEAFE; color: var(--subject-color); }
+.highlight-box.verb { background: #FEE2E2; color: var(--verb-color); }
+.highlight-box.object { background: #D1FAE5; color: var(--object-color); }
+.highlight-box.particle { background: var(--accent-bg); color: var(--accent); }
+
+/* ========== Comparison Grid ========== */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+.compare-card {
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s;
+}
+.compare-card.ja-card { border-color: #FECACA; background: #FFF5F5; }
+.compare-card.en-card { border-color: #BFDBFE; background: #F0F7FF; }
+.compare-card h4 {
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px dashed var(--border);
+}
+.pattern-display {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  margin: 12px 0;
+}
+.pattern-display .s { color: var(--subject-color); }
+.pattern-display .o { color: var(--object-color); }
+.pattern-display .v { color: var(--verb-color); }
+
+/* ========== Arrow Animation ========== */
+.arrow-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  font-size: 1.5rem;
+  color: var(--accent);
+  animation: bounce-arrow 1.5s infinite;
+}
+@keyframes bounce-arrow {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(8px); }
+}
+
+/* ========== Particle Table ========== */
+.particle-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 16px 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.particle-table th {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: left;
+}
+.particle-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+.particle-table tr:last-child td { border-bottom: none; }
+.particle-table tr:nth-child(even) td { background: var(--bg); }
+.particle-table tr:hover td { background: var(--primary-bg); }
+
+/* ========== Flow Diagram ========== */
+.flow-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 16px;
+  margin: 12px 0;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+}
+.flow-box {
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: center;
+}
+.flow-box.sentence { background: var(--primary-bg); color: var(--primary); border: 2px solid var(--primary); }
+.flow-box.conjunction { background: var(--accent-bg); color: var(--accent); border: 2px solid var(--accent); }
+.flow-arrow {
+  font-size: 1.2rem;
+  color: var(--text-light);
+}
+
+/* ========== Modifier Diagram ========== */
+.modifier-diagram {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 16px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  margin: 12px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.modifier-box {
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.modifier-box.modifier { background: #FDE68A; color: #92400E; border: 2px solid #F59E0B; }
+.modifier-box.noun { background: #BFDBFE; color: #1E40AF; border: 2px solid #2563EB; }
+.modifier-box.rel { background: #C4B5FD; color: #5B21B6; border: 2px solid #7C3AED; }
+.mod-arrow { font-size: 1rem; color: var(--text-light); margin: 0 4px; }
+
+/* ========== Sentence Builder ========== */
+.builder-area {
+  min-height: 60px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  transition: border-color 0.3s;
+  background: var(--white);
+}
+.builder-area.active { border-color: var(--primary); background: var(--primary-bg); }
+.builder-area.correct { border-color: var(--success); background: var(--success-bg); }
+.builder-area.incorrect { border-color: var(--error); background: var(--error-bg); }
+.word-chip {
+  display: inline-flex;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+  border: none;
+}
+.word-chip:hover { transform: scale(1.05); box-shadow: var(--shadow); }
+.word-chip.placed {
+  background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+}
+.word-chip.disabled { opacity: 0.3; pointer-events: none; }
+.word-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.builder-hint {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+.builder-feedback {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  margin-top: 8px;
+  display: none;
+}
+.builder-feedback.show { display: block; }
+.builder-feedback.correct { background: var(--success-bg); color: var(--success); }
+.builder-feedback.incorrect { background: var(--error-bg); color: var(--error); }
+
+/* ========== Quiz Styles ========== */
+.quiz-container {
+  margin: 20px 0;
+}
+.quiz-question {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s;
+}
+.quiz-question.answered-correct {
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+.quiz-question.answered-incorrect {
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+.q-number {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+.q-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.q-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.q-option {
+  padding: 12px 18px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  font-size: 0.9rem;
+  text-align: left;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+.q-option:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: var(--primary-bg);
+}
+.q-option.selected { border-color: var(--primary); background: var(--primary-bg); color: var(--primary); }
+.q-option.correct { border-color: var(--success); background: var(--success-bg); color: var(--success); }
+.q-option.incorrect { border-color: var(--error); background: var(--error-bg); color: var(--error); }
+.q-option:disabled { cursor: default; }
+.q-explanation {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  display: none;
+}
+.q-explanation.show { display: block; }
+.q-explanation.correct { background: var(--success-bg); color: #065F46; }
+.q-explanation.incorrect { background: var(--error-bg); color: #991B1B; }
+
+/* ========== Matching Quiz ========== */
+.matching-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+.matching-column h4 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 12px;
+  text-align: center;
+}
+.match-item {
+  padding: 12px 18px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: var(--white);
+}
+.match-item:hover { border-color: var(--primary); }
+.match-item.selected { border-color: var(--primary); background: var(--primary-bg); color: var(--primary); }
+.match-item.matched { border-color: var(--success); background: var(--success-bg); color: var(--success); cursor: default; }
+.match-item.wrong { border-color: var(--error); background: var(--error-bg); color: var(--error); animation: shake 0.4s; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* ========== Score Display ========== */
+.score-display {
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));
+  border-radius: var(--radius);
+  margin-top: 20px;
+  display: none;
+}
+.score-display.show { display: block; }
+.score-number {
+  font-size: 3rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.score-label {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+.score-message {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+/* ========== Buttons ========== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: none;
+  transition: all 0.3s;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.btn-secondary {
+  background: var(--bg);
+  color: var(--text);
+  border: 2px solid var(--border);
+}
+.btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+.btn-success {
+  background: linear-gradient(135deg, var(--success), #34D399);
+  color: white;
+}
+.btn-success:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.btn-accent {
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  color: white;
+}
+.btn-accent:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.btn-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+/* ========== Complete Button ========== */
+.complete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  margin-top: 24px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-light);
+  transition: all 0.3s;
+}
+.complete-btn:hover {
+  border-color: var(--success);
+  background: var(--success-bg);
+  color: var(--success);
+}
+.complete-btn.completed {
+  border-color: var(--success);
+  border-style: solid;
+  background: var(--success-bg);
+  color: var(--success);
+  pointer-events: none;
+}
+
+/* ========== Back to Top ========== */
+#back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border: none;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s;
+  z-index: 999;
+}
+#back-to-top.visible { opacity: 1; pointer-events: auto; }
+#back-to-top:hover { transform: scale(1.1); }
+
+/* ========== Footer ========== */
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-light);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+/* ========== Animations ========== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.animate-pulse { animation: pulse 2s infinite; }
+
+/* ========== Info Box ========== */
+.info-box {
+  padding: 16px 20px;
+  border-radius: var(--radius-sm);
+  margin: 16px 0;
+  font-size: 0.9rem;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.info-box.tip { background: var(--accent-bg); border-left: 4px solid var(--accent); }
+.info-box.note { background: var(--primary-bg); border-left: 4px solid var(--primary); }
+.info-box-icon { font-size: 1.2rem; flex-shrink: 0; }
+
+/* ========== Conjunction Category ========== */
+.conj-category {
+  margin-bottom: 20px;
+}
+.conj-category-title {
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+  margin-bottom: 12px;
+}
+.conj-category-title.cause { background: #FEE2E2; color: #DC2626; }
+.conj-category-title.contrast { background: #DBEAFE; color: #2563EB; }
+.conj-category-title.addition { background: #D1FAE5; color: #059669; }
+.conj-category-title.condition { background: #FDE68A; color: #92400E; }
+
+/* ========== Tabs ========== */
+.tab-buttons {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  padding: 10px 20px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  transition: all 0.3s;
+}
+.tab-btn.active {
+  border-color: var(--primary);
+  background: var(--primary-bg);
+  color: var(--primary);
+}
+.tab-btn:hover { border-color: var(--primary); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ========== Legend ========== */
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+  font-size: 0.8rem;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+.legend-dot.subject { background: var(--subject-color); }
+.legend-dot.verb { background: var(--verb-color); }
+.legend-dot.object { background: var(--object-color); }
+.legend-dot.particle { background: var(--particle-color); }
+
+/* ========== SVG Diagram ========== */
+.svg-diagram {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  display: block;
+}
+
+/* ========== Mobile Navigation Drawer ========== */
+.nav-drawer {
+  display: none;
+  position: fixed;
+  top: 52px;
+  left: 0;
+  right: 0;
+  background: rgba(255,255,255,0.98);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  z-index: 999;
+  padding: 16px;
+  box-shadow: var(--shadow-lg);
+}
+.nav-drawer.open { display: block; }
+.nav-drawer a {
+  display: block;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+.nav-drawer a:hover { background: var(--primary-bg); color: var(--primary); }
+
+/* ========== Responsive ========== */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.8rem; }
+  .hero p { font-size: 0.95rem; }
+  .nav-links { display: none; }
+  .nav-progress-text { display: none; }
+  .hamburger { display: block; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .matching-grid { grid-template-columns: 1fr; }
+  .section-body { padding: 20px 16px; }
+  .pattern-display { font-size: 1.2rem; }
+  main { padding: 70px 12px 40px; }
+  .section-header { padding: 20px; }
+  .section-header h2 { font-size: 1.25rem; }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 1.5rem; }
+  .nav-title { font-size: 0.95rem; }
+  .tab-btn { padding: 8px 12px; font-size: 0.8rem; }
+}
+/* ========== Particle Popup ========== */
+.particle-popup-trigger {
+  cursor: pointer;
+  position: relative;
+  border-bottom: 2px dashed var(--accent);
+  transition: background 0.2s;
+}
+.particle-popup-trigger:hover, .particle-popup-trigger:active {
+  background: var(--accent-bg);
+}
+.particle-popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+  padding: 24px;
+  z-index: 2000;
+  max-width: 400px;
+  width: 90%;
+  animation: fadeInUp 0.3s ease;
+}
+.particle-popup.show { display: block; }
+.particle-popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 1999;
+}
+.particle-popup-overlay.show { display: block; }
+.popup-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.popup-close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 4px;
+}
+.popup-close:hover { color: var(--text); }
+.popup-case {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  border-left: 3px solid var(--primary);
+}
+.popup-case:nth-child(odd) { background: var(--primary-bg); }
+.popup-case:nth-child(even) { background: var(--secondary-bg); border-left-color: var(--secondary); }
+.popup-case-en {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--primary);
+}
+.popup-case-desc {
+  font-size: 0.85rem;
+  color: var(--text);
+  margin-top: 2px;
+}
+.popup-case-example {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  margin-top: 4px;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div id="progress-bar"></div>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-title">🇯🇵 日英文法ビジュアル比較 🇬🇧</span>
+    <div class="nav-links" id="navLinks">
+      <a href="#step1">語順</a>
+      <a href="#step2">助詞</a>
+      <a href="#step3">接続詞</a>
+      <a href="#step4">修飾語</a>
+      <a href="#step5">練習</a>
+      <a href="#summary">総括</a>
+      <a href="#quiz">クイズ</a>
+    </div>
+    <span class="nav-progress-text" id="navProgressText">0 / 9 完了</span>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<!-- Mobile Drawer -->
+<div class="nav-drawer" id="navDrawer">
+  <a href="#step1" onclick="closeDrawer()">Step 1: 語順の違い</a>
+  <a href="#step2" onclick="closeDrawer()">Step 2: 助詞 vs 前置詞</a>
+  <a href="#step3" onclick="closeDrawer()">Step 3: 接続詞</a>
+  <a href="#step4" onclick="closeDrawer()">Step 4: 修飾語の位置</a>
+  <a href="#step5" onclick="closeDrawer()">Step 5: 文の組み立て練習</a>
+  <a href="#summary" onclick="closeDrawer()">📋 総括：長文で比較</a>
+  <a href="#quiz" onclick="closeDrawer()">📝 クイズ</a>
+</div>
+
+<main>
+
+<!-- Hero -->
+<section class="hero section" id="hero">
+  <h1>日英文法ビジュアル比較</h1>
+  <p>日本語と英語の文法構造の違いを、色分け・図解・アニメーションで直感的に学べるインタラクティブ学習サイトです。</p>
+  <div class="hero-badges">
+    <span class="hero-badge blue">📖 5つの学習ステップ</span>
+    <span class="hero-badge purple">🧩 インタラクティブ練習</span>
+    <span class="hero-badge amber">📝 3種類のクイズ</span>
+  </div>
+</section>
+
+<!-- ===== STEP 1: Word Order ===== -->
+<section class="section" id="step1">
+  <div class="section-header">
+    <div class="step-num">STEP 1</div>
+    <h2>語順の違い（Word Order）</h2>
+    <div class="subtitle">日本語はSOV、英語はSVO — 語順が逆になる！</div>
+  </div>
+  <div class="section-body">
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot subject"></div> 主語（Subject）</div>
+      <div class="legend-item"><div class="legend-dot verb"></div> 動詞（Verb）</div>
+      <div class="legend-item"><div class="legend-dot object"></div> 目的語（Object）</div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card ja-card">
+        <h4>🇯🇵 日本語の語順</h4>
+        <div class="pattern-display">
+          <span class="s">S</span> <span class="o">O</span> <span class="v">V</span>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-light)">主語 → 目的語 → 動詞</p>
+        <p style="font-size:0.85rem;color:var(--text-light)">動詞が文の<strong>最後</strong>に来る</p>
+      </div>
+      <div class="arrow-container">→</div>
+      <div class="compare-card en-card">
+        <h4>🇬🇧 英語の語順</h4>
+        <div class="pattern-display">
+          <span class="s">S</span> <span class="v">V</span> <span class="o">O</span>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-light)">主語 → 動詞 → 目的語</p>
+        <p style="font-size:0.85rem;color:var(--text-light)">動詞が主語の<strong>直後</strong>に来る</p>
+      </div>
+    </div>
+
+    <div class="info-box tip">
+      <span class="info-box-icon">💡</span>
+      <div>日本語では「何をするか」を最後に言いますが、英語では主語のすぐ後に「何をするか」を言います。目的語と動詞の<strong>位置が入れ替わる</strong>のが最大の違いです。</div>
+    </div>
+
+    <!-- SVG Word Order Diagram -->
+    <svg class="svg-diagram" viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+      <!-- Japanese SOV -->
+      <rect x="20" y="20" width="100" height="40" rx="8" fill="#DBEAFE" stroke="#2563EB" stroke-width="2"/>
+      <text x="70" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="#2563EB">主語 (S)</text>
+      <rect x="150" y="20" width="100" height="40" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+      <text x="200" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="#10B981">目的語 (O)</text>
+      <rect x="280" y="20" width="100" height="40" rx="8" fill="#FEE2E2" stroke="#EF4444" stroke-width="2"/>
+      <text x="330" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="#EF4444">動詞 (V)</text>
+      <text x="450" y="45" font-size="13" fill="#64748B" font-weight="600">← 日本語</text>
+      <!-- Arrow down -->
+      <line x1="300" y1="70" x2="300" y2="100" stroke="#F59E0B" stroke-width="3" marker-end="url(#arrowhead)"/>
+      <text x="320" y="90" font-size="11" fill="#F59E0B" font-weight="700">変換!</text>
+      <!-- English SVO -->
+      <rect x="20" y="110" width="100" height="40" rx="8" fill="#DBEAFE" stroke="#2563EB" stroke-width="2"/>
+      <text x="70" y="135" text-anchor="middle" font-size="14" font-weight="700" fill="#2563EB">Subject (S)</text>
+      <rect x="150" y="110" width="100" height="40" rx="8" fill="#FEE2E2" stroke="#EF4444" stroke-width="2"/>
+      <text x="200" y="135" text-anchor="middle" font-size="14" font-weight="700" fill="#EF4444">Verb (V)</text>
+      <rect x="280" y="110" width="100" height="40" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+      <text x="330" y="135" text-anchor="middle" font-size="14" font-weight="700" fill="#10B981">Object (O)</text>
+      <text x="450" y="135" font-size="13" fill="#64748B" font-weight="600">← English</text>
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#F59E0B"/>
+        </marker>
+      </defs>
+    </svg>
+
+    <h3 style="margin:20px 0 12px;font-size:1.1rem;">例文で確認しよう</h3>
+
+    <div class="example-box">
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span><span class="highlight-box subject">私は</span> <span class="highlight-box object">りんごを</span> <span class="highlight-box verb">食べる</span></span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span><span class="highlight-box subject">I</span> <span class="highlight-box verb">eat</span> <span class="highlight-box object">an apple</span></span>
+      </div>
+    </div>
+
+    <div class="example-box alt">
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span><span class="highlight-box subject">彼女は</span> <span class="highlight-box object">本を</span> <span class="highlight-box verb">読む</span></span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span><span class="highlight-box subject">She</span> <span class="highlight-box verb">reads</span> <span class="highlight-box object">a book</span></span>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span><span class="highlight-box subject">猫が</span> <span class="highlight-box object">魚を</span> <span class="highlight-box verb">食べた</span></span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span><span class="highlight-box subject">The cat</span> <span class="highlight-box verb">ate</span> <span class="highlight-box object">the fish</span></span>
+      </div>
+    </div>
+
+    <div class="example-box alt">
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span><span class="highlight-box subject">私たちは</span> <span class="highlight-box object">映画を</span> <span class="highlight-box verb">見る</span></span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span><span class="highlight-box subject">We</span> <span class="highlight-box verb">watch</span> <span class="highlight-box object">a movie</span></span>
+      </div>
+    </div>
+
+    <div class="info-box note">
+      <span class="info-box-icon">📝</span>
+      <div>日本語の助詞（は、が、を）が主語や目的語の役割を示すので語順は比較的自由ですが、英語では語順そのものが文法的な意味を持ちます。</div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--secondary);margin-top:16px;">
+      <div class="card-title">👁️ 視点の違い：俯瞰と主観</div>
+      <div style="font-size:0.9rem;line-height:1.8;">
+        <p>英語はまず<strong>「誰が」（主語）</strong>を明確にし、次に<strong>「何をする」（動詞）</strong>を伝えます。まるで上から全体を見渡す<span style="color:var(--primary);font-weight:700;"><ruby>俯瞰<rt>ふかん</rt></ruby>視点</span>です。</p>
+        <p style="margin-top:8px;">一方、日本語は<strong>「何を」</strong>から語り始め、最後に動詞を置きます。話し手が体験を語るような<span style="color:var(--secondary);font-weight:700;">主観的な視点</span>です。</p>
+        <div class="example-box" style="margin-top:12px;">
+          <div class="example-row">
+            <span class="lang-label ja">日</span>
+            <span>桜が きれいに 咲いている <small style="color:var(--text-light)">（目に映る情景から語る）</small></span>
+          </div>
+          <div class="example-row">
+            <span class="lang-label en">英</span>
+            <span>The cherry blossoms are blooming beautifully <small style="color:var(--text-light)">（主語を明確にして客観描写）</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="complete-btn" onclick="completeStep('step1')" id="complete-step1">
+      ✅ ステップ1を完了にする
+    </button>
+  </div>
+</section>
+
+<!-- ===== STEP 2: Particles vs Prepositions ===== -->
+<section class="section" id="step2">
+  <div class="section-header" style="background:linear-gradient(135deg, #7C3AED, #EC4899);">
+    <div class="step-num">STEP 2</div>
+    <h2>助詞 vs 前置詞（Particles vs Prepositions）</h2>
+    <div class="subtitle">日本語は名詞の「後」、英語は名詞の「前」に付く</div>
+  </div>
+  <div class="section-body">
+
+    <div class="compare-grid">
+      <div class="compare-card ja-card">
+        <h4>🇯🇵 日本語：助詞（後置詞）</h4>
+        <div style="font-size:1.3rem;font-weight:800;margin:10px 0;">
+          名詞 + <span class="p-part">助詞</span>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-light)">名詞の<strong>後ろ</strong>に付く</p>
+      </div>
+      <div class="arrow-container">⟷</div>
+      <div class="compare-card en-card">
+        <h4>🇬🇧 英語：前置詞</h4>
+        <div style="font-size:1.3rem;font-weight:800;margin:10px 0;">
+          <span class="p-part">Preposition</span> + Noun
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-light)">名詞の<strong>前</strong>に付く</p>
+      </div>
+    </div>
+
+    <h3 style="margin:20px 0 12px;font-size:1.1rem;">主な助詞と対応する英語</h3>
+
+    <table class="particle-table">
+      <thead>
+        <tr>
+          <th>助詞</th>
+          <th>機能</th>
+          <th>英語の対応</th>
+          <th>例</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="p-part">は</span></td>
+          <td>主題（Topic）</td>
+          <td>（語順で示す）</td>
+          <td>私<span class="p-part">は</span>学生です</td>
+        </tr>
+        <tr>
+          <td><span class="p-part">が</span></td>
+          <td>主語（Subject）</td>
+          <td>（語順で示す）</td>
+          <td>雨<span class="p-part">が</span>降っている</td>
+        </tr>
+        <tr>
+          <td><span class="p-part">を</span></td>
+          <td>目的語（Object）</td>
+          <td>（語順で示す）</td>
+          <td>水<span class="p-part">を</span>飲む</td>
+        </tr>
+        <tr>
+          <td><span class="p-part">に</span></td>
+          <td>方向・時間</td>
+          <td><span class="particle-popup-trigger" data-popup="popup-ni" role="button" tabindex="0" aria-label="に の使い分けを表示"><strong>to / at / in</strong> 📖</span></td>
+          <td>東京<span class="p-part">に</span>行く</td>
+        </tr>
+        <tr>
+          <td><span class="p-part">で</span></td>
+          <td>手段・場所</td>
+          <td><span class="particle-popup-trigger" data-popup="popup-de" role="button" tabindex="0" aria-label="で の使い分けを表示"><strong>by / at / in</strong> 📖</span></td>
+          <td>電車<span class="p-part">で</span>行く</td>
+        </tr>
+        <tr>
+          <td><span class="p-part">から</span></td>
+          <td>起点（From）</td>
+          <td><strong>from</strong></td>
+          <td>学校<span class="p-part">から</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-part">まで</span></td>
+          <td>終点（Until/To）</td>
+          <td><span class="particle-popup-trigger" data-popup="popup-made" role="button" tabindex="0" aria-label="まで の使い分けを表示"><strong>to / until</strong> 📖</span></td>
+          <td>家<span class="p-part">まで</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-part">と</span></td>
+          <td>並列・共同</td>
+          <td><span class="particle-popup-trigger" data-popup="popup-to" role="button" tabindex="0" aria-label="と の使い分けを表示"><strong>and / with</strong> 📖</span></td>
+          <td>友達<span class="p-part">と</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-part">の</span></td>
+          <td>所有（Possession）</td>
+          <td><span class="particle-popup-trigger" data-popup="popup-no" role="button" tabindex="0" aria-label="の の使い分けを表示"><strong>'s / of</strong> 📖</span></td>
+          <td>私<span class="p-part">の</span>本</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box note" style="margin-top:8px;">
+      <span class="info-box-icon">👆</span>
+      <div>表の <strong>📖</strong> マークをタップすると、各英語表現の使い分けをミニ解説で確認できます。</div>
+    </div>
+
+    <h3 style="margin:20px 0 12px;font-size:1.1rem;">語順で示す：は・が・を の英語表現</h3>
+
+    <div class="info-box" style="margin-bottom:16px;">
+      <span class="info-box-icon">💡</span>
+      <div>英語では、は・が・を の機能を「語順」で表します。主語は動詞の前、目的語は動詞の後に置くことで、助詞なしで関係が伝わります。</div>
+    </div>
+
+    <div class="example-box">
+      <div style="font-size:0.85rem;font-weight:700;color:var(--primary);margin-bottom:8px;">「は」（topic）→ 英語では主語の位置で表現</div>
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span>私<span class="p-part">は</span>学生です</span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span><span class="highlight-box subject">I</span> am a student <small style="color:var(--text-light)">（主語が文頭＝主題）</small></span>
+      </div>
+    </div>
+
+    <div class="example-box alt">
+      <div style="font-size:0.85rem;font-weight:700;color:var(--secondary);margin-bottom:8px;">「が」（subject）→ 英語では主語の位置で表現</div>
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span>雨<span class="p-part">が</span>降っている</span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span><span class="highlight-box subject">It</span> is raining / <span class="highlight-box subject">Rain</span> is falling <small style="color:var(--text-light)">（主語が文頭）</small></span>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div style="font-size:0.85rem;font-weight:700;color:var(--accent);margin-bottom:8px;">「を」（object）→ 英語では動詞の後ろで表現</div>
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span>水<span class="p-part">を</span>飲む</span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span>drink <span class="highlight-box object">water</span> <small style="color:var(--text-light)">（目的語は動詞の後ろ）</small></span>
+      </div>
+    </div>
+
+    <h3 style="margin:20px 0 12px;font-size:1.1rem;">位置の違いを比較</h3>
+
+    <div class="example-box">
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span>東京<span class="p-part">に</span>行く</span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span>go <span class="p-part">to</span> Tokyo</span>
+      </div>
+      <div style="font-size:0.8rem;color:var(--text-light);margin-top:4px;">💡 日本語: 名詞の後ろ ↔ 英語: 名詞の前</div>
+    </div>
+
+    <div class="example-box alt">
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span>電車<span class="p-part">で</span>行く</span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span>go <span class="p-part">by</span> train</span>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span>友達<span class="p-part">と</span>話す</span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span>talk <span class="p-part">with</span> a friend</span>
+      </div>
+    </div>
+
+    <div class="example-box alt">
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span>学校<span class="p-part">から</span>家<span class="p-part">まで</span></span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span><span class="p-part">from</span> school <span class="p-part">to</span> home</span>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span>公園<span class="p-part">で</span>遊ぶ</span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span>play <span class="p-part">at</span> the park</span>
+      </div>
+    </div>
+
+    <div class="info-box tip">
+      <span class="info-box-icon">💡</span>
+      <div>日本語の「は」「が」「を」は英語に直接対応する前置詞がありません。英語ではこれらの関係を<strong>語順</strong>で表します。これがStep 1で学んだ語順の重要性につながります！</div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--secondary);margin-top:16px;">
+      <div class="card-title">👁️ 視点の違い：助詞が生む「主観の世界」</div>
+      <div style="font-size:0.9rem;line-height:1.8;">
+        <p>日本語の助詞は、話し手が世界をどう<strong>感じているか</strong>を反映します。「は」は話し手が意識している<strong>話題</strong>を、「が」は新しく気づいた<strong>発見</strong>を表します。</p>
+        <p style="margin-top:8px;">英語にはこの区別がなく、語順で主語を決めるため、より<span style="color:var(--primary);font-weight:700;">客観的・構造的</span>な印象を与えます。</p>
+        <div class="example-box" style="margin-top:12px;">
+          <div class="example-row">
+            <span class="lang-label ja">日</span>
+            <span>あ、雨<span class="p-part">が</span>降ってきた！ <small style="color:var(--text-light)">（発見・驚き）</small></span>
+          </div>
+          <div class="example-row">
+            <span class="lang-label ja">日</span>
+            <span>雨<span class="p-part">は</span>もう止んだよ <small style="color:var(--text-light)">（既知の話題）</small></span>
+          </div>
+          <div class="example-row">
+            <span class="lang-label en">英</span>
+            <span>Oh, it started raining! / The rain has already stopped. <small style="color:var(--text-light)">（どちらも同じ主語構造）</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="complete-btn" onclick="completeStep('step2')" id="complete-step2">
+      ✅ ステップ2を完了にする
+    </button>
+  </div>
+</section>
+
+<!-- Particle Popup Overlay & Popups -->
+<div class="particle-popup-overlay" id="popupOverlay"></div>
+
+<div class="particle-popup" id="popup-ni">
+  <div class="popup-title"><span class="p-part">に</span> の英語表現 <button class="popup-close" onclick="closePopup()">✕</button></div>
+  <div class="popup-case">
+    <div class="popup-case-en">to（方向・目的地）</div>
+    <div class="popup-case-desc">移動の方向や到着点を表す</div>
+    <div class="popup-case-example">東京<b>に</b>行く → go <b>to</b> Tokyo</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">at（時間・地点）</div>
+    <div class="popup-case-desc">特定の時刻やピンポイントの場所</div>
+    <div class="popup-case-example">3時<b>に</b>会う → meet <b>at</b> 3 o'clock</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">in（場所・存在）</div>
+    <div class="popup-case-desc">広い場所や空間の中にいること</div>
+    <div class="popup-case-example">東京<b>に</b>住んでいる → live <b>in</b> Tokyo</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">on（面の上・曜日）</div>
+    <div class="popup-case-desc">表面の上や特定の日</div>
+    <div class="popup-case-example">月曜日<b>に</b> → <b>on</b> Monday</div>
+  </div>
+</div>
+
+<div class="particle-popup" id="popup-de">
+  <div class="popup-title"><span class="p-part">で</span> の英語表現 <button class="popup-close" onclick="closePopup()">✕</button></div>
+  <div class="popup-case">
+    <div class="popup-case-en">by（手段・交通手段）</div>
+    <div class="popup-case-desc">移動手段や方法を表す</div>
+    <div class="popup-case-example">電車<b>で</b>行く → go <b>by</b> train</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">at（場所で動作）</div>
+    <div class="popup-case-desc">ある場所で活動が行われる</div>
+    <div class="popup-case-example">レストラン<b>で</b>食べる → eat <b>at</b> a restaurant</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">in（場所・言語・材料）</div>
+    <div class="popup-case-desc">空間内での活動や、使用する言語・材料</div>
+    <div class="popup-case-example">日本語<b>で</b>話す → speak <b>in</b> Japanese</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">with（道具）</div>
+    <div class="popup-case-desc">道具や手段を使って何かをする</div>
+    <div class="popup-case-example">箸<b>で</b>食べる → eat <b>with</b> chopsticks</div>
+  </div>
+</div>
+
+<div class="particle-popup" id="popup-made">
+  <div class="popup-title"><span class="p-part">まで</span> の英語表現 <button class="popup-close" onclick="closePopup()">✕</button></div>
+  <div class="popup-case">
+    <div class="popup-case-en">to（終着点）</div>
+    <div class="popup-case-desc">物理的な移動の到着地点</div>
+    <div class="popup-case-example">駅<b>まで</b>歩く → walk <b>to</b> the station</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">until（時間的な限界）</div>
+    <div class="popup-case-desc">ある時点まで続くこと</div>
+    <div class="popup-case-example">5時<b>まで</b>働く → work <b>until</b> 5 o'clock</div>
+  </div>
+</div>
+
+<div class="particle-popup" id="popup-to">
+  <div class="popup-title"><span class="p-part">と</span> の英語表現 <button class="popup-close" onclick="closePopup()">✕</button></div>
+  <div class="popup-case">
+    <div class="popup-case-en">and（並列）</div>
+    <div class="popup-case-desc">2つ以上のものを列挙する</div>
+    <div class="popup-case-example">犬<b>と</b>猫 → dogs <b>and</b> cats</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">with（共同動作）</div>
+    <div class="popup-case-desc">誰かと一緒に何かをする</div>
+    <div class="popup-case-example">友達<b>と</b>遊ぶ → play <b>with</b> friends</div>
+  </div>
+</div>
+
+<div class="particle-popup" id="popup-no">
+  <div class="popup-title"><span class="p-part">の</span> の英語表現 <button class="popup-close" onclick="closePopup()">✕</button></div>
+  <div class="popup-case">
+    <div class="popup-case-en">'s（所有格）</div>
+    <div class="popup-case-desc">人やものの所有を表す（カジュアル）</div>
+    <div class="popup-case-example">田中さん<b>の</b>車 → Tanaka<b>'s</b> car</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">of（〜の）</div>
+    <div class="popup-case-desc">所属・部分・関係を表す（フォーマル）</div>
+    <div class="popup-case-example">日本<b>の</b>文化 → the culture <b>of</b> Japan</div>
+  </div>
+</div>
+
+<!-- ===== STEP 3: Conjunctions ===== -->
+<section class="section" id="step3">
+  <div class="section-header" style="background:linear-gradient(135deg, #059669, #0891B2);">
+    <div class="step-num">STEP 3</div>
+    <h2>接続詞と文のつなぎ方（Conjunctions）</h2>
+    <div class="subtitle">文と文をつなぐ方法の違いを理解しよう</div>
+  </div>
+  <div class="section-body">
+
+    <!-- 順接 Cause-effect -->
+    <div class="conj-category">
+      <div class="conj-category-title cause">🔴 順接（Cause-Effect）：理由・結果</div>
+      <div class="example-box">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span>雨が降った<span class="p-part">から</span>、試合は中止になった</span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span><span class="p-part">Because</span> it rained, the game was canceled</span>
+        </div>
+      </div>
+      <div class="example-box">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span>疲れた。<span class="p-part">だから</span>早く寝た。</span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span>I was tired. <span class="p-part">So</span> I went to bed early.</span>
+        </div>
+      </div>
+
+      <div class="flow-diagram">
+        <div class="flow-box sentence">原因の文</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box conjunction">だから / So</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box sentence">結果の文</div>
+      </div>
+
+      <div class="info-box note">
+        <span class="info-box-icon">📝</span>
+        <div>日本語の「から」は文の途中で理由節を作りますが、英語の "because" は文頭にも途中にも置けます。「だから」と "so" はどちらも2つの文をつなぐ働きをします。</div>
+      </div>
+    </div>
+
+    <!-- 逆接 Contrast -->
+    <div class="conj-category">
+      <div class="conj-category-title contrast">🔵 逆接（Contrast）：対比・逆</div>
+      <div class="example-box">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span>高い。<span class="p-part">しかし</span>品質がいい。</span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span>It's expensive. <span class="p-part">However</span>, the quality is good.</span>
+        </div>
+      </div>
+      <div class="example-box alt">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span>勉強した<span class="p-part">けど</span>、テストに落ちた。</span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span>I studied, <span class="p-part">but</span> I failed the test.</span>
+        </div>
+      </div>
+
+      <div class="flow-diagram">
+        <div class="flow-box sentence">文A</div>
+        <span class="flow-arrow">⟷</span>
+        <div class="flow-box conjunction">しかし / However</div>
+        <span class="flow-arrow">⟷</span>
+        <div class="flow-box sentence">文B（対立）</div>
+      </div>
+    </div>
+
+    <!-- 並列 Addition -->
+    <div class="conj-category">
+      <div class="conj-category-title addition">🟢 並列（Addition）：追加・並列</div>
+      <div class="example-box">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span>日本語を勉強している。<span class="p-part">そして</span>英語も勉強している。</span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span>I study Japanese. <span class="p-part">And</span> I also study English.</span>
+        </div>
+      </div>
+      <div class="example-box alt">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span>彼は優しい。<span class="p-part">また</span>頭もいい。</span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span>He is kind. <span class="p-part">Also</span>, he is smart.</span>
+        </div>
+      </div>
+
+      <div class="flow-diagram">
+        <div class="flow-box sentence">文A</div>
+        <span class="flow-arrow">+</span>
+        <div class="flow-box conjunction">そして / And</div>
+        <span class="flow-arrow">+</span>
+        <div class="flow-box sentence">文B（追加）</div>
+      </div>
+    </div>
+
+    <!-- 条件 Condition -->
+    <div class="conj-category">
+      <div class="conj-category-title condition">🟡 条件（Condition）：もし〜なら</div>
+      <div class="example-box">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span><span class="p-part">もし</span>雨が降っ<span class="p-part">たら</span>、家にいます。</span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span><span class="p-part">If</span> it rains, I will stay home.</span>
+        </div>
+      </div>
+      <div class="example-box alt">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span><span class="p-part">もし</span>時間があれ<span class="p-part">ば</span>、映画を見よう。</span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span><span class="p-part">If</span> we have time, let's watch a movie.</span>
+        </div>
+      </div>
+
+      <div class="flow-diagram">
+        <div class="flow-box conjunction">もし / If</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box sentence">条件の文</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box sentence">結果の文</div>
+      </div>
+
+      <div class="info-box tip">
+        <span class="info-box-icon">💡</span>
+        <div>日本語の条件表現は「もし〜たら」「もし〜ば」「もし〜なら」など動詞の活用で条件を作りますが、英語は "if" 一語で条件を示せます。</div>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--secondary);margin-top:16px;">
+      <div class="card-title">👁️ 視点の違い：つなぎ方に現れる思考パターン</div>
+      <div style="font-size:0.9rem;line-height:1.8;">
+        <p>日本語は文末まで聞かないと結論がわからない構造です。話し手の<strong>思考の流れ</strong>に沿って情報が展開します。</p>
+        <p style="margin-top:8px;">英語は結論（主語＋動詞）を先に述べてから理由や条件を付け足す傾向があり、<span style="color:var(--primary);font-weight:700;">論理的・分析的</span>な印象を与えます。</p>
+        <div class="example-box" style="margin-top:12px;">
+          <div class="example-row">
+            <span class="lang-label ja">日</span>
+            <span>電車が遅れた<span class="p-part">から</span>、遅刻した。 <small style="color:var(--text-light)">（原因→結果の順）</small></span>
+          </div>
+          <div class="example-row">
+            <span class="lang-label en">英</span>
+            <span>I was late <b>because</b> the train was delayed. <small style="color:var(--text-light)">（結果→原因の順）</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="complete-btn" onclick="completeStep('step3')" id="complete-step3">
+      ✅ ステップ3を完了にする
+    </button>
+  </div>
+</section>
+
+<!-- ===== STEP 4: Modifier Placement ===== -->
+<section class="section" id="step4">
+  <div class="section-header" style="background:linear-gradient(135deg, #DC2626, #F59E0B);">
+    <div class="step-num">STEP 4</div>
+    <h2>修飾語の位置（Modifier Placement）</h2>
+    <div class="subtitle">日本語は「前から修飾」、英語は「後ろから修飾」もある</div>
+  </div>
+  <div class="section-body">
+
+    <div class="compare-grid">
+      <div class="compare-card ja-card">
+        <h4>🇯🇵 日本語の修飾</h4>
+        <div style="font-size:1rem;font-weight:700;margin:8px 0;">
+          <span style="color:#F59E0B">【修飾語】</span> + <span style="color:#2563EB">名詞</span>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-light)">どんなに長い修飾語でも名詞の<strong>前</strong>に置く</p>
+      </div>
+      <div class="arrow-container">⟷</div>
+      <div class="compare-card en-card">
+        <h4>🇬🇧 英語の修飾</h4>
+        <div style="font-size:1rem;font-weight:700;margin:8px 0;">
+          <span style="color:#2563EB">Noun</span> + <span style="color:#7C3AED">【関係節】</span>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-light)">長い修飾は名詞の<strong>後ろ</strong>に関係代名詞で続ける</p>
+      </div>
+    </div>
+
+    <h3 style="margin:20px 0 12px;font-size:1.1rem;">例文で比較</h3>
+
+    <!-- Example 1: Short modifier -->
+    <div class="card">
+      <div class="card-title">🔸 短い修飾語（形容詞）</div>
+      <div class="modifier-diagram">
+        <span class="modifier-box modifier">赤い</span>
+        <span class="mod-arrow">→</span>
+        <span class="modifier-box noun">花</span>
+      </div>
+      <div class="modifier-diagram">
+        <span class="modifier-box modifier">red</span>
+        <span class="mod-arrow">→</span>
+        <span class="modifier-box noun">flower(s)</span>
+      </div>
+      <div class="info-box note" style="margin-top:8px;">
+        <span class="info-box-icon">📝</span>
+        <div>短い形容詞はどちらの言語でも名詞の前に置きます。同じ順序！</div>
+      </div>
+    </div>
+
+    <!-- Example 2: Clause modifier -->
+    <div class="card">
+      <div class="card-title">🔸 長い修飾語（節）</div>
+      <div class="example-box">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span><span style="background:#FDE68A;padding:2px 6px;border-radius:4px;font-weight:700;">昨日買った</span><span class="highlight-box subject">本</span></span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span>The <span class="highlight-box subject">book</span> <span style="background:#E9D5FF;padding:2px 6px;border-radius:4px;font-weight:700;">that I bought yesterday</span></span>
+        </div>
+      </div>
+      <div class="modifier-diagram">
+        <span style="font-size:0.8rem;color:var(--text-light)">🇯🇵</span>
+        <span class="modifier-box modifier">昨日買った</span>
+        <span class="mod-arrow">→</span>
+        <span class="modifier-box noun">本</span>
+      </div>
+      <div class="modifier-diagram">
+        <span style="font-size:0.8rem;color:var(--text-light)">🇬🇧</span>
+        <span class="modifier-box noun">book</span>
+        <span class="mod-arrow">→</span>
+        <span class="modifier-box rel">that I bought yesterday</span>
+      </div>
+    </div>
+
+    <!-- Example 3 -->
+    <div class="card">
+      <div class="card-title">🔸 さらに長い修飾</div>
+      <div class="example-box">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span><span style="background:#FDE68A;padding:2px 6px;border-radius:4px;font-weight:700;">東京に住んでいる</span><span class="highlight-box subject">友達</span></span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span>A <span class="highlight-box subject">friend</span> <span style="background:#E9D5FF;padding:2px 6px;border-radius:4px;font-weight:700;">who lives in Tokyo</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 4 -->
+    <div class="card">
+      <div class="card-title">🔸 複雑な修飾</div>
+      <div class="example-box">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span><span style="background:#FDE68A;padding:2px 6px;border-radius:4px;font-weight:700;">去年日本で撮った</span><span class="highlight-box subject">写真</span></span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span>The <span class="highlight-box subject">photos</span> <span style="background:#E9D5FF;padding:2px 6px;border-radius:4px;font-weight:700;">that I took in Japan last year</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box tip">
+      <span class="info-box-icon">💡</span>
+      <div>日本語は「左枝分かれ（left-branching）」言語、英語は「右枝分かれ（right-branching）」言語と呼ばれることがあります。これは修飾語の付く方向が逆であることを表しています。英語の "who", "that", "which" などの関係代名詞は、日本語には存在しない仕組みです。</div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--secondary);margin-top:16px;">
+      <div class="card-title">👁️ 視点の違い：情報の受け取り順序</div>
+      <div style="font-size:0.9rem;line-height:1.8;">
+        <p>日本語は修飾語を先に聞くので、聞き手は<strong>イメージを先に膨らませてから</strong>対象の名詞に到達します。まるで映画のカメラがゆっくりズームインするような感覚です。</p>
+        <p style="margin-top:8px;">英語は先に名詞を示してから詳細を後付けするため、<strong>まず対象を認識し、後から情報を補完</strong>する流れになります。</p>
+        <div class="example-box" style="margin-top:12px;">
+          <div class="example-row">
+            <span class="lang-label ja">日</span>
+            <span><span style="color:var(--accent);font-weight:700;">去年の夏に京都で出会った</span>女性 <small style="color:var(--text-light)">（情景→人物）</small></span>
+          </div>
+          <div class="example-row">
+            <span class="lang-label en">英</span>
+            <span>The woman <span style="color:var(--secondary);font-weight:700;">whom I met in Kyoto last summer</span> <small style="color:var(--text-light)">（人物→情景）</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="complete-btn" onclick="completeStep('step4')" id="complete-step4">
+      ✅ ステップ4を完了にする
+    </button>
+  </div>
+</section>
+
+<!-- ===== STEP 5: Sentence Building Practice ===== -->
+<section class="section" id="step5">
+  <div class="section-header" style="background:linear-gradient(135deg, #0891B2, #6366F1);">
+    <div class="step-num">STEP 5</div>
+    <h2>文の組み立て練習（Sentence Building Practice）</h2>
+    <div class="subtitle">単語チップをクリックして正しい順番に並べよう！</div>
+  </div>
+  <div class="section-body">
+
+    <div class="info-box tip">
+      <span class="info-box-icon">🎯</span>
+      <div>下の単語チップをクリックして、正しい英語の語順に並べましょう。間違えたら「リセット」ボタンで最初からやり直せます。</div>
+    </div>
+
+    <div id="builder-exercises"></div>
+
+    <button class="complete-btn" onclick="completeStep('step5')" id="complete-step5">
+      ✅ ステップ5を完了にする
+    </button>
+  </div>
+</section>
+
+<!-- ===== SUMMARY SECTION ===== -->
+<section class="section" id="summary">
+  <div class="section-header" style="background:linear-gradient(135deg, #0D9488, #7C3AED);">
+    <div class="step-num">📋 SUMMARY</div>
+    <h2>総括：長文で違いを体感する</h2>
+    <div class="subtitle">同じ内容を日本語と英語で読み比べ、構造の違いを実感しよう</div>
+  </div>
+  <div class="section-body">
+
+    <div class="info-box" style="margin-bottom:16px;">
+      <span class="info-box-icon">📖</span>
+      <div>ここまで学んだ<strong>語順・助詞・接続詞・修飾語・視点の違い</strong>が、実際の長文でどう現れるかを3つのジャンルで体感してみましょう。日本語の「主観・体験型」と英語の「客観・構造型」の違いに注目してください。</div>
+    </div>
+
+    <!-- Example 1: Smartphone Usage -->
+    <div class="card" style="border-left:4px solid var(--primary);">
+      <div class="card-title">📱 例文1：スマートフォンの操作（システム・技術系）</div>
+      <div class="example-box" style="margin-top:8px;">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span style="line-height:1.9;">ホーム画面<span class="p-part">を</span>右にスワイプして、設定アイコン<span class="p-part">を</span>タップしてください。<br>次に、「ネットワーク」<span class="p-part">を</span>選択して、Wi-Fi<span class="p-part">を</span>オン<span class="p-part">に</span>します。</span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span style="line-height:1.9;"><span class="highlight-box verb">Swipe</span> right on the home screen and <span class="highlight-box verb">tap</span> the Settings icon.<br>Then, <span class="highlight-box verb">select</span> "Network" and <span class="highlight-box verb">turn on</span> Wi-Fi.</span>
+        </div>
+      </div>
+      <div class="info-box note" style="margin-top:12px;">
+        <span class="info-box-icon">📝</span>
+        <div><strong>解析：</strong>日本語は<span class="p-part">を</span>（目的語助詞）でユーザーが操作する<em>対象</em>を強調。英語は命令形の<strong>動詞</strong>から始まるアクション重視の構造。</div>
+      </div>
+      <div class="info-box tip" style="margin-top:8px;">
+        <span class="info-box-icon">💭</span>
+        <div><strong>印象の違い：</strong>日本語は「画面を…して、アイコンを…して」と<span style="color:var(--secondary);font-weight:700;">操作対象に寄り添うガイド</span>のように感じます。英語は「Swipe! Tap! Select!」と<span style="color:var(--primary);font-weight:700;">明確な指示・コマンド</span>のように感じます。</div>
+      </div>
+    </div>
+
+    <!-- Example 2: Train Travel Story -->
+    <div class="card" style="border-left:4px solid var(--secondary);margin-top:16px;">
+      <div class="card-title">🚃 例文2：列車の旅（感情・物語系）</div>
+      <div class="example-box" style="margin-top:8px;">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span style="line-height:1.9;">窓の外<span class="p-part">に</span><span class="p-part">は</span>、<span style="color:var(--accent);font-weight:700;">夕焼け<span class="p-part">に</span>染まった</span>山々<span class="p-part">が</span>広がっていた。<br>列車の揺れ<span class="p-part">に</span>身<span class="p-part">を</span>任せながら、あの日の約束<span class="p-part">を</span>思い出していた。</span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span style="line-height:1.9;"><span style="color:var(--accent);font-weight:700;">Mountains tinged with the sunset</span> spread outside the window.<br>Surrendering to the sway of the train, <span class="highlight-box subject">I</span> was remembering the promise from that day.</span>
+        </div>
+      </div>
+      <div class="info-box note" style="margin-top:12px;">
+        <span class="info-box-icon">📝</span>
+        <div><strong>解析：</strong>日本語は主語を完全に省略 — 読み手が自然に語り手になります。英語は内省的な場面でも「<strong>I</strong>」が必要。日本語の修飾語「夕焼けに染まった」は名詞の<em>前</em>、英語の「tinged with the sunset」は名詞の<em>後</em>。</div>
+      </div>
+      <div class="info-box tip" style="margin-top:8px;">
+        <span class="info-box-icon">💭</span>
+        <div><strong>印象の違い：</strong>日本語は主語がないことで<span style="color:var(--secondary);font-weight:700;">読み手が物語に没入</span>する効果があります。英語は「I」があることで<span style="color:var(--primary);font-weight:700;">観察者としての距離感</span>が保たれます。</div>
+      </div>
+    </div>
+
+    <!-- Example 3: Business Communication -->
+    <div class="card" style="border-left:4px solid #059669;margin-top:16px;">
+      <div class="card-title">💼 例文3：ビジネスメール（敬語・丁寧表現）</div>
+      <div class="example-box" style="margin-top:8px;">
+        <div class="example-row">
+          <span class="lang-label ja">日</span>
+          <span style="line-height:1.9;">先日お送りいただいた資料<span class="p-part">を</span><strong style="color:#059669;">拝見いたしました</strong>。<br>いくつか確認したい点<span class="p-part">が</span>ございます<span class="p-part">ので</span>、お時間<span class="p-part">を</span>いただけますでしょうか。</span>
+        </div>
+        <div class="example-row">
+          <span class="lang-label en">英</span>
+          <span style="line-height:1.9;"><span class="highlight-box subject">I</span> <strong style="color:#059669;">have reviewed</strong> the documents you sent the other day.<br><span class="highlight-box subject">I</span> <strong style="color:#059669;">would like to</strong> confirm a few points, so <strong style="color:#059669;">could I</strong> have some of your time?</span>
+        </div>
+      </div>
+      <div class="info-box note" style="margin-top:12px;">
+        <span class="info-box-icon">📝</span>
+        <div><strong>解析：</strong>日本語の敬語は動詞の<em>形そのもの</em>が変わります（見る→拝見する、ある→ございます）。英語は助動詞（would / could）で丁寧さを加えますが、文の構造は変わりません。</div>
+      </div>
+      <div class="info-box tip" style="margin-top:8px;">
+        <span class="info-box-icon">💭</span>
+        <div><strong>印象の違い：</strong>日本語の敬語は<span style="color:var(--secondary);font-weight:700;">話し手と聞き手の関係性</span>が動詞に組み込まれ、文全体から敬意が伝わります。英語は<span style="color:var(--primary);font-weight:700;">would / could を添える</span>だけで同じ構造を維持します。</div>
+      </div>
+    </div>
+
+    <!-- Summary comparison box -->
+    <div class="card" style="border-left:4px solid var(--accent);margin-top:20px;">
+      <div class="card-title">🔍 3つの例文から見えること</div>
+      <div style="font-size:0.88rem;line-height:1.8;">
+        <div style="display:grid;gap:12px;">
+          <div class="popup-case" style="border-left-color:#059669;">
+            <div class="popup-case-en">🤝 共通点（同じところ）</div>
+            <div class="popup-case-desc">どちらの言語も「誰が・何を・どうする」という基本情報は同じ。伝えたい内容は変わりません。手順説明・物語・丁寧表現の区別もどちらの言語にもあります。</div>
+          </div>
+          <div class="popup-case" style="border-left-color:var(--primary);">
+            <div class="popup-case-en">🔀 相違点（違うところ）</div>
+            <div class="popup-case-desc">日本語は<b>助詞</b>で関係を示し、主語を省略でき、動詞の形で敬意を表現。英語は<b>語順</b>で関係を示し、主語が必須で、助動詞で丁寧さを添える。</div>
+          </div>
+          <div class="popup-case" style="border-left-color:var(--secondary);">
+            <div class="popup-case-en">👁️ 視点が生む「味」の違い</div>
+            <div class="popup-case-desc">同じ内容でも、日本語は<b>体験者の視点</b>に寄り添い没入感を生みます。英語は<b>観察者の視点</b>で構造的に情報を伝えます。どちらが優れているわけではなく、異なる「味わい」です。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="complete-btn" onclick="completeStep('summary')" id="complete-summary">
+      ✅ 総括を読了にする
+    </button>
+  </div>
+</section>
+
+<!-- ===== QUIZ SECTION ===== -->
+<section class="section" id="quiz">
+  <div class="section-header" style="background:linear-gradient(135deg, #7C3AED, #2563EB);">
+    <div class="step-num">📝 QUIZ</div>
+    <h2>理解度チェック（Comprehension Quizzes）</h2>
+    <div class="subtitle">3つのクイズで学んだ内容を確認しよう</div>
+  </div>
+  <div class="section-body">
+
+    <div class="tab-buttons">
+      <button class="tab-btn active" onclick="switchTab('quiz1', this)">語順クイズ</button>
+      <button class="tab-btn" onclick="switchTab('quiz2', this)">助詞マッチング</button>
+      <button class="tab-btn" onclick="switchTab('quiz3', this)">穴埋めクイズ</button>
+    </div>
+
+    <!-- Quiz 1: Word Order -->
+    <div class="tab-content active" id="tab-quiz1">
+      <h3 style="margin-bottom:16px;">語順クイズ（Word Order Quiz）</h3>
+      <p style="color:var(--text-light);margin-bottom:16px;">日本語の文を見て、正しい英語の語順を選んでください。</p>
+      <div id="quiz1-container"></div>
+      <div class="score-display" id="quiz1-score"></div>
+      <div class="btn-group">
+        <button class="btn btn-accent" onclick="submitQuiz('quiz1')" id="quiz1-submit">回答を確認する</button>
+        <button class="btn btn-secondary" onclick="retryQuiz('quiz1')" style="display:none" id="quiz1-retry">もう一度挑戦</button>
+      </div>
+      <button class="complete-btn" onclick="completeStep('quiz1')" id="complete-quiz1" style="display:none">
+        ✅ 語順クイズを完了にする
+      </button>
+    </div>
+
+    <!-- Quiz 2: Particle Matching -->
+    <div class="tab-content" id="tab-quiz2">
+      <h3 style="margin-bottom:16px;">助詞マッチングクイズ（Particle Matching Quiz）</h3>
+      <p style="color:var(--text-light);margin-bottom:16px;">左の日本語助詞をクリックし、次に右の対応する英語前置詞をクリックしてマッチさせてください。</p>
+      <div id="quiz2-container"></div>
+      <div class="score-display" id="quiz2-score"></div>
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="retryQuiz('quiz2')" style="display:none" id="quiz2-retry">もう一度挑戦</button>
+      </div>
+      <button class="complete-btn" onclick="completeStep('quiz2')" id="complete-quiz2" style="display:none">
+        ✅ 助詞マッチングクイズを完了にする
+      </button>
+    </div>
+
+    <!-- Quiz 3: Fill-in-the-blank -->
+    <div class="tab-content" id="tab-quiz3">
+      <h3 style="margin-bottom:16px;">穴埋めクイズ（Fill-in-the-Blank Quiz）</h3>
+      <p style="color:var(--text-light);margin-bottom:16px;">文中の空欄に入る正しい助詞・前置詞を選んでください。</p>
+      <div id="quiz3-container"></div>
+      <div class="score-display" id="quiz3-score"></div>
+      <div class="btn-group">
+        <button class="btn btn-accent" onclick="submitQuiz('quiz3')" id="quiz3-submit">回答を確認する</button>
+        <button class="btn btn-secondary" onclick="retryQuiz('quiz3')" style="display:none" id="quiz3-retry">もう一度挑戦</button>
+      </div>
+      <button class="complete-btn" onclick="completeStep('quiz3')" id="complete-quiz3" style="display:none">
+        ✅ 穴埋めクイズを完了にする
+      </button>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- Back to Top -->
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<!-- Footer -->
+<footer>
+  <p>日英文法ビジュアル比較 — Japanese-English Grammar Visual Comparison</p>
+  <p style="margin-top:4px;">インタラクティブ学習サイト 🇯🇵 ⟷ 🇬🇧</p>
+</footer>
+
+<script>
+/* ========================================================================
+   MAIN APPLICATION LOGIC
+   ======================================================================== */
+
+// ========== State ==========
+const completedSteps = new Set();
+const totalSteps = 9; // step1-5 + summary + quiz1-3
+
+// ========== Utilities ==========
+function shuffleArray(arr) {
+  const shuffled = [...arr];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+// ========== Navigation ==========
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const navDrawer = document.getElementById('navDrawer');
+
+hamburgerBtn.addEventListener('click', () => {
+  navDrawer.classList.toggle('open');
+});
+
+function closeDrawer() {
+  navDrawer.classList.remove('open');
+}
+
+document.addEventListener('click', (e) => {
+  if (!navDrawer.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+    closeDrawer();
+  }
+});
+
+// ========== Particle Popups ==========
+let lastPopupTrigger = null;
+function openPopup(id) {
+  document.getElementById('popupOverlay').classList.add('show');
+  document.getElementById(id).classList.add('show');
+}
+function closePopup() {
+  document.getElementById('popupOverlay').classList.remove('show');
+  document.querySelectorAll('.particle-popup.show').forEach(p => p.classList.remove('show'));
+  if (lastPopupTrigger) {
+    lastPopupTrigger.focus();
+    lastPopupTrigger = null;
+  }
+}
+document.getElementById('popupOverlay').addEventListener('click', closePopup);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePopup(); });
+document.querySelectorAll('.particle-popup-trigger').forEach(trigger => {
+  trigger.addEventListener('click', () => { lastPopupTrigger = trigger; openPopup(trigger.dataset.popup); });
+  trigger.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); lastPopupTrigger = trigger; openPopup(trigger.dataset.popup); } });
+});
+
+// ========== Progress Bar ==========
+function updateProgress() {
+  const pct = (completedSteps.size / totalSteps) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('navProgressText').textContent = completedSteps.size + ' / ' + totalSteps + ' 完了';
+}
+
+function completeStep(stepId) {
+  completedSteps.add(stepId);
+  const btn = document.getElementById('complete-' + stepId);
+  if (btn) {
+    btn.classList.add('completed');
+    btn.innerHTML = '✅ 完了しました！';
+  }
+  updateProgress();
+}
+
+// ========== IntersectionObserver for scroll animations ==========
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+// ========== Active nav link ==========
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      const link = document.querySelector('.nav-links a[href="#' + id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('section[id]').forEach(s => navObserver.observe(s));
+
+// ========== Back to top ==========
+const backToTop = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 400) {
+    backToTop.classList.add('visible');
+  } else {
+    backToTop.classList.remove('visible');
+  }
+});
+
+// ========================================================================
+// STEP 5: Sentence Builder
+// ========================================================================
+const builderExercises = [
+  {
+    japanese: '私は毎日水を飲む',
+    hint: '「私は毎日水を飲む」を英語にしよう',
+    words: ['I', 'drink', 'water', 'every day'],
+    answer: ['I', 'drink', 'water', 'every day']
+  },
+  {
+    japanese: '彼女は東京に住んでいる',
+    hint: '「彼女は東京に住んでいる」を英語にしよう',
+    words: ['in', 'She', 'lives', 'Tokyo'],
+    answer: ['She', 'lives', 'in', 'Tokyo']
+  },
+  {
+    japanese: '彼らは公園でサッカーをする',
+    hint: '「彼らは公園でサッカーをする」を英語にしよう',
+    words: ['play', 'at', 'They', 'the park', 'soccer'],
+    answer: ['They', 'play', 'soccer', 'at', 'the park']
+  },
+  {
+    japanese: '私は昨日友達と映画を見た',
+    hint: '「私は昨日友達と映画を見た」を英語にしよう',
+    words: ['a movie', 'with', 'I', 'watched', 'yesterday', 'my friend'],
+    answer: ['I', 'watched', 'a movie', 'with', 'my friend', 'yesterday']
+  },
+  {
+    japanese: '母が作った料理はおいしい',
+    hint: '「母が作った料理はおいしい」を英語にしよう',
+    words: ['is', 'delicious', 'The food', 'my mother', 'that', 'made'],
+    answer: ['The food', 'that', 'my mother', 'made', 'is', 'delicious']
+  }
+];
+
+function initBuilderExercises() {
+  const container = document.getElementById('builder-exercises');
+  container.innerHTML = '';
+
+  builderExercises.forEach((ex, idx) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.id = 'builder-' + idx;
+    div.innerHTML =
+      '<div class="card-title">問題 ' + (idx + 1) + '</div>' +
+      '<div class="example-box" style="margin-bottom:12px;">' +
+        '<div class="example-row"><span class="lang-label ja">日</span><span style="font-weight:700;">' + ex.japanese + '</span></div>' +
+      '</div>' +
+      '<div class="builder-hint">💡 ' + ex.hint + '</div>' +
+      '<div class="builder-area" id="builder-area-' + idx + '" data-idx="' + idx + '"></div>' +
+      '<div class="word-bank" id="word-bank-' + idx + '"></div>' +
+      '<div class="btn-group">' +
+        '<button class="btn btn-primary" onclick="checkBuilder(' + idx + ')">確認する</button>' +
+        '<button class="btn btn-secondary" onclick="resetBuilder(' + idx + ')">リセット</button>' +
+      '</div>' +
+      '<div class="builder-feedback" id="builder-feedback-' + idx + '"></div>';
+    container.appendChild(div);
+
+    populateWordBank(idx);
+  });
+}
+
+function populateWordBank(idx) {
+  const bankEl = document.getElementById('word-bank-' + idx);
+  const areaEl = document.getElementById('builder-area-' + idx);
+  bankEl.innerHTML = '';
+  areaEl.innerHTML = '';
+
+  const shuffled = shuffleArray(builderExercises[idx].words);
+
+  shuffled.forEach((word) => {
+    const chip = document.createElement('button');
+    chip.className = 'word-chip';
+    chip.textContent = word;
+    chip.addEventListener('click', function() {
+      if (this.classList.contains('disabled')) return;
+      this.classList.add('disabled');
+      const placed = document.createElement('button');
+      placed.className = 'word-chip placed';
+      placed.textContent = word;
+      placed.addEventListener('click', function() {
+        this.remove();
+        chip.classList.remove('disabled');
+        areaEl.classList.remove('correct', 'incorrect');
+        const fb = document.getElementById('builder-feedback-' + idx);
+        fb.classList.remove('show');
+      });
+      areaEl.appendChild(placed);
+    });
+    bankEl.appendChild(chip);
+  });
+}
+
+function checkBuilder(idx) {
+  const areaEl = document.getElementById('builder-area-' + idx);
+  const placedChips = areaEl.querySelectorAll('.word-chip');
+  const userAnswer = Array.from(placedChips).map(c => c.textContent);
+  const correctAnswer = builderExercises[idx].answer;
+  const fb = document.getElementById('builder-feedback-' + idx);
+
+  const isCorrect = userAnswer.length === correctAnswer.length &&
+    userAnswer.every((w, i) => w === correctAnswer[i]);
+
+  areaEl.classList.remove('correct', 'incorrect');
+  fb.classList.remove('correct', 'incorrect');
+
+  if (isCorrect) {
+    areaEl.classList.add('correct');
+    fb.className = 'builder-feedback show correct';
+    fb.textContent = '🎉 正解！ — ' + correctAnswer.join(' ');
+  } else {
+    areaEl.classList.add('incorrect');
+    fb.className = 'builder-feedback show incorrect';
+    fb.textContent = '❌ 不正解 — 正解: ' + correctAnswer.join(' ');
+  }
+}
+
+function resetBuilder(idx) {
+  const fb = document.getElementById('builder-feedback-' + idx);
+  fb.classList.remove('show');
+  const areaEl = document.getElementById('builder-area-' + idx);
+  areaEl.classList.remove('correct', 'incorrect');
+  populateWordBank(idx);
+}
+
+// ========================================================================
+// QUIZ 1: Word Order Quiz
+// ========================================================================
+const quiz1Data = [
+  {
+    question: '私は音楽を聞く',
+    options: ['I music listen to.', 'I listen to music.', 'Listen I to music.', 'Music I listen.'],
+    correct: 1,
+    explanation: '日本語のSOV「私は(S) 音楽を(O) 聞く(V)」→ 英語のSVO「I(S) listen to(V) music(O)」'
+  },
+  {
+    question: '彼は毎朝コーヒーを飲む',
+    options: ['He every morning coffee drinks.', 'Coffee he drinks every morning.', 'He drinks coffee every morning.', 'Every morning he coffee drinks.'],
+    correct: 2,
+    explanation: 'SVO語順: He(S) drinks(V) coffee(O) + 時間の副詞は文末に。'
+  },
+  {
+    question: '先生が生徒に質問した',
+    options: ['The teacher a question asked the students.', 'The teacher asked the students a question.', 'The students the teacher asked a question.', 'Asked the teacher the students a question.'],
+    correct: 1,
+    explanation: '英語ではSVOO（二重目的語）: The teacher(S) asked(V) the students(O1) a question(O2)'
+  },
+  {
+    question: '猫がテーブルの上で寝ている',
+    options: ['The cat on the table is sleeping.', 'On the table the cat sleeping is.', 'The cat is sleeping on the table.', 'Sleeping is the cat on the table.'],
+    correct: 2,
+    explanation: '英語SVO + 場所の前置詞句: The cat(S) is sleeping(V) on the table(場所)'
+  },
+  {
+    question: '私たちは来週京都に行く',
+    options: ['We next week Kyoto to will go.', 'We will go to Kyoto next week.', 'Next week to Kyoto we will go.', 'To Kyoto we next week will go.'],
+    correct: 1,
+    explanation: '英語SVO + 前置詞: We(S) will go(V) to Kyoto(方向) next week(時間)'
+  }
+];
+
+function initQuiz1() {
+  const container = document.getElementById('quiz1-container');
+  container.innerHTML = '';
+
+  quiz1Data.forEach((q, idx) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-question';
+    div.id = 'q1-' + idx;
+    let optionsHtml = '<div class="q-options">';
+    q.options.forEach((opt, oi) => {
+      optionsHtml += '<button class="q-option" data-quiz="quiz1" data-q="' + idx + '" data-opt="' + oi + '" onclick="selectOption(\'quiz1\',' + idx + ',' + oi + ')">' + opt + '</button>';
+    });
+    optionsHtml += '</div>';
+    div.innerHTML =
+      '<div class="q-number">問題 ' + (idx + 1) + ' / 5</div>' +
+      '<div class="q-text">🇯🇵 ' + q.question + '</div>' +
+      optionsHtml +
+      '<div class="q-explanation" id="q1-exp-' + idx + '"></div>';
+    container.appendChild(div);
+  });
+}
+
+const quizSelections = { quiz1: {}, quiz3: {} }; // quiz2 uses matchState instead
+
+function selectOption(quizId, qIdx, optIdx) {
+  const buttons = document.querySelectorAll('[data-quiz="' + quizId + '"][data-q="' + qIdx + '"]');
+  buttons.forEach(b => b.classList.remove('selected'));
+  buttons[optIdx].classList.add('selected');
+  quizSelections[quizId][qIdx] = optIdx;
+}
+
+function submitQuiz(quizId) {
+  let data, prefix;
+  if (quizId === 'quiz1') { data = quiz1Data; prefix = 'q1'; }
+  else if (quizId === 'quiz3') { data = quiz3Data; prefix = 'q3'; }
+  else return;
+
+  let score = 0;
+
+  data.forEach((q, idx) => {
+    const selected = quizSelections[quizId][idx];
+    const questionEl = document.getElementById(prefix + '-' + idx);
+    const expEl = document.getElementById(prefix + '-exp-' + idx);
+    const buttons = questionEl.querySelectorAll('.q-option');
+
+    buttons.forEach(b => b.disabled = true);
+
+    if (selected === undefined) {
+      questionEl.classList.add('answered-incorrect');
+      expEl.className = 'q-explanation show incorrect';
+      expEl.textContent = '⚠️ 未回答 — 正解: ' + q.options[q.correct] + ' — ' + q.explanation;
+      buttons[q.correct].classList.add('correct');
+    } else if (selected === q.correct) {
+      score++;
+      questionEl.classList.add('answered-correct');
+      buttons[selected].classList.add('correct');
+      expEl.className = 'q-explanation show correct';
+      expEl.textContent = '✅ 正解！ ' + q.explanation;
+    } else {
+      questionEl.classList.add('answered-incorrect');
+      buttons[selected].classList.add('incorrect');
+      buttons[q.correct].classList.add('correct');
+      expEl.className = 'q-explanation show incorrect';
+      expEl.textContent = '❌ 不正解 — 正解: ' + q.options[q.correct] + ' — ' + q.explanation;
+    }
+  });
+
+  showScore(quizId, score, data.length);
+  document.getElementById(quizId + '-submit').style.display = 'none';
+  document.getElementById(quizId + '-retry').style.display = 'inline-flex';
+  document.getElementById('complete-' + quizId).style.display = 'flex';
+}
+
+function showScore(quizId, score, total) {
+  const pct = Math.round((score / total) * 100);
+  let message = '';
+  if (pct === 100) message = '🎉 パーフェクト！素晴らしい！';
+  else if (pct >= 80) message = '👏 よくできました！';
+  else if (pct >= 60) message = '😊 まあまあ！復習しよう！';
+  else message = '📖 もう一度復習してみよう！';
+
+  const scoreEl = document.getElementById(quizId + '-score');
+  scoreEl.innerHTML =
+    '<div class="score-number">' + pct + '%</div>' +
+    '<div class="score-label">' + score + ' / ' + total + ' 正解</div>' +
+    '<div class="score-message">' + message + '</div>';
+  scoreEl.classList.add('show');
+}
+
+function retryQuiz(quizId) {
+  quizSelections[quizId] = {};
+  document.getElementById(quizId + '-score').classList.remove('show');
+  document.getElementById(quizId + '-submit').style.display = 'inline-flex';
+  document.getElementById(quizId + '-retry').style.display = 'none';
+  document.getElementById('complete-' + quizId).style.display = 'none';
+
+  if (quizId === 'quiz1') initQuiz1();
+  else if (quizId === 'quiz2') initQuiz2();
+  else if (quizId === 'quiz3') initQuiz3();
+}
+
+// ========================================================================
+// QUIZ 2: Particle Matching Quiz
+// ========================================================================
+const quiz2Data = [
+  { ja: 'に（方向）', en: 'to', jaFull: '東京に行く', enFull: 'go to Tokyo' },
+  { ja: 'で（手段）', en: 'by', jaFull: '電車で行く', enFull: 'go by train' },
+  { ja: 'と（共同）', en: 'with', jaFull: '友達と話す', enFull: 'talk with a friend' },
+  { ja: 'から（起点）', en: 'from', jaFull: '学校から', enFull: 'from school' },
+  { ja: 'の（所有）', en: 'of / \'s', jaFull: '私の本', enFull: 'my book / book of mine' }
+];
+
+let matchState = { selectedLeft: null, matchedPairs: [] };
+
+function initQuiz2() {
+  matchState = { selectedLeft: null, matchedPairs: [] };
+  const container = document.getElementById('quiz2-container');
+
+  const shuffledRight = shuffleArray(quiz2Data);
+
+  let html = '<div class="matching-grid">';
+  html += '<div class="matching-column"><h4>🇯🇵 日本語の助詞</h4>';
+  quiz2Data.forEach((item, idx) => {
+    html += '<div class="match-item" id="match-l-' + idx + '" data-side="left" data-idx="' + idx + '" onclick="handleMatch(\'left\',' + idx + ')">' + item.ja + '</div>';
+  });
+  html += '</div>';
+  html += '<div class="matching-column"><h4>🇬🇧 英語の前置詞</h4>';
+  shuffledRight.forEach((item, si) => {
+    const origIdx = quiz2Data.indexOf(item);
+    html += '<div class="match-item" id="match-r-' + origIdx + '" data-side="right" data-idx="' + origIdx + '" onclick="handleMatch(\'right\',' + origIdx + ')">' + item.en + '</div>';
+  });
+  html += '</div></div>';
+  html += '<div id="match-feedback" style="margin-top:12px;"></div>';
+  container.innerHTML = html;
+  document.getElementById('quiz2-retry').style.display = 'none';
+  document.getElementById('quiz2-score').classList.remove('show');
+  document.getElementById('complete-quiz2').style.display = 'none';
+}
+
+function handleMatch(side, idx) {
+  if (matchState.matchedPairs.includes(idx)) return;
+
+  const el = document.getElementById('match-' + (side === 'left' ? 'l' : 'r') + '-' + idx);
+  if (el.classList.contains('matched')) return;
+
+  el.classList.remove('wrong');
+
+  if (side === 'left') {
+    document.querySelectorAll('.match-item[data-side="left"]').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+    matchState.selectedLeft = idx;
+  } else if (side === 'right' && matchState.selectedLeft !== null) {
+    const leftIdx = matchState.selectedLeft;
+    if (leftIdx === idx) {
+      // Correct match
+      document.getElementById('match-l-' + leftIdx).classList.remove('selected');
+      document.getElementById('match-l-' + leftIdx).classList.add('matched');
+      el.classList.add('matched');
+      matchState.matchedPairs.push(leftIdx);
+      matchState.selectedLeft = null;
+
+      const fb = document.getElementById('match-feedback');
+      fb.innerHTML = '<div class="info-box tip"><span class="info-box-icon">✅</span><div>正解！ ' + quiz2Data[leftIdx].jaFull + ' → ' + quiz2Data[leftIdx].enFull + '</div></div>';
+
+      if (matchState.matchedPairs.length === quiz2Data.length) {
+        showScore('quiz2', quiz2Data.length, quiz2Data.length);
+        document.getElementById('quiz2-retry').style.display = 'inline-flex';
+        document.getElementById('complete-quiz2').style.display = 'flex';
+      }
+    } else {
+      // Wrong match
+      el.classList.add('wrong');
+      document.getElementById('match-l-' + leftIdx).classList.add('wrong');
+      setTimeout(() => {
+        el.classList.remove('wrong');
+        document.getElementById('match-l-' + leftIdx).classList.remove('wrong', 'selected');
+      }, 600);
+      matchState.selectedLeft = null;
+
+      const fb = document.getElementById('match-feedback');
+      fb.innerHTML = '<div class="info-box note"><span class="info-box-icon">❌</span><div>不正解！もう一度やってみてください。</div></div>';
+    }
+  }
+}
+
+// ========================================================================
+// QUIZ 3: Fill-in-the-blank Quiz
+// ========================================================================
+const quiz3Data = [
+  {
+    question: '東京＿＿行きます。（Tokyo ___ ikimasu）',
+    options: ['に', 'を', 'で', 'が'],
+    correct: 0,
+    explanation: '方向を表す助詞「に」が正解。東京「に」行く = go "to" Tokyo'
+  },
+  {
+    question: 'I go to school ___ bus.',
+    options: ['with', 'by', 'at', 'in'],
+    correct: 1,
+    explanation: '交通手段を表す前置詞 "by" が正解。「バスで行く」= go by bus'
+  },
+  {
+    question: '友達＿＿遊ぶ。（Tomodachi ___ asobu）',
+    options: ['が', 'に', 'と', 'で'],
+    correct: 2,
+    explanation: '共同を表す助詞「と」が正解。友達「と」遊ぶ = play with friends'
+  },
+  {
+    question: 'This is the book ___ I bought yesterday.',
+    options: ['who', 'where', 'that', 'what'],
+    correct: 2,
+    explanation: '関係代名詞 "that" が正解。「昨日買った本」= the book that I bought yesterday'
+  },
+  {
+    question: '学校＿＿家＿＿歩く。（Gakkou ___ ie ___ aruku）',
+    options: ['に…を', 'から…まで', 'で…に', 'と…が'],
+    correct: 1,
+    explanation: '起点「から」と終点「まで」のペア。学校「から」家「まで」= from school to home'
+  }
+];
+
+function initQuiz3() {
+  const container = document.getElementById('quiz3-container');
+  container.innerHTML = '';
+
+  quiz3Data.forEach((q, idx) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-question';
+    div.id = 'q3-' + idx;
+    let optionsHtml = '<div class="q-options">';
+    q.options.forEach((opt, oi) => {
+      optionsHtml += '<button class="q-option" data-quiz="quiz3" data-q="' + idx + '" data-opt="' + oi + '" onclick="selectOption(\'quiz3\',' + idx + ',' + oi + ')">' + opt + '</button>';
+    });
+    optionsHtml += '</div>';
+    div.innerHTML =
+      '<div class="q-number">問題 ' + (idx + 1) + ' / 5</div>' +
+      '<div class="q-text">📝 ' + q.question + '</div>' +
+      optionsHtml +
+      '<div class="q-explanation" id="q3-exp-' + idx + '"></div>';
+    container.appendChild(div);
+  });
+}
+
+// ========================================================================
+// TAB SWITCHING
+// ========================================================================
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ========================================================================
+// INITIALIZATION
+// ========================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  initBuilderExercises();
+  initQuiz1();
+  initQuiz2();
+  initQuiz3();
+  updateProgress();
+});
+</script>
+</body>
+</html>
