@@ -859,6 +859,82 @@ footer {
   .nav-title { font-size: 0.95rem; }
   .tab-btn { padding: 8px 12px; font-size: 0.8rem; }
 }
+/* ========== Particle Popup ========== */
+.particle-popup-trigger {
+  cursor: pointer;
+  position: relative;
+  border-bottom: 2px dashed var(--accent);
+  transition: background 0.2s;
+}
+.particle-popup-trigger:hover, .particle-popup-trigger:active {
+  background: var(--accent-bg);
+}
+.particle-popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+  padding: 24px;
+  z-index: 2000;
+  max-width: 400px;
+  width: 90%;
+  animation: fadeInUp 0.3s ease;
+}
+.particle-popup.show { display: block; }
+.particle-popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 1999;
+}
+.particle-popup-overlay.show { display: block; }
+.popup-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.popup-close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 4px;
+}
+.popup-close:hover { color: var(--text); }
+.popup-case {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  border-left: 3px solid var(--primary);
+}
+.popup-case:nth-child(odd) { background: var(--primary-bg); }
+.popup-case:nth-child(even) { background: var(--secondary-bg); border-left-color: var(--secondary); }
+.popup-case-en {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--primary);
+}
+.popup-case-desc {
+  font-size: 0.85rem;
+  color: var(--text);
+  margin-top: 2px;
+}
+.popup-case-example {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  margin-top: 4px;
+  font-style: italic;
+}
 </style>
 </head>
 <body>
@@ -876,6 +952,7 @@ footer {
       <a href="#step3">接続詞</a>
       <a href="#step4">修飾語</a>
       <a href="#step5">練習</a>
+      <a href="#summary">総括</a>
       <a href="#quiz">クイズ</a>
     </div>
     <span class="nav-progress-text" id="navProgressText">0 / 8 完了</span>
@@ -890,6 +967,7 @@ footer {
   <a href="#step3" onclick="closeDrawer()">Step 3: 接続詞</a>
   <a href="#step4" onclick="closeDrawer()">Step 4: 修飾語の位置</a>
   <a href="#step5" onclick="closeDrawer()">Step 5: 文の組み立て練習</a>
+  <a href="#summary" onclick="closeDrawer()">📋 総括：長文で比較</a>
   <a href="#quiz" onclick="closeDrawer()">📝 クイズ</a>
 </div>
 
@@ -1024,6 +1102,24 @@ footer {
       <div>日本語の助詞（は、が、を）が主語や目的語の役割を示すので語順は比較的自由ですが、英語では語順そのものが文法的な意味を持ちます。</div>
     </div>
 
+    <div class="card" style="border-left:4px solid var(--secondary);margin-top:16px;">
+      <div class="card-title">👁️ 視点の違い：俯瞰と主観</div>
+      <div style="font-size:0.9rem;line-height:1.8;">
+        <p>英語はまず<strong>「誰が」（主語）</strong>を明確にし、次に<strong>「何をする」（動詞）</strong>を伝えます。まるで上から全体を見渡す<span style="color:var(--primary);font-weight:700;">俯瞰（ふかん）視点</span>です。</p>
+        <p style="margin-top:8px;">一方、日本語は<strong>「何を」</strong>から語り始め、最後に動詞を置きます。話し手が体験を語るような<span style="color:var(--secondary);font-weight:700;">主観的な視点</span>です。</p>
+        <div class="example-box" style="margin-top:12px;">
+          <div class="example-row">
+            <span class="lang-label ja">日</span>
+            <span>桜が きれいに 咲いている <small style="color:var(--text-light)">（目に映る情景から語る）</small></span>
+          </div>
+          <div class="example-row">
+            <span class="lang-label en">英</span>
+            <span>The cherry blossoms are blooming beautifully <small style="color:var(--text-light)">（主語を明確にして客観描写）</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <button class="complete-btn" onclick="completeStep('step1')" id="complete-step1">
       ✅ ステップ1を完了にする
     </button>
@@ -1090,13 +1186,13 @@ footer {
         <tr>
           <td><span class="p-part">に</span></td>
           <td>方向・時間</td>
-          <td><strong>to / at / in</strong></td>
+          <td><span class="particle-popup-trigger" data-popup="popup-ni"><strong>to / at / in</strong> 📖</span></td>
           <td>東京<span class="p-part">に</span>行く</td>
         </tr>
         <tr>
           <td><span class="p-part">で</span></td>
           <td>手段・場所</td>
-          <td><strong>by / at / in</strong></td>
+          <td><span class="particle-popup-trigger" data-popup="popup-de"><strong>by / at / in</strong> 📖</span></td>
           <td>電車<span class="p-part">で</span>行く</td>
         </tr>
         <tr>
@@ -1108,23 +1204,71 @@ footer {
         <tr>
           <td><span class="p-part">まで</span></td>
           <td>終点（Until/To）</td>
-          <td><strong>to / until</strong></td>
+          <td><span class="particle-popup-trigger" data-popup="popup-made"><strong>to / until</strong> 📖</span></td>
           <td>家<span class="p-part">まで</span></td>
         </tr>
         <tr>
           <td><span class="p-part">と</span></td>
           <td>並列・共同</td>
-          <td><strong>and / with</strong></td>
+          <td><span class="particle-popup-trigger" data-popup="popup-to"><strong>and / with</strong> 📖</span></td>
           <td>友達<span class="p-part">と</span></td>
         </tr>
         <tr>
           <td><span class="p-part">の</span></td>
           <td>所有（Possession）</td>
-          <td><strong>'s / of</strong></td>
+          <td><span class="particle-popup-trigger" data-popup="popup-no"><strong>'s / of</strong> 📖</span></td>
           <td>私<span class="p-part">の</span>本</td>
         </tr>
       </tbody>
     </table>
+
+    <div class="info-box note" style="margin-top:8px;">
+      <span class="info-box-icon">👆</span>
+      <div>表の <strong>📖</strong> マークをタップすると、各英語表現の使い分けをミニ解説で確認できます。</div>
+    </div>
+
+    <h3 style="margin:20px 0 12px;font-size:1.1rem;">語順で示す：は・が・を の英語表現</h3>
+
+    <div class="info-box" style="margin-bottom:16px;">
+      <span class="info-box-icon">💡</span>
+      <div>英語では、は・が・を の機能を「語順」で表します。主語は動詞の前、目的語は動詞の後に置くことで、助詞なしで関係が伝わります。</div>
+    </div>
+
+    <div class="example-box">
+      <div style="font-size:0.85rem;font-weight:700;color:var(--primary);margin-bottom:8px;">「は」（topic）→ 英語では主語の位置で表現</div>
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span>私<span class="p-part">は</span>学生です</span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span><span class="highlight-box subject">I</span> am a student <small style="color:var(--text-light)">（主語が文頭＝主題）</small></span>
+      </div>
+    </div>
+
+    <div class="example-box alt">
+      <div style="font-size:0.85rem;font-weight:700;color:var(--secondary);margin-bottom:8px;">「が」（subject）→ 英語では主語の位置で表現</div>
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span>雨<span class="p-part">が</span>降っている</span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span><span class="highlight-box subject">It</span> is raining / <span class="highlight-box subject">Rain</span> is falling <small style="color:var(--text-light)">（主語が文頭）</small></span>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div style="font-size:0.85rem;font-weight:700;color:var(--accent);margin-bottom:8px;">「を」（object）→ 英語では動詞の後ろで表現</div>
+      <div class="example-row">
+        <span class="lang-label ja">日</span>
+        <span>水<span class="p-part">を</span>飲む</span>
+      </div>
+      <div class="example-row">
+        <span class="lang-label en">英</span>
+        <span>drink <span class="highlight-box object">water</span> <small style="color:var(--text-light)">（目的語は動詞の後ろ）</small></span>
+      </div>
+    </div>
 
     <h3 style="margin:20px 0 12px;font-size:1.1rem;">位置の違いを比較</h3>
 
@@ -1189,11 +1333,116 @@ footer {
       <div>日本語の「は」「が」「を」は英語に直接対応する前置詞がありません。英語ではこれらの関係を<strong>語順</strong>で表します。これがStep 1で学んだ語順の重要性につながります！</div>
     </div>
 
+    <div class="card" style="border-left:4px solid var(--secondary);margin-top:16px;">
+      <div class="card-title">👁️ 視点の違い：助詞が生む「主観の世界」</div>
+      <div style="font-size:0.9rem;line-height:1.8;">
+        <p>日本語の助詞は、話し手が世界をどう<strong>感じているか</strong>を反映します。「は」は話し手が意識している<strong>話題</strong>を、「が」は新しく気づいた<strong>発見</strong>を表します。</p>
+        <p style="margin-top:8px;">英語にはこの区別がなく、語順で主語を決めるため、より<span style="color:var(--primary);font-weight:700;">客観的・構造的</span>な印象を与えます。</p>
+        <div class="example-box" style="margin-top:12px;">
+          <div class="example-row">
+            <span class="lang-label ja">日</span>
+            <span>あ、雨<span class="p-part">が</span>降ってきた！ <small style="color:var(--text-light)">（発見・驚き）</small></span>
+          </div>
+          <div class="example-row">
+            <span class="lang-label ja">日</span>
+            <span>雨<span class="p-part">は</span>もう止んだよ <small style="color:var(--text-light)">（既知の話題）</small></span>
+          </div>
+          <div class="example-row">
+            <span class="lang-label en">英</span>
+            <span>Oh, it started raining! / The rain has already stopped. <small style="color:var(--text-light)">（どちらも同じ主語構造）</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <button class="complete-btn" onclick="completeStep('step2')" id="complete-step2">
       ✅ ステップ2を完了にする
     </button>
   </div>
 </section>
+
+<!-- Particle Popup Overlay & Popups -->
+<div class="particle-popup-overlay" id="popupOverlay"></div>
+
+<div class="particle-popup" id="popup-ni">
+  <div class="popup-title">🔹 に → to / at / in の使い分け<button class="popup-close" onclick="closePopup()">✕</button></div>
+  <div class="popup-case">
+    <div class="popup-case-en">to</div>
+    <div class="popup-case-desc">方向・移動先を示す</div>
+    <div class="popup-case-example">東京<b>に</b>行く → go <b>to</b> Tokyo</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">at</div>
+    <div class="popup-case-desc">特定の時刻を示す</div>
+    <div class="popup-case-example">7時<b>に</b>起きる → wake up <b>at</b> 7</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">in</div>
+    <div class="popup-case-desc">存在する場所を示す</div>
+    <div class="popup-case-example">部屋<b>に</b>いる → be <b>in</b> the room</div>
+  </div>
+</div>
+
+<div class="particle-popup" id="popup-de">
+  <div class="popup-title">🔹 で → by / at / in の使い分け<button class="popup-close" onclick="closePopup()">✕</button></div>
+  <div class="popup-case">
+    <div class="popup-case-en">by</div>
+    <div class="popup-case-desc">手段・方法を示す</div>
+    <div class="popup-case-example">電車<b>で</b>行く → go <b>by</b> train</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">at</div>
+    <div class="popup-case-desc">動作が行われる場所を示す</div>
+    <div class="popup-case-example">カフェ<b>で</b>勉強する → study <b>at</b> a café</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">in</div>
+    <div class="popup-case-desc">より広い場所で動作を行う</div>
+    <div class="popup-case-example">公園<b>で</b>遊ぶ → play <b>in</b> the park</div>
+  </div>
+</div>
+
+<div class="particle-popup" id="popup-made">
+  <div class="popup-title">🔹 まで → to / until の使い分け<button class="popup-close" onclick="closePopup()">✕</button></div>
+  <div class="popup-case">
+    <div class="popup-case-en">to</div>
+    <div class="popup-case-desc">空間的な終点を示す</div>
+    <div class="popup-case-example">駅<b>まで</b>歩く → walk <b>to</b> the station</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">until</div>
+    <div class="popup-case-desc">時間的な終点を示す</div>
+    <div class="popup-case-example">5時<b>まで</b>待つ → wait <b>until</b> 5 o'clock</div>
+  </div>
+</div>
+
+<div class="particle-popup" id="popup-to">
+  <div class="popup-title">🔹 と → and / with の使い分け<button class="popup-close" onclick="closePopup()">✕</button></div>
+  <div class="popup-case">
+    <div class="popup-case-en">and</div>
+    <div class="popup-case-desc">ものを並列に列挙する</div>
+    <div class="popup-case-example">犬<b>と</b>猫 → dogs <b>and</b> cats</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">with</div>
+    <div class="popup-case-desc">一緒に行動する相手を示す</div>
+    <div class="popup-case-example">友達<b>と</b>遊ぶ → play <b>with</b> friends</div>
+  </div>
+</div>
+
+<div class="particle-popup" id="popup-no">
+  <div class="popup-title">🔹 の → 's / of の使い分け<button class="popup-close" onclick="closePopup()">✕</button></div>
+  <div class="popup-case">
+    <div class="popup-case-en">'s</div>
+    <div class="popup-case-desc">人や生き物の所有を示す</div>
+    <div class="popup-case-example">私<b>の</b>本 → my book / Tom<b>'s</b> book</div>
+  </div>
+  <div class="popup-case">
+    <div class="popup-case-en">of</div>
+    <div class="popup-case-desc">無生物や抽象的な所属を示す</div>
+    <div class="popup-case-example">日本<b>の</b>文化 → the culture <b>of</b> Japan</div>
+  </div>
+</div>
 
 <!-- ===== STEP 3: Conjunctions ===== -->
 <section class="section" id="step3">
@@ -1346,6 +1595,24 @@ footer {
       </div>
     </div>
 
+    <div class="card" style="border-left:4px solid var(--secondary);margin-top:16px;">
+      <div class="card-title">👁️ 視点の違い：つなぎ方に現れる思考パターン</div>
+      <div style="font-size:0.9rem;line-height:1.8;">
+        <p>日本語は文末まで聞かないと結論がわからない構造です。話し手の<strong>思考の流れ</strong>に沿って情報が展開します。</p>
+        <p style="margin-top:8px;">英語は結論（主語＋動詞）を先に述べてから理由や条件を付け足す傾向があり、<span style="color:var(--primary);font-weight:700;">論理的・分析的</span>な印象を与えます。</p>
+        <div class="example-box" style="margin-top:12px;">
+          <div class="example-row">
+            <span class="lang-label ja">日</span>
+            <span>電車が遅れた<span class="p-part">から</span>、遅刻した。 <small style="color:var(--text-light)">（原因→結果の順）</small></span>
+          </div>
+          <div class="example-row">
+            <span class="lang-label en">英</span>
+            <span>I was late <b>because</b> the train was delayed. <small style="color:var(--text-light)">（結果→原因の順）</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <button class="complete-btn" onclick="completeStep('step3')" id="complete-step3">
       ✅ ステップ3を完了にする
     </button>
@@ -1462,6 +1729,24 @@ footer {
       <div>日本語は「左枝分かれ（left-branching）」言語、英語は「右枝分かれ（right-branching）」言語と呼ばれることがあります。これは修飾語の付く方向が逆であることを表しています。英語の "who", "that", "which" などの関係代名詞は、日本語には存在しない仕組みです。</div>
     </div>
 
+    <div class="card" style="border-left:4px solid var(--secondary);margin-top:16px;">
+      <div class="card-title">👁️ 視点の違い：情報の受け取り順序</div>
+      <div style="font-size:0.9rem;line-height:1.8;">
+        <p>日本語は修飾語を先に聞くので、聞き手は<strong>イメージを先に膨らませてから</strong>対象の名詞に到達します。まるで映画のカメラがゆっくりズームインするような感覚です。</p>
+        <p style="margin-top:8px;">英語は先に名詞を示してから詳細を後付けするため、<strong>まず対象を認識し、後から情報を補完</strong>する流れになります。</p>
+        <div class="example-box" style="margin-top:12px;">
+          <div class="example-row">
+            <span class="lang-label ja">日</span>
+            <span><span style="color:var(--accent);font-weight:700;">去年の夏に京都で出会った</span>女性 <small style="color:var(--text-light)">（情景→人物）</small></span>
+          </div>
+          <div class="example-row">
+            <span class="lang-label en">英</span>
+            <span>The woman <span style="color:var(--secondary);font-weight:700;">whom I met in Kyoto last summer</span> <small style="color:var(--text-light)">（人物→情景）</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <button class="complete-btn" onclick="completeStep('step4')" id="complete-step4">
       ✅ ステップ4を完了にする
     </button>
@@ -1486,6 +1771,74 @@ footer {
 
     <button class="complete-btn" onclick="completeStep('step5')" id="complete-step5">
       ✅ ステップ5を完了にする
+    </button>
+  </div>
+</section>
+
+<!-- ===== SUMMARY SECTION ===== -->
+<section class="section" id="summary">
+  <div class="section-header" style="background:linear-gradient(135deg, #0D9488, #7C3AED);">
+    <div class="step-num">📋 SUMMARY</div>
+    <h2>総括：長文で違いを体感する</h2>
+    <div class="subtitle">同じ内容を日本語と英語で読み比べ、構造の違いを実感しよう</div>
+  </div>
+  <div class="section-body">
+
+    <div class="info-box" style="margin-bottom:16px;">
+      <span class="info-box-icon">📖</span>
+      <div>以下の文章は同じ内容を日本語と英語で表したものです。<strong>語順・助詞と前置詞・接続詞・修飾語の位置</strong>の違いに注目しながら読み比べてみましょう。</div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--primary);">
+      <div class="card-title">🇯🇵 日本語版</div>
+      <div style="font-size:0.92rem;line-height:2;">
+        <p>去年の夏<span class="p-part">に</span>、私<span class="p-part">は</span>友達<span class="p-part">と</span>一緒<span class="p-part">に</span>京都<span class="p-part">へ</span>旅行<span class="p-part">に</span>行きました。</p>
+        <p>朝早く起きて、東京駅<span class="p-part">から</span>新幹線<span class="p-part">で</span>京都<span class="p-part">まで</span>行きました。</p>
+        <p><strong>祖母<span class="p-part">が</span>若いころ<span class="p-part">に</span>住んでいた</strong>古い町並み<span class="p-part">を</span>散歩しました。</p>
+        <p>天気<span class="p-part">が</span>よかった<span class="p-part">ので</span>、有名なお寺<span class="p-part">で</span>写真<span class="p-part">を</span>たくさん撮りました。</p>
+        <p>もし時間<span class="p-part">が</span>あれ<span class="p-part">ば</span>、嵐山<span class="p-part">に</span>も行きたかった<span class="p-part">けど</span>、夕方<span class="p-part">まで</span><span class="p-part">に</span>帰らなければなりませんでした。</p>
+        <p>とても楽しかった<span class="p-part">ので</span>、来年も行きたいです。</p>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--secondary);margin-top:12px;">
+      <div class="card-title">🇬🇧 English Version</div>
+      <div style="font-size:0.92rem;line-height:2;">
+        <p><span class="highlight-box subject">I</span> went on a trip <b>to</b> Kyoto <b>with</b> my friend last summer.</p>
+        <p><span class="highlight-box subject">We</span> woke up early and took the bullet train <b>from</b> Tokyo Station <b>to</b> Kyoto.</p>
+        <p><span class="highlight-box subject">We</span> walked through the old streets <b>where</b> <span style="color:var(--secondary);font-weight:700;">my grandmother had lived when she was young</span>.</p>
+        <p><b>Because</b> the weather was nice, <span class="highlight-box subject">we</span> took many photos <b>at</b> a famous temple.</p>
+        <p><span class="highlight-box subject">I</span> wanted to go <b>to</b> Arashiyama too, <b>but</b> we had to return <b>by</b> evening.</p>
+        <p><span class="highlight-box subject">It</span> was so much fun <b>that</b> I want to go again next year.</p>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--accent);margin-top:16px;">
+      <div class="card-title">🔍 構造の違いポイント</div>
+      <div style="font-size:0.88rem;line-height:1.8;">
+        <div style="display:grid;gap:10px;">
+          <div class="popup-case" style="border-left-color:var(--primary);">
+            <div class="popup-case-en">語順（Step 1）</div>
+            <div class="popup-case-desc">日本語は「京都へ旅行に<b>行きました</b>」と動詞が末尾。英語は「I <b>went</b> on a trip to Kyoto」と主語の直後に動詞。</div>
+          </div>
+          <div class="popup-case" style="border-left-color:var(--secondary);">
+            <div class="popup-case-en">助詞 vs 前置詞（Step 2）</div>
+            <div class="popup-case-desc">日本語の「から・で・まで・に」が英語では「from / by / to / at」の前置詞に。名詞の<b>前</b>に来る点が逆。</div>
+          </div>
+          <div class="popup-case" style="border-left-color:#059669;">
+            <div class="popup-case-en">接続詞（Step 3）</div>
+            <div class="popup-case-desc">日本語は「よかった<b>ので</b>」と原因が先。英語は「<b>Because</b> the weather was nice」と接続詞が文頭に来て結果が続く。</div>
+          </div>
+          <div class="popup-case" style="border-left-color:var(--accent);">
+            <div class="popup-case-en">修飾語（Step 4）</div>
+            <div class="popup-case-desc">日本語は「<b>祖母が若いころに住んでいた</b>古い町並み」と修飾語が前。英語は「the old streets <b>where my grandmother had lived</b>」と後ろから修飾。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="complete-btn" onclick="completeStep('summary')" id="complete-summary">
+      ✅ 総括を読了にする
     </button>
   </div>
 </section>
@@ -1570,7 +1923,7 @@ footer {
 
 // ========== State ==========
 const completedSteps = new Set();
-const totalSteps = 8; // step1-5 + quiz1-3
+const totalSteps = 9; // step1-5 + summary + quiz1-3
 
 // ========== Utilities ==========
 function shuffleArray(arr) {
@@ -1598,6 +1951,20 @@ document.addEventListener('click', (e) => {
   if (!navDrawer.contains(e.target) && !hamburgerBtn.contains(e.target)) {
     closeDrawer();
   }
+});
+
+// ========== Particle Popups ==========
+function openPopup(id) {
+  document.getElementById('popupOverlay').classList.add('show');
+  document.getElementById(id).classList.add('show');
+}
+function closePopup() {
+  document.getElementById('popupOverlay').classList.remove('show');
+  document.querySelectorAll('.particle-popup.show').forEach(p => p.classList.remove('show'));
+}
+document.getElementById('popupOverlay').addEventListener('click', closePopup);
+document.querySelectorAll('.particle-popup-trigger').forEach(trigger => {
+  trigger.addEventListener('click', () => openPopup(trigger.dataset.popup));
 });
 
 // ========== Progress Bar ==========
