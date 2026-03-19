@@ -1105,7 +1105,7 @@ footer {
     <div class="card" style="border-left:4px solid var(--secondary);margin-top:16px;">
       <div class="card-title">👁️ 視点の違い：俯瞰と主観</div>
       <div style="font-size:0.9rem;line-height:1.8;">
-        <p>英語はまず<strong>「誰が」（主語）</strong>を明確にし、次に<strong>「何をする」（動詞）</strong>を伝えます。まるで上から全体を見渡す<span style="color:var(--primary);font-weight:700;">俯瞰（ふかん）視点</span>です。</p>
+        <p>英語はまず<strong>「誰が」（主語）</strong>を明確にし、次に<strong>「何をする」（動詞）</strong>を伝えます。まるで上から全体を見渡す<span style="color:var(--primary);font-weight:700;"><ruby>俯瞰<rt>ふかん</rt></ruby>視点</span>です。</p>
         <p style="margin-top:8px;">一方、日本語は<strong>「何を」</strong>から語り始め、最後に動詞を置きます。話し手が体験を語るような<span style="color:var(--secondary);font-weight:700;">主観的な視点</span>です。</p>
         <div class="example-box" style="margin-top:12px;">
           <div class="example-row">
@@ -2020,6 +2020,7 @@ function closePopup() {
   }
 }
 document.getElementById('popupOverlay').addEventListener('click', closePopup);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePopup(); });
 document.querySelectorAll('.particle-popup-trigger').forEach(trigger => {
   trigger.addEventListener('click', () => { lastPopupTrigger = trigger; openPopup(trigger.dataset.popup); });
   trigger.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); lastPopupTrigger = trigger; openPopup(trigger.dataset.popup); } });
