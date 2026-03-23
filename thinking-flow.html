@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英語の思考フロー | English Thinking Flow</title>
+<style>
+/* ========== CSS Custom Properties ========== */
+:root {
+  --primary: #2563EB;
+  --primary-light: #3B82F6;
+  --primary-bg: #EFF6FF;
+  --secondary: #7C3AED;
+  --secondary-light: #8B5CF6;
+  --secondary-bg: #F5F3FF;
+  --accent: #F59E0B;
+  --accent-light: #FBBF24;
+  --accent-bg: #FFFBEB;
+  --success: #10B981;
+  --success-bg: #ECFDF5;
+  --error: #EF4444;
+  --error-bg: #FEF2F2;
+  --text: #1E293B;
+  --text-light: #64748B;
+  --bg: #F8FAFC;
+  --white: #FFFFFF;
+  --border: #E2E8F0;
+  --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+  --radius: 16px;
+  --radius-sm: 8px;
+  --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --subject-color: #2563EB;
+  --verb-color: #EF4444;
+  --object-color: #10B981;
+  --modifier-color: #F59E0B;
+}
+
+/* ========== Reset & Base ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { cursor: pointer; font-family: var(--font); }
+
+/* ========== Navigation ========== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  padding: 0.6rem 1.5rem;
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--primary);
+  font-weight: 500;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
+}
+.nav-back:hover { background: var(--primary-bg); text-decoration: none; }
+.nav-links {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+.nav-links a {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-light);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.nav-links a:hover { background: var(--primary-bg); color: var(--primary); text-decoration: none; }
+
+/* ========== Header ========== */
+.hero {
+  margin-top: 60px;
+  padding: 3rem 1.5rem 2rem;
+  background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 50%, var(--accent-bg) 100%);
+  text-align: center;
+}
+.hero h1 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+.hero p {
+  font-size: 1rem;
+  color: var(--text-light);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ========== Section ========== */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+section { padding: 3rem 0; }
+.section-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.section-header h2 {
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  margin-bottom: 0.4rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.section-header p {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+.section-divider {
+  border: none;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0;
+}
+
+/* ========== Color Legend ========== */
+.legend {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.legend-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.legend-dot.subject { background: var(--subject-color); }
+.legend-dot.verb { background: var(--verb-color); }
+.legend-dot.object { background: var(--object-color); }
+.legend-dot.modifier { background: var(--modifier-color); }
+
+/* ========== 4-Step Stepper ========== */
+.stepper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+}
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 200px;
+  flex: 1;
+  min-width: 140px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+}
+.step-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.step-circle {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+.step-circle.s1 { background: linear-gradient(135deg, var(--primary), var(--primary-light)); }
+.step-circle.s2 { background: linear-gradient(135deg, var(--secondary), var(--secondary-light)); }
+.step-circle.s3 { background: linear-gradient(135deg, var(--success), #34D399); }
+.step-circle.s4 { background: linear-gradient(135deg, var(--accent), var(--accent-light)); }
+.step-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+.step-desc {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+.step-arrow {
+  font-size: 1.5rem;
+  color: var(--border);
+  margin-top: 16px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease 0.3s;
+}
+.step-arrow.visible { opacity: 1; }
+@media (max-width: 700px) {
+  .stepper { flex-direction: column; align-items: center; gap: 0.5rem; }
+  .step-arrow { transform: rotate(90deg); margin-top: 0; }
+}
+
+/* ========== Controls Bar ========== */
+.controls-bar {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-size: 0.85rem;
+  color: var(--text);
+  transition: all 0.2s;
+}
+.btn:hover { border-color: var(--primary); color: var(--primary); }
+.btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
+.btn-primary {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+}
+.btn-primary:hover { background: var(--primary-light); }
+
+/* ========== Filter Tags ========== */
+.filter-tags {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.filter-tag {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-size: 0.8rem;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.filter-tag:hover, .filter-tag.active {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-bg);
+}
+
+/* ========== Pattern Cards ========== */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.2rem;
+}
+@media (max-width: 400px) {
+  .cards-grid { grid-template-columns: 1fr; }
+}
+.pattern-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(30px);
+}
+.pattern-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.pattern-card:hover { box-shadow: var(--shadow-lg); }
+.card-header {
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  user-select: none;
+}
+.card-header:hover { background: var(--bg); }
+.card-title-area { flex: 1; }
+.card-number {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--primary);
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+.card-pattern-name {
+  font-weight: 700;
+  font-size: 1rem;
+}
+.card-pattern-sub {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+.card-chevron {
+  font-size: 1.2rem;
+  color: var(--text-light);
+  transition: transform 0.3s;
+  flex-shrink: 0;
+}
+.pattern-card.expanded .card-chevron { transform: rotate(180deg); }
+.card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding: 0 1.2rem 0.8rem;
+}
+.badge {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 12px;
+  background: var(--primary-bg);
+  color: var(--primary);
+  font-weight: 500;
+}
+.card-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.pattern-card.expanded .card-body { max-height: 2000px; }
+.card-body-inner { padding: 0 1.2rem 1.2rem; }
+.card-learned {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+.card-learned label {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  cursor: pointer;
+}
+.card-learned input[type="checkbox"] {
+  accent-color: var(--success);
+  width: 18px; height: 18px;
+  cursor: pointer;
+}
+
+/* ========== Flow Visualization ========== */
+.flow-section {
+  margin-top: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.flow-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  background: var(--bg);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.flow-play-btn {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  border: 1px solid var(--primary);
+  background: var(--primary-bg);
+  color: var(--primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.flow-play-btn:hover { background: var(--primary); color: var(--white); }
+.flow-content {
+  padding: 1rem;
+}
+.flow-steps { display: flex; flex-direction: column; gap: 0.6rem; }
+.flow-step {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.5s ease;
+  flex-wrap: wrap;
+}
+.flow-step.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+.flow-step-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--secondary);
+  padding: 0.15rem 0.6rem;
+  border-radius: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.flow-step-content {
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.flow-arrow-inline {
+  color: var(--text-light);
+  font-weight: 700;
+}
+.flow-final {
+  margin-top: 0.6rem;
+  padding: 0.8rem 1rem;
+  background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.5s ease;
+}
+.flow-final.show { opacity: 1; transform: scale(1); }
+
+/* Color spans */
+.c-subj { color: var(--subject-color); font-weight: 600; }
+.c-verb { color: var(--verb-color); font-weight: 600; }
+.c-obj { color: var(--object-color); font-weight: 600; }
+.c-mod { color: var(--modifier-color); font-weight: 600; }
+.jp-box {
+  background: var(--accent-bg);
+  border: 1px solid var(--accent);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+}
+.en-box {
+  background: var(--primary-bg);
+  border: 1px solid var(--primary);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+}
+
+/* ========== Practical Examples ========== */
+.example-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+.example-card.visible { opacity: 1; transform: translateY(0); }
+.example-jp {
+  font-size: 1rem;
+  padding: 0.8rem 1rem;
+  background: var(--accent-bg);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.8rem;
+}
+.example-arrow-down {
+  text-align: center;
+  font-size: 1.4rem;
+  color: var(--primary);
+  margin: 0.5rem 0;
+}
+.example-en {
+  font-size: 1rem;
+  padding: 0.8rem 1rem;
+  background: var(--primary-bg);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius-sm);
+}
+
+/* ========== Templates ========== */
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.2rem;
+}
+.template-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+.template-card.visible { opacity: 1; transform: translateY(0); }
+.template-label {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.template-icon {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: var(--white);
+}
+.template-flow {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+.template-flow span {
+  background: var(--bg);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+.template-example {
+  font-size: 0.9rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--primary-bg);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--primary);
+}
+
+/* ========== Priority Guide ========== */
+.priority-section { display: flex; flex-direction: column; gap: 1.2rem; }
+.priority-group {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+.priority-group.visible { opacity: 1; transform: translateY(0); }
+.priority-header {
+  padding: 0.8rem 1.2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.priority-header.high { background: linear-gradient(90deg, #FEE2E2, #FEF2F2); color: var(--error); }
+.priority-header.mid { background: linear-gradient(90deg, #FEF3C7, #FFFBEB); color: #D97706; }
+.priority-header.low { background: linear-gradient(90deg, #E0E7FF, #EEF2FF); color: #6366F1; }
+.priority-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem 1.2rem;
+}
+.priority-chip {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.priority-chip.high { background: #FEE2E2; color: var(--error); }
+.priority-chip.mid { background: #FEF3C7; color: #D97706; }
+.priority-chip.low { background: #E0E7FF; color: #6366F1; }
+
+/* ========== Reading Flow ========== */
+.reading-demo {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+.reading-sentence {
+  font-size: 1.1rem;
+  padding: 1rem;
+  background: var(--primary-bg);
+  border-radius: var(--radius-sm);
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+.reading-steps { display: flex; flex-direction: column; gap: 0.8rem; }
+.reading-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 0.8rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.5s ease;
+}
+.reading-step.show { opacity: 1; transform: translateX(0); }
+.reading-step-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--secondary);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.reading-step-body {
+  flex: 1;
+}
+.reading-step-label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--secondary);
+  margin-bottom: 0.2rem;
+}
+.reading-step-text {
+  font-size: 0.9rem;
+}
+
+/* ========== Back to Top ========== */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  font-size: 1.3rem;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s;
+  z-index: 999;
+}
+.back-to-top.visible { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { background: var(--secondary); transform: translateY(-3px); }
+
+/* ========== Progress Counter ========== */
+.progress-counter {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+.progress-counter strong { color: var(--primary); }
+.progress-bar-container {
+  width: 200px;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  margin: 0.4rem auto 0;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+/* ========== Animations ========== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">&#8592; 文法比較に戻る</a>
+    <div class="nav-links">
+      <a href="#steps">4ステップ</a>
+      <a href="#patterns">文法パターン</a>
+      <a href="#examples">実務変換例</a>
+      <a href="#templates">テンプレート</a>
+      <a href="#priority">優先度</a>
+      <a href="#reading">読解のコツ</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <h1>英語の思考フロー | English Thinking Flow</h1>
+  <p>日本語の発想から英文を組み立てるプロセスを、アニメーションで視覚的に学びます。Unity / Go / Notion / Git の実務シーンで使える12の文法パターンを習得しましょう。</p>
+</header>
+
+<!-- Color Legend -->
+<div style="padding: 1rem 0; background: var(--white); border-bottom: 1px solid var(--border);">
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot subject"></span> 主語 Subject</div>
+    <div class="legend-item"><span class="legend-dot verb"></span> 動詞 Verb</div>
+    <div class="legend-item"><span class="legend-dot object"></span> 目的語 Object</div>
+    <div class="legend-item"><span class="legend-dot modifier"></span> 修飾語 Modifier</div>
+  </div>
+</div>
+
+<!-- Section 1: 4-Step Overview -->
+<section id="steps">
+  <div class="container">
+    <div class="section-header">
+      <h2>思考の4ステップ</h2>
+      <p>英文を組み立てるときの基本的な思考プロセス</p>
+    </div>
+    <div class="stepper">
+      <div class="step-item" data-step="1">
+        <div class="step-circle s1">1</div>
+        <div class="step-title">文の目的を決める</div>
+        <div class="step-desc">報告 / 依頼 / 確認 / 提案 / 問題共有</div>
+      </div>
+      <div class="step-arrow">&#10132;</div>
+      <div class="step-item" data-step="2">
+        <div class="step-circle s2">2</div>
+        <div class="step-title">文の核を決める</div>
+        <div class="step-desc">主語 + 動詞を先に確定する</div>
+      </div>
+      <div class="step-arrow">&#10132;</div>
+      <div class="step-item" data-step="3">
+        <div class="step-circle s3">3</div>
+        <div class="step-title">条件を足す</div>
+        <div class="step-desc">場所、ツール、状況などを追加</div>
+      </div>
+      <div class="step-arrow">&#10132;</div>
+      <div class="step-item" data-step="4">
+        <div class="step-circle s4">4</div>
+        <div class="step-title">丁寧さを調整する</div>
+        <div class="step-desc">Can / Could / Would で敬度を調節</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Section 2: Grammar Patterns -->
+<section id="patterns">
+  <div class="container">
+    <div class="section-header">
+      <h2>12の文法パターン</h2>
+      <p>実務で使う基本文型をアニメーションで理解する</p>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-counter">
+      学習済み: <strong id="learned-count">0</strong> / 12
+      <div class="progress-bar-container"><div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div></div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-bar">
+      <button class="btn" id="expand-all">すべて展開</button>
+      <button class="btn" id="collapse-all">すべて折りたたむ</button>
+    </div>
+
+    <!-- Filter Tags -->
+    <div class="filter-tags">
+      <button class="filter-tag active" data-filter="all">すべて</button>
+      <button class="filter-tag" data-filter="バグ報告">バグ報告</button>
+      <button class="filter-tag" data-filter="作業報告">作業報告</button>
+      <button class="filter-tag" data-filter="権限依頼">権限依頼</button>
+      <button class="filter-tag" data-filter="仕様説明">仕様説明</button>
+      <button class="filter-tag" data-filter="進捗共有">進捗共有</button>
+      <button class="filter-tag" data-filter="ノウハウ共有">ノウハウ共有</button>
+      <button class="filter-tag" data-filter="調査依頼">調査依頼</button>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="cards-grid" id="cards-grid">
+      <!-- Cards are generated by JS -->
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Section 3: Practical Examples -->
+<section id="examples">
+  <div class="container">
+    <div class="section-header">
+      <h2>実務変換例</h2>
+      <p>複雑な日本語を英語に変換する実例</p>
+    </div>
+    <div id="examples-container"></div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Section 4: Templates -->
+<section id="templates">
+  <div class="container">
+    <div class="section-header">
+      <h2>思考テンプレート</h2>
+      <p>場面別の英文組み立て順序</p>
+    </div>
+    <div class="template-grid" id="templates-grid"></div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Section 5: Priority Guide -->
+<section id="priority">
+  <div class="container">
+    <div class="section-header">
+      <h2>優先度ガイド</h2>
+      <p>どのパターンから学ぶべきか</p>
+    </div>
+    <div class="priority-section" id="priority-section"></div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Section 6: Reading Flow -->
+<section id="reading">
+  <div class="container">
+    <div class="section-header">
+      <h2>英語を読むコツ</h2>
+      <p>英文の骨格を先に掴み、修飾語を後から差し込む</p>
+    </div>
+    <div class="reading-demo">
+      <div class="reading-sentence">
+        "The document that we reviewed yesterday needs to be updated before the next release."
+      </div>
+      <div style="text-align:center; margin-bottom:1rem;">
+        <button class="btn btn-primary" id="reading-play-btn">&#9654; 読解フロー再生</button>
+      </div>
+      <div class="reading-steps" id="reading-steps">
+        <div class="reading-step" data-rs="1">
+          <div class="reading-step-num">1</div>
+          <div class="reading-step-body">
+            <div class="reading-step-label">骨を拾う</div>
+            <div class="reading-step-text"><span class="c-subj">The document</span> <span class="c-verb">needs to be updated</span>.</div>
+          </div>
+        </div>
+        <div class="reading-step" data-rs="2">
+          <div class="reading-step-num">2</div>
+          <div class="reading-step-body">
+            <div class="reading-step-label">説明を差し込む</div>
+            <div class="reading-step-text"><span class="c-mod">that we reviewed yesterday</span> &rarr; 「昨日レビューした」</div>
+          </div>
+        </div>
+        <div class="reading-step" data-rs="3">
+          <div class="reading-step-num">3</div>
+          <div class="reading-step-body">
+            <div class="reading-step-label">条件を足す</div>
+            <div class="reading-step-text"><span class="c-mod">before the next release</span> &rarr; 「次のリリース前に」</div>
+          </div>
+        </div>
+        <div class="reading-step" data-rs="4">
+          <div class="reading-step-num">4</div>
+          <div class="reading-step-body">
+            <div class="reading-step-label">日本語に組み直す</div>
+            <div class="reading-step-text">「昨日レビューしたその資料は、次のリリース前に更新が必要です」</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="height: 4rem;"></div>
+
+<!-- Back to top -->
+<button class="back-to-top" id="back-to-top" title="トップに戻る">&#8593;</button>
+
+<script>
+// ========== DATA ==========
+const patternsData = [
+  {
+    id: 1, name: "SVO", sub: "誰が 何をする 何を",
+    uses: ["バグ報告", "作業報告", "確認結果", "再現手順の共有"],
+    jp: "私はissueを再現しました",
+    en: "I reproduced the issue on my Mac.",
+    jpToEn: [
+      { label: "日本語文", content: '<span class="jp-box">私は issue を再現しました</span>' },
+      { label: "核を抽出", content: '「再現した」' },
+      { label: "主語を決める", content: '「私」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-subj">I</span>' },
+      { label: "動詞を置く", content: '「再現した」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-verb">reproduced</span>' },
+      { label: "目的語", content: '「issueを」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-obj">the issue</span>' },
+      { label: "条件追加", content: '「Mac上で」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-mod">on my Mac</span>' }
+    ],
+    final_en: '<span class="c-subj">I</span> <span class="c-verb">reproduced</span> <span class="c-obj">the issue</span> <span class="c-mod">on my Mac</span>.',
+    enToJp: [
+      { label: "英文", content: '<span class="en-box">I reproduced the issue on my Mac.</span>' },
+      { label: "主語を確認", content: '<span class="c-subj">I</span> <span class="flow-arrow-inline">&rarr;</span> 「私は」' },
+      { label: "動詞を確認", content: '<span class="c-verb">reproduced</span> <span class="flow-arrow-inline">&rarr;</span> 「再現した」' },
+      { label: "目的語", content: '<span class="c-obj">the issue</span> <span class="flow-arrow-inline">&rarr;</span> 「issueを」' },
+      { label: "修飾語", content: '<span class="c-mod">on my Mac</span> <span class="flow-arrow-inline">&rarr;</span> 「Mac上で」' }
+    ],
+    final_jp: '「私はMac上でissueを再現しました」'
+  },
+  {
+    id: 2, name: "SVC", sub: "誰が どんな状態 何のために",
+    uses: ["要件説明", "仕様説明", "仕様の明示"],
+    jp: "この設定は必須です",
+    en: "This setting is required for the build.",
+    jpToEn: [
+      { label: "日本語文", content: '<span class="jp-box">この設定はビルドに必須です</span>' },
+      { label: "核を抽出", content: '「必須です」' },
+      { label: "主語を決める", content: '「この設定」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-subj">This setting</span>' },
+      { label: "動詞+補語", content: '「必須です」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-verb">is required</span>' },
+      { label: "条件追加", content: '「ビルドに」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-mod">for the build</span>' }
+    ],
+    final_en: '<span class="c-subj">This setting</span> <span class="c-verb">is required</span> <span class="c-mod">for the build</span>.',
+    enToJp: [
+      { label: "英文", content: '<span class="en-box">This setting is required for the build.</span>' },
+      { label: "主語", content: '<span class="c-subj">This setting</span> <span class="flow-arrow-inline">&rarr;</span> 「この設定は」' },
+      { label: "状態", content: '<span class="c-verb">is required</span> <span class="flow-arrow-inline">&rarr;</span> 「必須です」' },
+      { label: "対象", content: '<span class="c-mod">for the build</span> <span class="flow-arrow-inline">&rarr;</span> 「ビルドに」' }
+    ],
+    final_jp: '「この設定はビルドに必須です」'
+  },
+  {
+    id: 3, name: "There is/are", sub: "～がある/いる",
+    uses: ["現象報告", "環境説明"],
+    jp: "ログにエラーが一つあります",
+    en: "There is one error in the log.",
+    jpToEn: [
+      { label: "日本語文", content: '<span class="jp-box">ログにエラーが一つあります</span>' },
+      { label: "核を抽出", content: '「ある」→ 存在構文' },
+      { label: "There is/are", content: '<span class="c-verb">There is</span>' },
+      { label: "何が", content: '「エラーが一つ」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-obj">one error</span>' },
+      { label: "どこに", content: '「ログに」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-mod">in the log</span>' }
+    ],
+    final_en: '<span class="c-verb">There is</span> <span class="c-obj">one error</span> <span class="c-mod">in the log</span>.',
+    enToJp: [
+      { label: "英文", content: '<span class="en-box">There is one error in the log.</span>' },
+      { label: "存在構文", content: '<span class="c-verb">There is</span> <span class="flow-arrow-inline">&rarr;</span> 「〜がある」' },
+      { label: "何が", content: '<span class="c-obj">one error</span> <span class="flow-arrow-inline">&rarr;</span> 「エラーが一つ」' },
+      { label: "場所", content: '<span class="c-mod">in the log</span> <span class="flow-arrow-inline">&rarr;</span> 「ログに」' }
+    ],
+    final_jp: '「ログにエラーが一つあります」'
+  },
+  {
+    id: 4, name: "現在進行形", sub: "いま～している",
+    uses: ["進捗共有", "リアルタイム報告"],
+    jp: "いまGoサーバー側を確認しています",
+    en: "I am checking the Go server side now.",
+    jpToEn: [
+      { label: "日本語文", content: '<span class="jp-box">いまGoサーバー側を確認しています</span>' },
+      { label: "核を抽出", content: '「確認している」→ 進行中' },
+      { label: "主語", content: '<span class="c-subj">I</span>' },
+      { label: "進行形", content: '「確認している」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-verb">am checking</span>' },
+      { label: "目的語", content: '「Goサーバー側」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-obj">the Go server side</span>' },
+      { label: "時間", content: '「いま」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-mod">now</span>' }
+    ],
+    final_en: '<span class="c-subj">I</span> <span class="c-verb">am checking</span> <span class="c-obj">the Go server side</span> <span class="c-mod">now</span>.',
+    enToJp: [
+      { label: "英文", content: '<span class="en-box">I am checking the Go server side now.</span>' },
+      { label: "主語", content: '<span class="c-subj">I</span> <span class="flow-arrow-inline">&rarr;</span> 「私は」' },
+      { label: "進行形", content: '<span class="c-verb">am checking</span> <span class="flow-arrow-inline">&rarr;</span> 「確認している」' },
+      { label: "対象", content: '<span class="c-obj">the Go server side</span> <span class="flow-arrow-inline">&rarr;</span> 「Goサーバー側を」' },
+      { label: "時間", content: '<span class="c-mod">now</span> <span class="flow-arrow-inline">&rarr;</span> 「いま」' }
+    ],
+    final_jp: '「いまGoサーバー側を確認しています」'
+  },
+  {
+    id: 5, name: "現在完了", sub: "～した（結果が今に続く）",
+    uses: ["作業報告", "共有済み資料の案内"],
+    jp: "Notionに手順をまとめておきました",
+    en: "I have added the setup steps to Notion.",
+    jpToEn: [
+      { label: "日本語文", content: '<span class="jp-box">Notionに手順をまとめておきました</span>' },
+      { label: "核を抽出", content: '「まとめておいた」→ 完了＋現在への影響' },
+      { label: "主語", content: '<span class="c-subj">I</span>' },
+      { label: "現在完了", content: '「まとめておいた」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-verb">have added</span>' },
+      { label: "目的語", content: '「手順」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-obj">the setup steps</span>' },
+      { label: "場所", content: '「Notionに」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-mod">to Notion</span>' }
+    ],
+    final_en: '<span class="c-subj">I</span> <span class="c-verb">have added</span> <span class="c-obj">the setup steps</span> <span class="c-mod">to Notion</span>.',
+    enToJp: [
+      { label: "英文", content: '<span class="en-box">I have added the setup steps to Notion.</span>' },
+      { label: "主語", content: '<span class="c-subj">I</span> <span class="flow-arrow-inline">&rarr;</span> 「私は」' },
+      { label: "完了形", content: '<span class="c-verb">have added</span> <span class="flow-arrow-inline">&rarr;</span> 「追加しておいた」' },
+      { label: "対象", content: '<span class="c-obj">the setup steps</span> <span class="flow-arrow-inline">&rarr;</span> 「セットアップ手順を」' },
+      { label: "場所", content: '<span class="c-mod">to Notion</span> <span class="flow-arrow-inline">&rarr;</span> 「Notionに」' }
+    ],
+    final_jp: '「Notionにセットアップ手順を追加しておきました」'
+  },
+  {
+    id: 6, name: "助動詞 can/could", sub: "～できますか / ～してもらえますか",
+    uses: ["権限依頼", "設定変更依頼", "レビュー依頼"],
+    jp: "そのリポジトリに私を追加できますか",
+    en: "Could you add me to that repository?",
+    jpToEn: [
+      { label: "日本語文", content: '<span class="jp-box">そのリポジトリに私を追加できますか</span>' },
+      { label: "目的を確認", content: '依頼 → Could you ...?' },
+      { label: "助動詞+主語", content: '<span class="c-mod">Could</span> <span class="c-subj">you</span>' },
+      { label: "動詞", content: '「追加する」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-verb">add</span>' },
+      { label: "目的語", content: '「私を」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-obj">me</span>' },
+      { label: "場所", content: '「そのリポジトリに」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-mod">to that repository</span>' }
+    ],
+    final_en: '<span class="c-mod">Could</span> <span class="c-subj">you</span> <span class="c-verb">add</span> <span class="c-obj">me</span> <span class="c-mod">to that repository</span>?',
+    enToJp: [
+      { label: "英文", content: '<span class="en-box">Could you add me to that repository?</span>' },
+      { label: "丁寧さ", content: '<span class="c-mod">Could</span> <span class="flow-arrow-inline">&rarr;</span> 丁寧な依頼' },
+      { label: "主語", content: '<span class="c-subj">you</span> <span class="flow-arrow-inline">&rarr;</span> 「あなたが」' },
+      { label: "動詞", content: '<span class="c-verb">add</span> <span class="flow-arrow-inline">&rarr;</span> 「追加する」' },
+      { label: "対象", content: '<span class="c-obj">me</span> + <span class="c-mod">to that repository</span> <span class="flow-arrow-inline">&rarr;</span> 「私をそのリポジトリに」' }
+    ],
+    final_jp: '「そのリポジトリに私を追加していただけますか」'
+  },
+  {
+    id: 7, name: "受動態", sub: "～されている",
+    uses: ["仕様説明", "ルール説明"],
+    jp: "このブランチは保護されています",
+    en: "This branch is protected.",
+    jpToEn: [
+      { label: "日本語文", content: '<span class="jp-box">このブランチは保護されています</span>' },
+      { label: "核を抽出", content: '「保護されている」→ 受動態' },
+      { label: "主語", content: '「このブランチ」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-subj">This branch</span>' },
+      { label: "受動態", content: '「保護されている」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-verb">is protected</span>' }
+    ],
+    final_en: '<span class="c-subj">This branch</span> <span class="c-verb">is protected</span>.',
+    enToJp: [
+      { label: "英文", content: '<span class="en-box">This branch is protected.</span>' },
+      { label: "主語", content: '<span class="c-subj">This branch</span> <span class="flow-arrow-inline">&rarr;</span> 「このブランチは」' },
+      { label: "受動態", content: '<span class="c-verb">is protected</span> <span class="flow-arrow-inline">&rarr;</span> 「保護されている」' }
+    ],
+    final_jp: '「このブランチは保護されています」'
+  },
+  {
+    id: 8, name: "if条件", sub: "もし～なら",
+    uses: ["バグ報告", "検証依頼", "条件付きの指示"],
+    jp: "もしMac版Unityで再現するなら、この設定も確認してください",
+    en: "If you can reproduce it on Unity for Mac, please check this setting as well.",
+    jpToEn: [
+      { label: "日本語文", content: '<span class="jp-box">もしMac版Unityで再現するなら、この設定も確認してください</span>' },
+      { label: "条件を分離", content: '条件: 再現するなら / 本文: 確認して' },
+      { label: "if節", content: '<span class="c-mod">If</span> <span class="c-subj">you</span> <span class="c-verb">can reproduce</span> <span class="c-obj">it</span> <span class="c-mod">on Unity for Mac</span>' },
+      { label: "本文", content: '<span class="c-mod">please</span> <span class="c-verb">check</span> <span class="c-obj">this setting</span> <span class="c-mod">as well</span>' }
+    ],
+    final_en: '<span class="c-mod">If</span> <span class="c-subj">you</span> <span class="c-verb">can reproduce</span> <span class="c-obj">it</span> <span class="c-mod">on Unity for Mac</span>, <span class="c-mod">please</span> <span class="c-verb">check</span> <span class="c-obj">this setting</span> <span class="c-mod">as well</span>.',
+    enToJp: [
+      { label: "英文", content: '<span class="en-box">If you can reproduce it on Unity for Mac, please check this setting as well.</span>' },
+      { label: "条件節", content: '<span class="c-mod">If you can reproduce it on Unity for Mac</span> <span class="flow-arrow-inline">&rarr;</span> 「Mac版Unityで再現するなら」' },
+      { label: "依頼", content: '<span class="c-mod">please</span> <span class="c-verb">check</span> <span class="c-obj">this setting</span> <span class="flow-arrow-inline">&rarr;</span> 「この設定も確認してください」' }
+    ],
+    final_jp: '「もしMac版Unityで再現するなら、この設定も確認してください」'
+  },
+  {
+    id: 9, name: "不定詞 to do", sub: "～するために",
+    uses: ["作業報告", "目的説明"],
+    jp: "アクセス権を確認するために、組織の招待を送ります",
+    en: "I will send the organization invite to confirm your access.",
+    jpToEn: [
+      { label: "日本語文", content: '<span class="jp-box">アクセス権を確認するために、組織の招待を送ります</span>' },
+      { label: "核を抽出", content: '「送る」が主動詞、「確認するために」が目的' },
+      { label: "主語+動詞", content: '<span class="c-subj">I</span> <span class="c-verb">will send</span>' },
+      { label: "目的語", content: '「組織の招待」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-obj">the organization invite</span>' },
+      { label: "目的(to)", content: '「確認するために」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-mod">to confirm your access</span>' }
+    ],
+    final_en: '<span class="c-subj">I</span> <span class="c-verb">will send</span> <span class="c-obj">the organization invite</span> <span class="c-mod">to confirm your access</span>.',
+    enToJp: [
+      { label: "英文", content: '<span class="en-box">I will send the organization invite to confirm your access.</span>' },
+      { label: "主動詞", content: '<span class="c-subj">I</span> <span class="c-verb">will send</span> <span class="flow-arrow-inline">&rarr;</span> 「送ります」' },
+      { label: "目的語", content: '<span class="c-obj">the organization invite</span> <span class="flow-arrow-inline">&rarr;</span> 「組織の招待を」' },
+      { label: "目的", content: '<span class="c-mod">to confirm your access</span> <span class="flow-arrow-inline">&rarr;</span> 「アクセス権を確認するために」' }
+    ],
+    final_jp: '「アクセス権を確認するために、組織の招待を送ります」'
+  },
+  {
+    id: 10, name: "動名詞", sub: "～することは",
+    uses: ["ノウハウ共有", "トラブルシュート"],
+    jp: "MacでUnityを使うときは、キャッシュを消すことが役立ちます",
+    en: "Clearing the cache helps when using Unity on Mac.",
+    jpToEn: [
+      { label: "日本語文", content: '<span class="jp-box">MacでUnityを使うときは、キャッシュを消すことが役立ちます</span>' },
+      { label: "核を抽出", content: '「キャッシュを消す」→ 動名詞主語' },
+      { label: "主語(動名詞)", content: '<span class="c-subj">Clearing the cache</span>' },
+      { label: "動詞", content: '「役立つ」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-verb">helps</span>' },
+      { label: "条件", content: '「MacでUnityを使うとき」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-mod">when using Unity on Mac</span>' }
+    ],
+    final_en: '<span class="c-subj">Clearing the cache</span> <span class="c-verb">helps</span> <span class="c-mod">when using Unity on Mac</span>.',
+    enToJp: [
+      { label: "英文", content: '<span class="en-box">Clearing the cache helps when using Unity on Mac.</span>' },
+      { label: "動名詞主語", content: '<span class="c-subj">Clearing the cache</span> <span class="flow-arrow-inline">&rarr;</span> 「キャッシュを消すことは」' },
+      { label: "動詞", content: '<span class="c-verb">helps</span> <span class="flow-arrow-inline">&rarr;</span> 「役立つ」' },
+      { label: "条件", content: '<span class="c-mod">when using Unity on Mac</span> <span class="flow-arrow-inline">&rarr;</span> 「MacでUnityを使うとき」' }
+    ],
+    final_jp: '「MacでUnityを使うときは、キャッシュを消すことが役立ちます」'
+  },
+  {
+    id: 11, name: "関係代名詞", sub: "～した○○は",
+    uses: ["作業報告", "資料の特定", "ファイルの特定"],
+    jp: "昨日共有したNotionページに、最新手順があります",
+    en: "The Notion page that I shared yesterday contains the latest steps.",
+    jpToEn: [
+      { label: "日本語文", content: '<span class="jp-box">昨日共有したNotionページに、最新手順があります</span>' },
+      { label: "核を抽出", content: '主語: Notionページ / 動詞: 含む' },
+      { label: "主語", content: '<span class="c-subj">The Notion page</span>' },
+      { label: "関係代名詞", content: '<span class="c-mod">that I shared yesterday</span>' },
+      { label: "動詞", content: '「ある」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-verb">contains</span>' },
+      { label: "目的語", content: '「最新手順」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-obj">the latest steps</span>' }
+    ],
+    final_en: '<span class="c-subj">The Notion page</span> <span class="c-mod">that I shared yesterday</span> <span class="c-verb">contains</span> <span class="c-obj">the latest steps</span>.',
+    enToJp: [
+      { label: "英文", content: '<span class="en-box">The Notion page that I shared yesterday contains the latest steps.</span>' },
+      { label: "主語", content: '<span class="c-subj">The Notion page</span> <span class="flow-arrow-inline">&rarr;</span> 「Notionページ」' },
+      { label: "修飾", content: '<span class="c-mod">that I shared yesterday</span> <span class="flow-arrow-inline">&rarr;</span> 「昨日共有した」' },
+      { label: "動詞+目的語", content: '<span class="c-verb">contains</span> <span class="c-obj">the latest steps</span> <span class="flow-arrow-inline">&rarr;</span> 「最新手順がある」' }
+    ],
+    final_jp: '「昨日共有したNotionページに、最新手順があります」'
+  },
+  {
+    id: 12, name: "間接疑問", sub: "～かを確認したい",
+    uses: ["調査依頼", "仕様説明", "権限依頼"],
+    jp: "その権限が誰に付与されているか確認したいです",
+    en: "I would like to check who has that permission.",
+    jpToEn: [
+      { label: "日本語文", content: '<span class="jp-box">その権限が誰に付与されているか確認したいです</span>' },
+      { label: "核を抽出", content: '「確認したい」+ 間接疑問' },
+      { label: "主語+希望", content: '<span class="c-subj">I</span> <span class="c-verb">would like to check</span>' },
+      { label: "間接疑問", content: '「誰に付与されているか」 <span class="flow-arrow-inline">&rarr;</span> <span class="c-obj">who has that permission</span>' }
+    ],
+    final_en: '<span class="c-subj">I</span> <span class="c-verb">would like to check</span> <span class="c-obj">who has that permission</span>.',
+    enToJp: [
+      { label: "英文", content: '<span class="en-box">I would like to check who has that permission.</span>' },
+      { label: "主節", content: '<span class="c-subj">I</span> <span class="c-verb">would like to check</span> <span class="flow-arrow-inline">&rarr;</span> 「確認したい」' },
+      { label: "間接疑問", content: '<span class="c-obj">who has that permission</span> <span class="flow-arrow-inline">&rarr;</span> 「誰がその権限を持っているか」' }
+    ],
+    final_jp: '「その権限が誰に付与されているか確認したいです」'
+  }
+];
+
+const practicalExamples = [
+  {
+    jp: "Mac版Unityでだけ再現するので、エディタ設定ではなくプラットフォーム依存の可能性があります",
+    en: "Since it only happens on Unity for Mac, it may be platform-specific rather than an editor setting issue."
+  },
+  {
+    jp: "Goサーバー側ではリクエストを受け取れていますが、レスポンス生成の前で止まっています",
+    en: "The Go server is receiving the request, but it stops before generating the response."
+  },
+  {
+    jp: "Notionの仕様ページを更新したので、その内容に合わせて実装を進めてください",
+    en: "I have updated the Notion spec page, so please proceed with the implementation based on that version."
+  },
+  {
+    jp: "GitHubの権限が足りない場合は、私ではなく管理者に依頼してください",
+    en: "If the GitHub permission is insufficient, please contact the administrator instead of me."
+  }
+];
+
+const templatesData = [
+  { type: "報告", icon: "&#128221;", color: "var(--primary)", flow: ["誰が", "何をした", "どこで", "いつから"], example: "I deployed the hotfix to the staging server this morning." },
+  { type: "依頼", icon: "&#128588;", color: "var(--secondary)", flow: ["誰に", "何をしてほしい", "どの条件で"], example: "Could you review this PR before the end of the day?" },
+  { type: "確認", icon: "&#128269;", color: "var(--success)", flow: ["何を知りたい", "どの範囲について"], example: "I would like to confirm whether this setting applies to all environments." },
+  { type: "提案", icon: "&#128161;", color: "var(--accent)", flow: ["何をしたい", "なぜ", "どう進めたい"], example: "I suggest we use a shared Notion page so everyone can track the progress." },
+  { type: "問題共有", icon: "&#9888;", color: "var(--error)", flow: ["何が起きた", "どこまで分かっている", "何が不明か"], example: "The build fails on Mac. I confirmed it is not a cache issue, but I have not identified the root cause yet." }
+];
+
+const priorityData = [
+  { level: "high", label: "高（まず覚える）", items: ["SVO", "現在完了", "受動態", "if条件", "助動詞 can/could", "関係代名詞"] },
+  { level: "mid", label: "中（次に覚える）", items: ["There is/are", "現在進行形", "不定詞 to do", "間接疑問"] },
+  { level: "low", label: "低（後回しでOK）", items: ["動名詞", "SVC"] }
+];
+
+// ========== RENDER ==========
+
+// Pattern Cards
+function renderCards(filter) {
+  const grid = document.getElementById('cards-grid');
+  grid.innerHTML = '';
+  const learned = JSON.parse(localStorage.getItem('tf-learned') || '{}');
+
+  patternsData.forEach(p => {
+    if (filter && filter !== 'all' && !p.uses.includes(filter)) return;
+
+    const card = document.createElement('div');
+    card.className = 'pattern-card';
+    card.dataset.id = p.id;
+    card.dataset.uses = p.uses.join(',');
+
+    card.innerHTML = `
+      <div class="card-header" onclick="toggleCard(this)">
+        <div style="display:flex;align-items:center;gap:0.5rem;flex:1;min-width:0">
+          <span class="card-number">${p.id}</span>
+          <div class="card-title-area">
+            <div class="card-pattern-name">${p.name}</div>
+            <div class="card-pattern-sub">${p.sub}</div>
+          </div>
+        </div>
+        <span class="card-chevron">&#9660;</span>
+      </div>
+      <div class="card-badges">
+        ${p.uses.map(u => `<span class="badge">${u}</span>`).join('')}
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="card-learned">
+            <input type="checkbox" id="learn-${p.id}" ${learned[p.id] ? 'checked' : ''} onchange="toggleLearned(${p.id}, this.checked)">
+            <label for="learn-${p.id}">学習済みにする</label>
+          </div>
+
+          <!-- JP to EN Flow -->
+          <div class="flow-section">
+            <div class="flow-header">
+              <span>日 &#8594; 英 フロー</span>
+              <button class="flow-play-btn" onclick="playFlow(this, 'jpen', ${p.id})">&#9654; フロー再生</button>
+            </div>
+            <div class="flow-content">
+              <div class="flow-steps" id="flow-jpen-${p.id}">
+                ${p.jpToEn.map((s, i) => `
+                  <div class="flow-step" data-idx="${i}">
+                    <span class="flow-step-label">${s.label}</span>
+                    <span class="flow-step-content">${s.content}</span>
+                  </div>
+                `).join('')}
+              </div>
+              <div class="flow-final" id="final-jpen-${p.id}">${p.final_en}</div>
+            </div>
+          </div>
+
+          <!-- EN to JP Flow -->
+          <div class="flow-section" style="margin-top:0.8rem;">
+            <div class="flow-header">
+              <span>英 &#8594; 日 フロー</span>
+              <button class="flow-play-btn" onclick="playFlow(this, 'enjp', ${p.id})">&#9654; フロー再生</button>
+            </div>
+            <div class="flow-content">
+              <div class="flow-steps" id="flow-enjp-${p.id}">
+                ${p.enToJp.map((s, i) => `
+                  <div class="flow-step" data-idx="${i}">
+                    <span class="flow-step-label">${s.label}</span>
+                    <span class="flow-step-content">${s.content}</span>
+                  </div>
+                `).join('')}
+              </div>
+              <div class="flow-final" id="final-enjp-${p.id}">${p.final_jp}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Trigger entrance animations
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.pattern-card').forEach((c, i) => {
+      setTimeout(() => c.classList.add('visible'), i * 80);
+    });
+  });
+
+  updateProgress();
+}
+
+// Practical Examples
+function renderExamples() {
+  const container = document.getElementById('examples-container');
+  container.innerHTML = practicalExamples.map((ex, i) => `
+    <div class="example-card" data-ex="${i}">
+      <div class="example-jp">${ex.jp}</div>
+      <div class="example-arrow-down">&#11015;</div>
+      <div class="example-en">${ex.en}</div>
+    </div>
+  `).join('');
+}
+
+// Templates
+function renderTemplates() {
+  const grid = document.getElementById('templates-grid');
+  grid.innerHTML = templatesData.map(t => `
+    <div class="template-card">
+      <div class="template-label">
+        <span class="template-icon" style="background:${t.color}">${t.icon}</span>
+        ${t.type}
+      </div>
+      <div class="template-flow">
+        ${t.flow.map(f => `<span>${f}</span>`).join(' <span style="background:none;color:var(--text-light)">&#8594;</span> ')}
+      </div>
+      <div class="template-example">${t.example}</div>
+    </div>
+  `).join('');
+}
+
+// Priority Guide
+function renderPriority() {
+  const section = document.getElementById('priority-section');
+  section.innerHTML = priorityData.map(p => `
+    <div class="priority-group">
+      <div class="priority-header ${p.level}">${p.label}</div>
+      <div class="priority-items">
+        ${p.items.map(item => `<span class="priority-chip ${p.level}">${item}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ========== INTERACTIONS ==========
+
+function toggleCard(headerEl) {
+  const card = headerEl.closest('.pattern-card');
+  card.classList.toggle('expanded');
+}
+
+function toggleLearned(id, checked) {
+  const learned = JSON.parse(localStorage.getItem('tf-learned') || '{}');
+  if (checked) learned[id] = true;
+  else delete learned[id];
+  localStorage.setItem('tf-learned', JSON.stringify(learned));
+  updateProgress();
+}
+
+function updateProgress() {
+  const learned = JSON.parse(localStorage.getItem('tf-learned') || '{}');
+  const count = Object.keys(learned).length;
+  document.getElementById('learned-count').textContent = count;
+  document.getElementById('progress-fill').style.width = (count / 12 * 100) + '%';
+}
+
+function playFlow(btn, direction, id) {
+  const container = document.getElementById(`flow-${direction}-${id}`);
+  const finalEl = document.getElementById(`final-${direction}-${id}`);
+  const steps = container.querySelectorAll('.flow-step');
+
+  // Reset
+  steps.forEach(s => s.classList.remove('show'));
+  finalEl.classList.remove('show');
+  btn.textContent = '... 再生中';
+  btn.disabled = true;
+
+  // Play each step
+  steps.forEach((step, i) => {
+    setTimeout(() => step.classList.add('show'), (i + 1) * 600);
+  });
+
+  // Show final
+  setTimeout(() => {
+    finalEl.classList.add('show');
+    btn.textContent = '\u21BB リプレイ';
+    btn.disabled = false;
+  }, (steps.length + 1) * 600);
+}
+
+// Expand/Collapse all
+document.getElementById('expand-all').addEventListener('click', () => {
+  document.querySelectorAll('.pattern-card').forEach(c => c.classList.add('expanded'));
+});
+document.getElementById('collapse-all').addEventListener('click', () => {
+  document.querySelectorAll('.pattern-card').forEach(c => c.classList.remove('expanded'));
+});
+
+// Filter
+document.querySelectorAll('.filter-tag').forEach(tag => {
+  tag.addEventListener('click', () => {
+    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+    tag.classList.add('active');
+    renderCards(tag.dataset.filter);
+  });
+});
+
+// Reading Flow
+document.getElementById('reading-play-btn').addEventListener('click', function() {
+  const steps = document.querySelectorAll('.reading-step');
+  steps.forEach(s => s.classList.remove('show'));
+  this.textContent = '... 再生中';
+  this.disabled = true;
+  const self = this;
+  steps.forEach((step, i) => {
+    setTimeout(() => step.classList.add('show'), (i + 1) * 800);
+  });
+  setTimeout(() => {
+    self.textContent = '\u21BB リプレイ';
+    self.disabled = false;
+  }, (steps.length + 1) * 800);
+});
+
+// Back to Top
+const backBtn = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+  backBtn.classList.toggle('visible', window.scrollY > 400);
+});
+backBtn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// IntersectionObserver for scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+function observeElements() {
+  document.querySelectorAll('.step-item, .step-arrow, .example-card, .template-card, .priority-group').forEach(el => {
+    observer.observe(el);
+  });
+}
+
+// ========== INIT ==========
+renderCards('all');
+renderExamples();
+renderTemplates();
+renderPriority();
+observeElements();
+</script>
+</body>
+</html>
