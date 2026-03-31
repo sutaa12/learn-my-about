@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>立川駅北口 ↔ 昭和第一学園 バス時刻メモ</title>
+    <style>
+      :root {
+        --bg: #fff8ef;
+        --card: rgba(255, 255, 255, 0.92);
+        --line: #ead5bc;
+        --text: #362417;
+        --sub: #7c5d42;
+        --accent: #ff7a59;
+        --accent-2: #5c7cff;
+        --accent-3: #1eb980;
+        --accent-4: #f2b134;
+        --shadow: 0 16px 40px rgba(112, 76, 37, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", system-ui, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(255, 203, 154, 0.5), transparent 28%),
+          linear-gradient(180deg, #fff8ef 0%, #fff4e6 52%, #fffaf4 100%);
+        color: var(--text);
+      }
+
+      a {
+        color: #2144c8;
+      }
+
+      .page {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 24px 16px 56px;
+      }
+
+      .hero,
+      .panel {
+        background: var(--card);
+        border: 1px solid rgba(234, 213, 188, 0.9);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .hero {
+        padding: 28px 24px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        width: fit-content;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 122, 89, 0.12);
+        color: #aa452e;
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      .hero p,
+      .panel p,
+      li {
+        line-height: 1.7;
+      }
+
+      .hero-grid,
+      .meta-grid,
+      .cards,
+      .sources,
+      .legend {
+        display: grid;
+        gap: 14px;
+      }
+
+      .hero-grid,
+      .meta-grid,
+      .legend {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+
+      .mini-card,
+      .source-card,
+      .legend-card {
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 250, 244, 0.8);
+      }
+
+      .mini-card strong,
+      .legend-card strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .toolbar,
+      .filters,
+      .day-tabs,
+      .chips,
+      .time-list,
+      .summary-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .panel {
+        margin-top: 22px;
+        padding: 22px 18px 24px;
+      }
+
+      .panel-header {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      button {
+        font: inherit;
+        cursor: pointer;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 10px 14px;
+        background: #fff;
+        color: var(--text);
+        transition: 0.2s ease;
+      }
+
+      button.active {
+        border-color: transparent;
+        background: linear-gradient(135deg, var(--accent), #ff9b70);
+        color: #fff;
+        box-shadow: 0 10px 22px rgba(255, 122, 89, 0.25);
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+      }
+
+      .cards {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+
+      .service-card {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: linear-gradient(180deg, #fffdfa 0%, #fff8f2 100%);
+        padding: 18px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .service-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .operator {
+        font-size: 0.86rem;
+        font-weight: 700;
+        color: var(--sub);
+      }
+
+      .route-name {
+        font-size: 1.1rem;
+        font-weight: 800;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .badge.high { background: rgba(30, 185, 128, 0.14); color: #0f7d57; }
+      .badge.mid { background: rgba(92, 124, 255, 0.12); color: #3350c8; }
+      .badge.low { background: rgba(242, 177, 52, 0.18); color: #9c6911; }
+      .badge.warn { background: rgba(255, 122, 89, 0.14); color: #a1462e; }
+
+      .chips .chip,
+      .summary-badges .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(92, 124, 255, 0.08);
+        color: #314da7;
+        font-size: 0.84rem;
+        font-weight: 700;
+      }
+
+      .summary-badges .chip.primary {
+        background: rgba(255, 122, 89, 0.12);
+        color: #aa452e;
+      }
+
+      .time-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .time-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 11px;
+        border-radius: 999px;
+        background: #fff;
+        border: 1px solid var(--line);
+        font-weight: 700;
+      }
+
+      .time-pill.nearest {
+        background: linear-gradient(135deg, rgba(255, 122, 89, 0.14), rgba(255, 196, 109, 0.22));
+        border-color: rgba(255, 122, 89, 0.3);
+      }
+
+      .time-pill .label {
+        font-size: 0.72rem;
+        color: var(--sub);
+      }
+
+      .subtle {
+        color: var(--sub);
+        font-size: 0.92rem;
+      }
+
+      .note {
+        padding: 14px 16px;
+        border-radius: 18px;
+        border: 1px dashed rgba(124, 93, 66, 0.28);
+        background: rgba(255, 250, 244, 0.8);
+      }
+
+      .sources {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+
+      .source-card h3 {
+        margin-bottom: 6px;
+        font-size: 1rem;
+      }
+
+      .update-list,
+      .check-list {
+        padding-left: 18px;
+      }
+
+      .empty {
+        padding: 18px;
+        text-align: center;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px dashed var(--line);
+        color: var(--sub);
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          padding-inline: 12px;
+        }
+
+        .hero,
+        .panel {
+          border-radius: 20px;
+        }
+
+        .service-top {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <span class="eyebrow">立川駅北口から乗るバスを迷わないための整理メモ</span>
+        <div>
+          <h1>立川駅北口 ↔ 昭和第一学園 バス時刻メモ</h1>
+          <p style="margin-top: 10px">
+            「昭和第一学園」だけを対象に、<strong>昭和第一学園西門は除外</strong>して整理した静的ページです。
+            立川駅北口からは、昭和第一学園を最優先にしつつ、
+            栄町二丁目・西武バス立川営業所・新立川航空に行ける便も
+            <strong>目的地ラベルで切り替え</strong>できるようにしました。
+          </p>
+        </div>
+
+        <div class="hero-grid">
+          <div class="mini-card">
+            <strong>見方</strong>
+            いまの端末時刻に近い便から上へ並び替えます。始発と終バスは別バッジで固定表示します。
+          </div>
+          <div class="mini-card">
+            <strong>デフォルト表示</strong>
+            立川駅北口 → 昭和第一学園 を最初に表示。帰り側は「立川駅北口行き」をすべて表示します。
+          </div>
+          <div class="mini-card">
+            <strong>注意</strong>
+            現地掲示・公式サイトが最終版です。このページは 2026-03-31 時点で確認できた公開ページを整理したメモです。
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>使い方</h2>
+            <p class="subtle">
+              まず曜日タブを選び、そのあと立川駅北口発の「到着ラベル」を切り替えてください。
+              昭和第一学園に止まる便は緑、止まらない便はオレンジで目立たせています。
+            </p>
+          </div>
+          <div class="legend">
+            <div class="legend-card">
+              <strong>信頼度 高</strong>
+              具体的な時刻を列挙できた便。
+            </div>
+            <div class="legend-card">
+              <strong>信頼度 中</strong>
+              系統・のりば・到達先は確認済み。時刻は一部または別ページ突合。
+            </div>
+            <div class="legend-card">
+              <strong>信頼度 低</strong>
+              経路確認のみ。最終確認用の公式リンクを併記。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>① 立川駅北口 → 各目的地</h2>
+            <p class="subtle">
+              デフォルトは昭和第一学園。栄町二丁目・西武バス立川営業所・新立川航空もボタンで切り替えられます。
+            </p>
+          </div>
+          <div class="toolbar">
+            <div class="day-tabs" id="dayTabs"></div>
+            <div class="filters" id="targetFilters"></div>
+          </div>
+        </div>
+        <div id="outboundCards" class="cards"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>② 昭和第一学園 → 立川駅北口</h2>
+            <p class="subtle">
+              逆方向は目的地が 立川駅北口 だけなので、確認できた便をまとめて表示します。
+            </p>
+          </div>
+        </div>
+        <div id="returnCards" class="cards"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>調査メモと注意点</h2>
+            <p class="subtle">
+              公開ページの取り込みがこの環境では不安定だったため、確定できた内容と、再確認が必要な内容を分けて記載しています。
+            </p>
+          </div>
+        </div>
+        <ul class="check-list">
+          <li>「昭和第一学園西門」は似た名前でも別停留所として除外しました。</li>
+          <li>立川駅北口ののりばは、確認できたものだけ数値で掲載しています。</li>
+          <li>西武バス側は一部のりば番号に資料差があったため、カードごとに信頼度を付けています。</li>
+          <li>新立川航空は本数が少ない 立20-1 を高信頼で掲載し、他候補系統は補足扱いにしています。</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>出典リンク</h2>
+            <p class="subtle">このページで参照した公開ページです。直前確認したいときはここから公式・主要サイトへ移動してください。</p>
+          </div>
+        </div>
+        <div class="sources">
+          <article class="source-card">
+            <h3>立川バス 立川駅北口</h3>
+            <p>立川駅北口の系統・時刻表・のりば一覧</p>
+            <a href="https://transfer-cloud.navitime.biz/tachikawabus/courses?busstop=00430001">transfer-cloud.navitime.biz/tachikawabus/courses?busstop=00430001</a>
+          </article>
+          <article class="source-card">
+            <h3>立川バス 昭和第一学園</h3>
+            <p>昭和第一学園の系統・時刻表・のりば一覧</p>
+            <a href="https://transfer-cloud.navitime.biz/tachikawabus/courses?busstop=00430618">transfer-cloud.navitime.biz/tachikawabus/courses?busstop=00430618</a>
+          </article>
+          <article class="source-card">
+            <h3>立川バス 新立川航空</h3>
+            <p>新立川航空の系統・時刻表・のりば一覧</p>
+            <a href="https://transfer-cloud.navitime.biz/tachikawabus/courses?busstop=00430431">transfer-cloud.navitime.biz/tachikawabus/courses?busstop=00430431</a>
+          </article>
+          <article class="source-card">
+            <h3>NAVITIME 立34</h3>
+            <p>立川駅北口 ↔ 昭和第一学園（西武バス）</p>
+            <a href="https://www.navitime.co.jp/bus/diagram/timelist?departure=00021388&amp;arrival=00022889&amp;line=00007577">立川駅北口 → 昭和第一学園</a><br />
+            <a href="https://www.navitime.co.jp/bus/diagram/timelist?departure=00022889&amp;arrival=00021388&amp;line=00007577">昭和第一学園 → 立川駅北口</a>
+          </article>
+          <article class="source-card">
+            <h3>NAVITIME 立30/31</h3>
+            <p>昭和第一学園 ↔ 立川駅北口（立川バス）</p>
+            <a href="https://www.navitime.co.jp/bus/diagram/timelist?departure=00022889&amp;arrival=00021388&amp;line=00011709">昭和第一学園 → 立川駅北口</a>
+          </article>
+          <article class="source-card">
+            <h3>NAVITIME 立20-1</h3>
+            <p>立川駅北口 → 新立川航空</p>
+            <a href="https://www.navitime.co.jp/bus/diagram/timelist?departure=00021388&amp;arrival=00040628&amp;line=00011678">立川駅北口 → 新立川航空</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>更新履歴</h2>
+            <p class="subtle">公開ページ側には更新履歴だけを掲載しています。</p>
+          </div>
+        </div>
+        <ul class="update-list">
+          <li>2026-03-31: 立川駅北口 ↔ 昭和第一学園を中心に、栄町二丁目・西武バス立川営業所・新立川航空の優先比較ページを追加。</li>
+          <li>2026-03-31: 端末時刻に近い順へ並び替えるロジック、始発・終バス表示、到着ラベルフィルターを実装。</li>
+        </ul>
+      </section>
+    </main>
+
+    <script>
+      const DAY_LABELS = {
+        weekday: "平日",
+        saturday: "土曜",
+        holiday: "休日",
+      };
+
+      const TARGET_LABELS = {
+        showa: "昭和第一学園",
+        sakae: "栄町二丁目",
+        office: "西武バス立川営業所",
+        shin: "新立川航空",
+        all: "全部見る",
+      };
+
+      const OUTBOUND = [
+        {
+          id: "tachikawa-3031",
+          operator: "立川バス",
+          route: "立30 / 立31",
+          boarding: "5番のりば",
+          destination: "若葉町団地 / 武蔵野美術大学",
+          tags: ["showa", "sakae", "office"],
+          stopsShowa: true,
+          confidence: "mid",
+          note: "昭和第一学園と栄町二丁目までは同一方向。西武バス立川営業所は資料上の経由候補として補足。",
+          sources: [
+            "立川駅北口の系統・時刻表・のりば一覧 | 立川バス",
+            "昭和第一学園の系統・時刻表・のりば一覧 | 立川バス",
+          ],
+          times: {
+            weekday: ["05:43","06:13","06:36","06:46","06:58","07:10","07:20","07:28","07:38","07:48","07:58","08:07","08:17","08:26","08:42","08:56","09:07","09:17","09:32","09:52","10:09","10:29","10:39","10:54","11:08","11:20","11:29","11:42","12:01","12:13","12:24","12:36","12:47","13:02","13:23","13:38","13:50","13:55","14:07","14:22","14:38","15:00","15:17","15:36","15:52","16:08","16:25","16:43","16:57","17:10","17:21","17:32","17:49","18:02","18:15","18:28","18:40","18:54","19:06","19:15","19:28"],
+            saturday: ["05:43","06:13","06:36","06:46","06:58","07:10","07:20","07:28","07:38","07:48","07:58","08:07","08:17","08:26","08:42","08:56","09:07","09:17","09:32","09:52","10:09","10:29","10:39","10:54","11:08","11:20","11:29","11:42","12:01","12:13","12:24","12:36","12:47","13:02","13:23","13:38","13:50","13:55","14:07","14:22","14:38","15:00","15:17","15:36","15:52","16:08","16:25","16:43","16:57","17:10","17:21","17:32","17:49","18:02","18:15","18:28","18:40","18:54","19:06","19:15","19:28"],
+            holiday: ["06:50","07:15","07:45","08:15","08:45","09:15","09:45","10:15","10:45","11:15","11:45","12:15","12:45","13:15","13:45","14:15","14:45","15:15","15:45","16:15","16:45","17:15","17:45","18:15","18:45","19:20","20:00"],
+          },
+        },
+        {
+          id: "seibu-34",
+          operator: "西武バス",
+          route: "立34",
+          boarding: "7番のりば",
+          destination: "久米川駅 / 東京街道団地",
+          tags: ["showa", "sakae", "office"],
+          stopsShowa: true,
+          confidence: "high",
+          note: "立川駅北口→昭和第一学園の具体時刻を一番多く拾えた系統。",
+          sources: [
+            "立川駅北口から昭和第一学園 バス時刻表 (立34 [西武バス]) - NAVITIME",
+          ],
+          times: {
+            weekday: ["05:43","06:13","06:36","06:46","06:58","07:10","07:20","07:28","07:38","07:48","07:58","08:07","08:17","08:26","08:42","08:56","09:07","09:17","09:32","09:52","10:09","10:29","10:54","11:08","11:20","11:29","11:42","12:01","12:13","12:36","12:47","13:02","13:23","13:38","13:50","14:07","14:22","14:38","15:00","15:17","15:36","15:52","16:08","16:25","16:43","16:57","17:10","17:21","17:32","17:49","18:02","18:15","18:28","18:40","19:06","19:28","19:38","20:08","20:25","20:52","21:13","21:38","22:00","22:19","22:43"],
+            saturday: [],
+            holiday: [],
+          },
+        },
+        {
+          id: "seibu-35-37-39",
+          operator: "西武バス",
+          route: "立35 / 立37 / 立39 など",
+          boarding: "6番のりば中心（立39は要再確認）",
+          destination: "東村山駅西口 / イオンモールむさし村山 / 南街 など",
+          tags: ["showa", "sakae", "office"],
+          stopsShowa: true,
+          confidence: "mid",
+          note: "経由確認はできたものの、のりば番号は資料差がありました。立39 は特に公式ページで要再確認。",
+          sources: [
+            "昭和第一学園 (しょうわだいいちがくえん) 系統一覧 | 西武バス",
+          ],
+          times: {
+            weekday: ["05:35","06:21","06:25","06:51","07:06","07:07","07:44","07:50","07:59","08:20","08:37","08:51","09:11","09:32","09:59","10:04","10:22","10:40","10:50","11:16","11:49","12:03","12:13","12:24","12:53","13:18","14:16","15:32","16:17","16:30","18:13","18:59","19:12","19:50","20:08","20:45","21:22","21:58","22:47","23:04"],
+            saturday: [],
+            holiday: [],
+          },
+        },
+        {
+          id: "tachikawa-53",
+          operator: "立川バス",
+          route: "立53",
+          boarding: "12番のりば",
+          destination: "北町",
+          tags: ["office"],
+          stopsShowa: false,
+          confidence: "mid",
+          note: "西武バス立川営業所を優先候補に入れたいときの別ルート。昭和第一学園へは止まりません。",
+          sources: [
+            "立川駅北口から西武バス立川営業所 バス時刻表 (立53 [立川バス]) - NAVITIME",
+          ],
+          times: {
+            weekday: ["06:34","07:02","07:19","07:35","07:50","08:03","08:20","08:37","08:51","09:05","09:28","09:51","10:20","11:04","11:28","11:50","12:13","12:35","12:58","13:17","13:40","14:02","14:24","14:47","15:08","15:28","15:52","16:16","16:36","17:00","17:23","17:44","18:08","18:33","18:54","19:19","19:40","20:03","20:44","21:25","22:10"],
+            saturday: [],
+            holiday: [],
+          },
+        },
+        {
+          id: "tachikawa-201",
+          operator: "立川バス",
+          route: "立20-1",
+          boarding: "4番のりば",
+          destination: "新立川航空",
+          tags: ["shin"],
+          stopsShowa: false,
+          confidence: "high",
+          note: "新立川航空へ直接行く本数の少ない便。昭和第一学園には止まりません。",
+          sources: [
+            "立川駅北口から新立川航空 バス時刻表 (立20-1 [立川バス]) - NAVITIME",
+          ],
+          times: {
+            weekday: ["08:00","09:20","17:31"],
+            saturday: [],
+            holiday: [],
+          },
+        },
+      ];
+
+      const RETURN = [
+        {
+          id: "return-tachikawa-3031",
+          operator: "立川バス",
+          route: "立30 / 立31",
+          boarding: "昭和第一学園",
+          destination: "立川駅北口",
+          showaLabel: "昭和第一学園発",
+          confidence: "mid",
+          note: "平日の一覧を比較的多く拾えました。土曜・休日はこの環境では完全抽出に失敗しています。",
+          sources: [
+            "昭和第一学園から立川駅北口 バス時刻表 (立30/31:立川駅-若葉町団地-武蔵野美術大学 [立川バス]) - NAVITIME",
+          ],
+          times: {
+            weekday: ["05:18","05:41","06:01","06:11","06:19","06:27","06:34","06:42","06:49","06:57","07:04","07:12","07:17","07:25","07:33","07:38","07:43","07:47","07:52","07:57","08:06","08:13","08:22","08:28","08:34","08:45","08:55","09:05","09:22","09:35","09:48","10:10","10:25","10:39","10:55","11:10","11:25","11:40","11:55","12:10","12:25","12:40","12:55","13:10","13:25","13:40","13:55","14:10","14:25","14:40","14:55","15:10","15:25","15:40","15:53","16:09","16:25","16:42","16:55","17:05","17:16","17:29","17:40","17:50"],
+            saturday: [],
+            holiday: [],
+          },
+        },
+        {
+          id: "return-seibu-34",
+          operator: "西武バス",
+          route: "立34",
+          boarding: "昭和第一学園",
+          destination: "立川駅北口",
+          showaLabel: "昭和第一学園発",
+          confidence: "high",
+          note: "土曜は始発から終バスまで比較的きれいに抽出できました。",
+          sources: [
+            "昭和第一学園から立川駅北口 バス時刻表 (立34 [西武バス]) - NAVITIME",
+          ],
+          times: {
+            weekday: ["06:18","06:28","06:48","07:06","07:16","07:25","07:36","07:45","07:55","08:04","08:16","08:30","08:41","08:54"],
+            saturday: ["06:41","07:01","07:24","07:44","08:04","08:24","08:49","09:11","09:35","09:53","10:10","10:25","10:40","10:55","11:12","11:27","11:40","11:52","12:05","12:20","12:38","12:58","13:15","13:35","13:53","14:08","14:20","14:35","14:49","15:05","15:21","15:35","15:50","16:05","16:20","16:38","16:55","17:10","17:25","17:39","17:58","18:20","18:36","18:58","19:18","19:40","19:58","20:18","20:38","21:03","21:26","21:48"],
+            holiday: ["06:41","07:08","07:38","08:08","08:38"],
+          },
+        },
+      ];
+
+      const state = {
+        day: getInitialDay(),
+        target: "showa",
+      };
+
+      function getInitialDay() {
+        const today = new Date().getDay();
+        if (today === 6) return "saturday";
+        if (today === 0) return "holiday";
+        return "weekday";
+      }
+
+      function minutesFromTime(value) {
+        const [hour, minute] = value.split(":").map(Number);
+        return hour * 60 + minute;
+      }
+
+      function getNowMinutes() {
+        const now = new Date();
+        return now.getHours() * 60 + now.getMinutes();
+      }
+
+      function rotateByNearest(times) {
+        if (!times.length) return [];
+        const now = getNowMinutes();
+        const enriched = times.map((time, index) => {
+          const minutes = minutesFromTime(time);
+          const delta = minutes >= now ? minutes - now : minutes + 1440 - now;
+          return { time, index, delta, minutes };
+        });
+        const next = enriched.reduce((best, current) => (current.delta < best.delta ? current : best), enriched[0]);
+        const start = next.index;
+        return enriched.slice(start).concat(enriched.slice(0, start));
+      }
+
+      function makeTimePill(time, index) {
+        const li = document.createElement("li");
+        li.className = "time-pill" + (index === 0 ? " nearest" : "");
+        li.innerHTML = index === 0
+          ? `<span>${time}</span><span class="label">いちばん近い</span>`
+          : `<span>${time}</span>`;
+        return li;
+      }
+
+      function confidenceMeta(level) {
+        if (level === "high") return { label: "信頼度 高", className: "high" };
+        if (level === "mid") return { label: "信頼度 中", className: "mid" };
+        return { label: "信頼度 低", className: "low" };
+      }
+
+      function createCard(item, day) {
+        const card = document.createElement("article");
+        card.className = "service-card";
+
+        const times = item.times[day] || [];
+        const rotated = rotateByNearest(times);
+        const confidence = confidenceMeta(item.confidence);
+        const first = times[0] || "—";
+        const last = times[times.length - 1] || "—";
+
+        const tags = item.tags
+          ? item.tags.map((tag) => `<span class="chip">${TARGET_LABELS[tag]}</span>`).join("")
+          : `<span class="chip">立川駅北口行き</span>`;
+        const showaChip = item.showaLabel
+          ? item.showaLabel
+          : (item.stopsShowa ? "昭和第一学園に止まる" : "昭和第一学園に止まらない");
+
+        card.innerHTML = `
+          <div class="service-top">
+            <div>
+              <div class="operator">${item.operator}</div>
+              <div class="route-name">${item.route}</div>
+              <p class="subtle">${item.destination}</p>
+            </div>
+            <span class="badge ${confidence.className}">${confidence.label}</span>
+          </div>
+          <div class="chips">${tags}</div>
+          <div class="summary-badges">
+            <span class="chip primary">始発 ${first}</span>
+            <span class="chip primary">終バス ${last}</span>
+            <span class="chip">${item.boarding}</span>
+            <span class="chip">${showaChip}</span>
+          </div>
+          <p class="note">${item.note}</p>
+          <div>
+            <h3>${DAY_LABELS[day]}の時刻</h3>
+            ${times.length ? "" : `<div class="empty">この曜日の時刻は、この環境では完全に引き抜けませんでした。出典リンクで最終確認してください。</div>`}
+          </div>
+        `;
+
+        if (times.length) {
+          const timeList = document.createElement("ul");
+          timeList.className = "time-list";
+          rotated.forEach((entry, index) => timeList.appendChild(makeTimePill(entry.time, index)));
+          card.appendChild(timeList);
+        }
+
+        const sourceNote = document.createElement("p");
+        sourceNote.className = "subtle";
+        sourceNote.textContent = `参照: ${item.sources.join(" / ")}`;
+        card.appendChild(sourceNote);
+
+        return card;
+      }
+
+      function renderDayTabs() {
+        const wrap = document.getElementById("dayTabs");
+        wrap.innerHTML = "";
+        Object.entries(DAY_LABELS).forEach(([key, label]) => {
+          const button = document.createElement("button");
+          button.textContent = label;
+          if (state.day === key) button.classList.add("active");
+          button.addEventListener("click", () => {
+            state.day = key;
+            render();
+          });
+          wrap.appendChild(button);
+        });
+      }
+
+      function renderFilters() {
+        const wrap = document.getElementById("targetFilters");
+        wrap.innerHTML = "";
+        Object.entries(TARGET_LABELS).forEach(([key, label]) => {
+          const button = document.createElement("button");
+          button.textContent = label;
+          if (state.target === key) button.classList.add("active");
+          button.addEventListener("click", () => {
+            state.target = key;
+            render();
+          });
+          wrap.appendChild(button);
+        });
+      }
+
+      function renderOutbound() {
+        const mount = document.getElementById("outboundCards");
+        mount.innerHTML = "";
+
+        const filtered = OUTBOUND.filter((item) => state.target === "all" || item.tags.includes(state.target))
+          .sort((a, b) => {
+            if (state.target === "showa") return Number(b.stopsShowa) - Number(a.stopsShowa);
+            return 0;
+          });
+
+        if (!filtered.length) {
+          mount.innerHTML = `<div class="empty">この条件に合う便が見つかりませんでした。</div>`;
+          return;
+        }
+
+        filtered.forEach((item) => mount.appendChild(createCard(item, state.day)));
+      }
+
+      function renderReturn() {
+        const mount = document.getElementById("returnCards");
+        mount.innerHTML = "";
+        RETURN.forEach((item) => mount.appendChild(createCard(item, state.day)));
+      }
+
+      function render() {
+        renderDayTabs();
+        renderFilters();
+        renderOutbound();
+        renderReturn();
+      }
+
+      render();
+    </script>
+  </body>
+</html>
