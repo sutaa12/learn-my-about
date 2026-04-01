@@ -116,7 +116,8 @@
       .day-tabs,
       .chips,
       .time-list,
-      .summary-badges {
+      .summary-badges,
+      .mix-list {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
@@ -226,6 +227,16 @@
       }
 
       .time-pill {
+        position: relative;
+      }
+
+      .time-pill details {
+        position: relative;
+      }
+
+      .time-pill summary,
+      .mix-item summary {
+        list-style: none;
         display: inline-flex;
         align-items: center;
         gap: 8px;
@@ -234,9 +245,16 @@
         background: #fff;
         border: 1px solid var(--line);
         font-weight: 700;
+        cursor: pointer;
       }
 
-      .time-pill.nearest {
+      .time-pill summary::-webkit-details-marker,
+      .mix-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .time-pill.nearest summary,
+      .mix-item.nearest summary {
         background: linear-gradient(135deg, rgba(255, 122, 89, 0.14), rgba(255, 196, 109, 0.22));
         border-color: rgba(255, 122, 89, 0.3);
       }
@@ -244,6 +262,74 @@
       .time-pill .label {
         font-size: 0.72rem;
         color: var(--sub);
+      }
+
+      .balloon {
+        position: absolute;
+        left: 0;
+        top: calc(100% + 10px);
+        width: min(320px, 78vw);
+        padding: 14px 15px;
+        border-radius: 18px;
+        background: #fffdf9;
+        border: 1px solid var(--line);
+        box-shadow: 0 16px 28px rgba(53, 36, 23, 0.16);
+        z-index: 4;
+      }
+
+      .balloon::before {
+        content: "";
+        position: absolute;
+        left: 18px;
+        top: -8px;
+        width: 14px;
+        height: 14px;
+        background: #fffdf9;
+        border-left: 1px solid var(--line);
+        border-top: 1px solid var(--line);
+        transform: rotate(45deg);
+      }
+
+      .balloon h4 {
+        margin: 0 0 8px;
+        font-size: 0.95rem;
+      }
+
+      .balloon p {
+        font-size: 0.88rem;
+      }
+
+      .balloon-grid {
+        display: grid;
+        gap: 6px;
+        margin-top: 10px;
+      }
+
+      .balloon-grid span {
+        font-size: 0.82rem;
+        color: var(--sub);
+      }
+
+      .mix-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .mix-item {
+        position: relative;
+      }
+
+      .mix-item summary {
+        background: linear-gradient(180deg, #fffdfa 0%, #fff8f2 100%);
+      }
+
+      .mix-item .route-mini {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(92, 124, 255, 0.08);
+        color: #314da7;
       }
 
       .subtle {
@@ -331,10 +417,10 @@
         <div class="panel-header">
           <div>
             <h2>使い方</h2>
-            <p class="subtle">
-              まず曜日タブを選び、そのあと立川駅北口発の「到着ラベル」を切り替えてください。
-              昭和第一学園に止まる便は緑、止まらない便はオレンジで目立たせています。
-            </p>
+          <p class="subtle">
+            まず曜日タブを選び、そのあと立川駅北口発の「到着ラベル」を切り替えてください。
+            昭和第一学園に止まる便は緑、止まらない便はオレンジで目立たせています。時刻をタップすると吹き出しで路線メモを開けます。
+          </p>
           </div>
           <div class="legend">
             <div class="legend-card">
@@ -358,7 +444,7 @@
           <div>
             <h2>① 立川駅北口 → 各目的地</h2>
             <p class="subtle">
-              デフォルトは昭和第一学園。栄町二丁目・西武バス立川営業所・新立川航空もボタンで切り替えられます。
+              デフォルトは昭和第一学園。栄町二丁目・西武バス立川営業所・新立川航空・立川サンシャインパーク前もボタンで切り替えられます。
             </p>
           </div>
           <div class="toolbar">
@@ -372,7 +458,20 @@
       <section class="panel">
         <div class="panel-header">
           <div>
-            <h2>② 昭和第一学園 → 立川駅北口</h2>
+            <h2>② 立川駅北口発 全路線ミックス時刻表</h2>
+            <p class="subtle">
+              いま選んでいる曜日・到着ラベルにあわせて、対象路線を全部混ぜた順番で表示します。
+              時刻をタップすると、系統番号・のりば・停車メモ・どの分類の路線かを吹き出しで見られます。
+            </p>
+          </div>
+        </div>
+        <ul id="mixedTimeline" class="mix-list"></ul>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>③ 昭和第一学園 → 立川駅北口</h2>
             <p class="subtle">
               逆方向は目的地が 立川駅北口 だけなので、確認できた便をまとめて表示します。
             </p>
@@ -395,6 +494,7 @@
           <li>立川駅北口ののりばは、確認できたものだけ数値で掲載しています。</li>
           <li>西武バス側は一部のりば番号に資料差があったため、カードごとに信頼度を付けています。</li>
           <li>新立川航空は本数が少ない 立20-1 を高信頼で掲載し、他候補系統は補足扱いにしています。</li>
+          <li>立川サンシャインパーク前は 4番のりば系の複数路線を追加し、時刻は公開ページで確認できた範囲を列挙しました。</li>
         </ul>
       </section>
 
@@ -466,6 +566,7 @@
         sakae: "栄町二丁目",
         office: "西武バス立川営業所",
         shin: "新立川航空",
+        sunshine: "立川サンシャインパーク前",
         all: "全部見る",
       };
 
@@ -478,6 +579,8 @@
           destination: "若葉町団地 / 武蔵野美術大学",
           tags: ["showa", "sakae", "office"],
           stopsShowa: true,
+          routeType: "立川バス本線",
+          stopSummary: "立川駅北口 → 栄町二丁目 → 昭和第一学園 → 若葉町団地 / 武蔵野美術大学 方面",
           confidence: "mid",
           note: "昭和第一学園と栄町二丁目までは同一方向。西武バス立川営業所は資料上の経由候補として補足。",
           sources: [
@@ -498,6 +601,8 @@
           destination: "久米川駅 / 東京街道団地",
           tags: ["showa", "sakae", "office"],
           stopsShowa: true,
+          routeType: "西武バス本線",
+          stopSummary: "立川駅北口 → 栄町二丁目 → 昭和第一学園 → 久米川駅 / 東京街道団地 方面",
           confidence: "high",
           note: "立川駅北口→昭和第一学園の具体時刻を一番多く拾えた系統。",
           sources: [
@@ -517,6 +622,8 @@
           destination: "東村山駅西口 / イオンモールむさし村山 / 南街 など",
           tags: ["showa", "sakae", "office"],
           stopsShowa: true,
+          routeType: "西武バス枝線",
+          stopSummary: "立川駅北口 → 栄町二丁目 → 昭和第一学園 付近を通る複数系統のまとめ",
           confidence: "mid",
           note: "経由確認はできたものの、のりば番号は資料差がありました。立39 は特に公式ページで要再確認。",
           sources: [
@@ -536,6 +643,8 @@
           destination: "北町",
           tags: ["office"],
           stopsShowa: false,
+          routeType: "営業所方面の別経路",
+          stopSummary: "立川駅北口 → 西武バス立川営業所 → 北町。昭和第一学園には止まりません。",
           confidence: "mid",
           note: "西武バス立川営業所を優先候補に入れたいときの別ルート。昭和第一学園へは止まりません。",
           sources: [
@@ -555,6 +664,8 @@
           destination: "新立川航空",
           tags: ["shin"],
           stopsShowa: false,
+          routeType: "新立川航空直行候補",
+          stopSummary: "立川駅北口 → 新立川航空。昭和第一学園は経由しません。",
           confidence: "high",
           note: "新立川航空へ直接行く本数の少ない便。昭和第一学園には止まりません。",
           sources: [
@@ -562,6 +673,49 @@
           ],
           times: {
             weekday: ["08:00","09:20","17:31"],
+            saturday: [],
+            holiday: [],
+          },
+        },
+        {
+          id: "tachikawa-sunshine-main",
+          operator: "立川バス",
+          route: "立22 / 立23 / 玉10",
+          boarding: "4番のりば",
+          destination: "村山団地 / 玉川上水駅 方面",
+          tags: ["sunshine"],
+          stopsShowa: true,
+          routeType: "立川サンシャインパーク前経由",
+          stopSummary: "立川駅北口 → 立川サンシャインパーク前 → 学園（公開ページでは『学園』表記）→ 村山団地 / 玉川上水駅 方面",
+          confidence: "mid",
+          note: "立川サンシャインパーク前へ行ける 4番のりば系の主力候補。学園表記が昭和第一学園を指す資料あり。",
+          sources: [
+            "立川駅北口から立川サンシャインパーク前 バス時刻表 (立22/23/玉10/立25:立川駅-玉川上水駅-村山団地 [立川バス]) - NAVITIME",
+            "立川サンシャインパーク前の系統・時刻表・のりば一覧 | 立川バス",
+          ],
+          times: {
+            weekday: ["06:32","06:55","07:40","08:20","09:00","09:40","10:00"],
+            saturday: [],
+            holiday: [],
+          },
+        },
+        {
+          id: "tachikawa-sunshine-251",
+          operator: "立川バス",
+          route: "立25-1",
+          boarding: "4番のりば",
+          destination: "玉川上水駅",
+          tags: ["sunshine"],
+          stopsShowa: false,
+          routeType: "立川サンシャインパーク前経由",
+          stopSummary: "立川駅北口 → 立川サンシャインパーク前 → 玉川上水駅。昭和第一学園は経由未確認。",
+          confidence: "mid",
+          note: "立川サンシャインパーク前までは行けるが、昭和第一学園を通る確認は取れていない別系統。",
+          sources: [
+            "立川駅北口から立川サンシャインパーク前 バス時刻表 (立22/23/玉10/立25:立川駅-玉川上水駅-村山団地 [立川バス]) - NAVITIME",
+          ],
+          times: {
+            weekday: ["08:40","10:20"],
             saturday: [],
             holiday: [],
           },
@@ -642,12 +796,30 @@
         return enriched.slice(start).concat(enriched.slice(0, start));
       }
 
-      function makeTimePill(time, index) {
+      function makeBalloonContent(item, time) {
+        return `
+          <div class="balloon">
+            <h4>${time} 発のメモ</h4>
+            <p>${item.stopSummary || item.note}</p>
+            <div class="balloon-grid">
+              <span>系統: ${item.route}</span>
+              <span>事業者: ${item.operator}</span>
+              <span>のりば / 停留所: ${item.boarding}</span>
+              <span>路線分類: ${item.routeType || "路線メモ"}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      function makeTimePill(item, time, index) {
         const li = document.createElement("li");
         li.className = "time-pill" + (index === 0 ? " nearest" : "");
-        li.innerHTML = index === 0
-          ? `<span>${time}</span><span class="label">いちばん近い</span>`
-          : `<span>${time}</span>`;
+        li.innerHTML = `
+          <details>
+            <summary>${index === 0 ? `<span>${time}</span><span class="label">いちばん近い</span>` : `<span>${time}</span>`}</summary>
+            ${makeBalloonContent(item, time)}
+          </details>
+        `;
         return li;
       }
 
@@ -700,7 +872,7 @@
         if (times.length) {
           const timeList = document.createElement("ul");
           timeList.className = "time-list";
-          rotated.forEach((entry, index) => timeList.appendChild(makeTimePill(entry.time, index)));
+          rotated.forEach((entry, index) => timeList.appendChild(makeTimePill(item, entry.time, index)));
           card.appendChild(timeList);
         }
 
@@ -760,6 +932,47 @@
         filtered.forEach((item) => mount.appendChild(createCard(item, state.day)));
       }
 
+      function renderMixedTimeline() {
+        const mount = document.getElementById("mixedTimeline");
+        mount.innerHTML = "";
+
+        const pool = OUTBOUND.filter((item) => state.target === "all" || item.tags.includes(state.target))
+          .flatMap((item) => (item.times[state.day] || []).map((time) => ({
+            item,
+            time,
+            minutes: minutesFromTime(time),
+          })));
+
+        if (!pool.length) {
+          mount.innerHTML = `<li class="empty">この条件で混ぜられる時刻がありません。出典リンクから確認してください。</li>`;
+          return;
+        }
+
+        const now = getNowMinutes();
+        const ordered = pool
+          .map((entry) => ({
+            ...entry,
+            delta: entry.minutes >= now ? entry.minutes - now : entry.minutes + 1440 - now,
+          }))
+          .sort((a, b) => a.delta - b.delta);
+
+        ordered.forEach((entry, index) => {
+          const li = document.createElement("li");
+          li.className = "mix-item" + (index === 0 ? " nearest" : "");
+          li.innerHTML = `
+            <details>
+              <summary>
+                <span>${entry.time}</span>
+                <span class="route-mini">${entry.item.route}</span>
+                <span class="label">${entry.item.destination}</span>
+              </summary>
+              ${makeBalloonContent(entry.item, entry.time)}
+            </details>
+          `;
+          mount.appendChild(li);
+        });
+      }
+
       function renderReturn() {
         const mount = document.getElementById("returnCards");
         mount.innerHTML = "";
@@ -770,6 +983,7 @@
         renderDayTabs();
         renderFilters();
         renderOutbound();
+        renderMixedTimeline();
         renderReturn();
       }
 
