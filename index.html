@@ -111,12 +111,35 @@
         margin-bottom: 6px;
       }
 
+      .quick-nav a {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.92);
+        text-decoration: none;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .quick-nav a:hover {
+        transform: translateY(-1px);
+      }
+
+      .quick-nav a:focus-visible {
+        outline: 3px solid rgba(92, 124, 255, 0.35);
+        outline-offset: 2px;
+        transform: translateY(-1px);
+      }
+
       .toolbar,
       .filters,
       .day-tabs,
       .chips,
       .time-list,
       .summary-badges,
+      .quick-nav,
       .mix-list {
         display: flex;
         flex-wrap: wrap;
@@ -167,6 +190,53 @@
         padding: 18px;
         display: grid;
         gap: 14px;
+      }
+
+      .separate-panel {
+        border: 2px solid rgba(92, 124, 255, 0.2);
+        background:
+          radial-gradient(circle at top right, rgba(92, 124, 255, 0.08), transparent 30%),
+          linear-gradient(180deg, rgba(244, 247, 255, 0.96) 0%, rgba(255, 251, 245, 0.96) 100%);
+      }
+
+      .route-rail {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.85);
+      }
+
+      .route-stop {
+        font-weight: 700;
+      }
+
+      .route-arrow {
+        color: var(--accent-2);
+        font-weight: 800;
+      }
+
+      .time-note {
+        font-size: 0.92rem;
+        color: var(--sub);
+      }
+
+      .link-card {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 16px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.88);
+      }
+
+      .link-card a {
+        font-weight: 700;
       }
 
       .service-top {
@@ -367,6 +437,11 @@
         color: var(--sub);
       }
 
+      .mt-14 { margin-top: 14px; }
+      .mt-16 { margin-top: 16px; }
+      .mt-18 { margin-top: 18px; }
+      .mt-20 { margin-top: 20px; }
+
       @media (max-width: 720px) {
         .page {
           padding-inline: 12px;
@@ -411,9 +486,18 @@
             現地掲示・公式サイトが最終版です。このページは 2026-03-31 時点で確認できた公開ページを整理したメモです。
           </div>
         </div>
+
+        <nav class="quick-nav" aria-label="ページ内移動">
+          <a href="#howto">使い方</a>
+          <a href="#tachikawa-outbound">立川駅北口 → 各目的地</a>
+          <a href="#mixed-timetable">全路線ミックス</a>
+          <a href="#tachikawa-return">昭和第一学園 → 立川駅北口</a>
+          <a href="#tokyu-wakabayashi">若林交番 → 新代田駅前</a>
+          <a href="#sources">出典リンク</a>
+        </nav>
       </section>
 
-      <section class="panel">
+      <section class="panel" id="howto">
         <div class="panel-header">
           <div>
             <h2>使い方</h2>
@@ -439,7 +523,7 @@
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel" id="tachikawa-outbound">
         <div class="panel-header">
           <div>
             <h2>① 立川駅北口 → 各目的地</h2>
@@ -455,7 +539,7 @@
         <div id="outboundCards" class="cards"></div>
       </section>
 
-      <section class="panel">
+      <section class="panel" id="mixed-timetable">
         <div class="panel-header">
           <div>
             <h2>② 立川駅北口発 全路線ミックス時刻表</h2>
@@ -468,7 +552,7 @@
         <ul id="mixedTimeline" class="mix-list"></ul>
       </section>
 
-      <section class="panel">
+      <section class="panel" id="tachikawa-return">
         <div class="panel-header">
           <div>
             <h2>③ 昭和第一学園 → 立川駅北口</h2>
@@ -498,7 +582,184 @@
         </ul>
       </section>
 
-      <section class="panel">
+      <section class="panel separate-panel" id="tokyu-wakabayashi">
+        <div class="panel-header">
+          <div>
+            <h2>④ 別件: 東急バス 若林交番 → 新代田駅前</h2>
+            <p class="subtle">
+              ここから下は<strong>立川メモとは別件</strong>です。既存の立川バス / 西武バス比較には混ぜず、
+              別セクションとして「若林交番 のりばb から 新代田駅前へ行く片道情報」だけをまとめました。
+            </p>
+          </div>
+          <div class="legend">
+            <div class="legend-card">
+              <strong>置き場所の判断</strong>
+              立川周辺の比較 UI とは目的地も事業者も完全に別なので、既存タブには入れずページ後半へ独立配置。
+            </div>
+            <div class="legend-card">
+              <strong>対象範囲</strong>
+              若林交番 → 新代田駅前の片道のみ。逆方向は入れていません。
+            </div>
+            <div class="legend-card">
+              <strong>確認方針</strong>
+              系統名・のりばは東急バス公式、時刻は公開時刻表ページで突合して掲載。
+            </div>
+          </div>
+        </div>
+
+        <div class="meta-grid">
+          <div class="mini-card">
+            <strong>系統 / 行先</strong>
+            森91 新代田駅前ゆき
+          </div>
+          <div class="mini-card">
+            <strong>事業者</strong>
+            東急バス
+          </div>
+          <div class="mini-card">
+            <strong>公開上の乗車場所</strong>
+            若林交番 のりばb
+          </div>
+          <div class="mini-card">
+            <strong>到着停留所</strong>
+            新代田駅前
+          </div>
+        </div>
+
+        <div class="route-rail mt-16">
+          <span class="route-stop">若林交番 のりばb</span>
+          <span class="route-arrow">→</span>
+          <span>森91 新代田駅前ゆき</span>
+          <span class="route-arrow">→</span>
+          <span class="route-stop">新代田駅前</span>
+        </div>
+
+        <div class="link-card mt-14">
+          <strong>混雑・接近状況</strong>
+          <a
+            href="https://transfer.navitime.biz/tokyubus/smart/location/BusLocationSearchTargetCourse?startId=00240363&amp;poleId=000000001436"
+          >東急バスの混雑状況ページを見る</a>
+          <span class="subtle">時刻表そのものではなく、乗る直前の様子を確認するためのリンクです。</span>
+        </div>
+
+        <div class="cards mt-18">
+          <article class="service-card">
+            <div class="service-top">
+              <div>
+                <div class="operator">東急バス</div>
+                <div class="route-name">平日</div>
+                <p class="subtle">若林交番 のりばb → 新代田駅前</p>
+              </div>
+              <span class="badge high">公開時刻を抽出</span>
+            </div>
+            <div class="summary-badges">
+              <span class="chip primary">始発 06:09</span>
+              <span class="chip primary">終バス 21:39</span>
+              <span class="chip">森91</span>
+              <span class="chip">公式のりば地図あり</span>
+            </div>
+            <p class="time-note">
+              06:09 06:31 06:44 06:58 / 07:16 07:31 07:50 / 08:06 08:22 08:38 08:55 /
+              09:15 09:48 / 10:09 10:41 / 11:20 11:50 / 12:20 12:50 / 13:20 13:50 /
+              14:19 14:49 / 15:21 15:50 / 16:11 16:30 16:56 / 17:24 17:52 /
+              18:17 18:39 / 19:05 19:26 19:51 / 20:17 20:43 / 21:09 21:39
+            </p>
+            <p class="note">
+              駅探と NAVITIME の公開時刻表抽出で読めた並び。最終確認は東急バス公式時刻表ページで行う前提です。
+            </p>
+          </article>
+
+          <article class="service-card">
+            <div class="service-top">
+              <div>
+                <div class="operator">東急バス</div>
+                <div class="route-name">土曜</div>
+                <p class="subtle">若林交番 のりばb → 新代田駅前</p>
+              </div>
+              <span class="badge high">公開時刻を抽出</span>
+            </div>
+            <div class="summary-badges">
+              <span class="chip primary">始発 06:09</span>
+              <span class="chip primary">終バス 21:39</span>
+              <span class="chip">森91</span>
+              <span class="chip">平日と同一並びで抽出</span>
+            </div>
+            <p class="time-note">
+              06:09 06:31 06:44 06:58 / 07:16 07:31 07:50 / 08:06 08:22 08:38 08:55 /
+              09:15 09:48 / 10:09 10:41 / 11:20 11:50 / 12:20 12:50 / 13:20 13:50 /
+              14:19 14:49 / 15:21 15:50 / 16:11 16:30 16:56 / 17:24 17:52 /
+              18:17 18:39 / 19:05 19:26 19:51 / 20:17 20:43 / 21:09 21:39
+            </p>
+            <p class="note">
+              公開抽出では平日と同じ並びでした。曜日切替つきの公式ページがあるため、現地利用前は公式側の土曜タブも再確認してください。
+            </p>
+          </article>
+
+          <article class="service-card">
+            <div class="service-top">
+              <div>
+                <div class="operator">東急バス</div>
+                <div class="route-name">休日</div>
+                <p class="subtle">若林交番 のりばb → 新代田駅前</p>
+              </div>
+              <span class="badge high">公開時刻を抽出</span>
+            </div>
+            <div class="summary-badges">
+              <span class="chip primary">始発 06:14</span>
+              <span class="chip primary">終バス 19:21</span>
+              <span class="chip">森91</span>
+              <span class="chip">休日は別ダイヤ</span>
+            </div>
+            <p class="time-note">
+              06:14 06:36 06:49 / 07:03 07:21 07:36 07:55 / 08:03 08:24 08:49 /
+              09:10 09:33 / 10:11 10:27 10:43 / 11:12 11:34 11:56 /
+              12:00 12:28 12:54 / 13:00 13:20 13:53 / 14:19 14:42 / 15:20 15:48 /
+              16:14 16:46 / 17:29 17:54 / 18:25 18:54 / 19:21
+            </p>
+            <p class="note">
+              休日は平日 / 土曜とは違う並びで公開抽出できました。
+            </p>
+          </article>
+        </div>
+
+        <div class="panel-header mt-20">
+          <div>
+            <h3>出典と確認メモ</h3>
+            <p class="subtle">
+              必要情報ごとに、どこを根拠にしたかを分けて残しています。
+            </p>
+          </div>
+        </div>
+        <div class="sources">
+          <article class="source-card">
+            <h3>若林交番 のりば地図 | 東急バス</h3>
+            <p>b番のりば と 森91 新代田駅前ゆき の対応確認用。</p>
+            <a href="https://transfer.navitime.biz/tokyubus/pc/diagram/BusAboardMap?stCode=00240363">https://transfer.navitime.biz/tokyubus/pc/diagram/BusAboardMap?stCode=00240363</a>
+          </article>
+          <article class="source-card">
+            <h3>若林交番 時刻表 （ 森91 新代田駅前ゆき ） | 東急バス</h3>
+            <p>東急バス公式の時刻表ページ。平日 / 土曜 / 休日の切替前提。</p>
+            <a href="https://transfer.navitime.biz/tokyubus/pc/diagram/BusDiagram?orvCode=00240363&amp;course=0004602633&amp;stopNo=1">東急バス公式の曜日別時刻表を開く</a>
+          </article>
+          <article class="source-card">
+            <h3>若林交番から新代田駅前 バス時刻表 (森91 [東急バス]) - NAVITIME</h3>
+            <p>公開上の停留所名と片道時刻の突合用。</p>
+            <a href="https://www.navitime.co.jp/bus/diagram/timelist?departure=00017809&amp;arrival=00017023&amp;line=00005386">NAVITIME の片道時刻表を開く</a>
+          </article>
+          <article class="source-card">
+            <h3>東急バス森91系統「若林交番」 (新代田駅前行き)のバス時刻表 - 駅探</h3>
+            <p>曜日別時刻の抽出補助。平日 / 土曜 / 休日の具体時刻を読み取りやすかったページ。</p>
+            <a href="https://ekitan.com/timetable/route-bus/company/5074/1017536/1003614/d1">https://ekitan.com/timetable/route-bus/company/5074/1017536/1003614/d1</a>
+          </article>
+          <article class="source-card">
+            <h3>東急バスナビ｜路線別運行情報 (位置情報)｜森91</h3>
+            <p>上の「混雑・接近状況」リンクと同じ系統の位置情報ページです。</p>
+            <a href="https://tokyu.bus-location.jp/blsys/navis?VID=rtl&amp;EID=nt&amp;PRM&amp;RAMK=131">https://tokyu.bus-location.jp/blsys/navis?VID=rtl&amp;EID=nt&amp;PRM&amp;RAMK=131</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel" id="sources">
         <div class="panel-header">
           <div>
             <h2>出典リンク</h2>
@@ -550,6 +811,7 @@
         <ul class="update-list">
           <li>2026-03-31: 立川駅北口 ↔ 昭和第一学園を中心に、栄町二丁目・西武バス立川営業所・新立川航空の優先比較ページを追加。</li>
           <li>2026-03-31: 端末時刻に近い順へ並び替えるロジック、始発・終バス表示、到着ラベルフィルターを実装。</li>
+          <li>2026-04-01: 別件として、東急バス「若林交番 のりばb → 新代田駅前」の片道メモと出典リンクを独立セクションで追加。</li>
         </ul>
       </section>
     </main>
