@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英検5級→2級ブーストラボ</title>
+  <style>
+    :root {
+      --bg: #f5f8ff;
+      --surface: rgba(255, 255, 255, 0.88);
+      --surface-strong: #ffffff;
+      --ink: #1f2440;
+      --muted: #5d6480;
+      --line: rgba(76, 92, 146, 0.18);
+      --accent: #5b67ff;
+      --accent-2: #ff7a59;
+      --accent-3: #19b8a6;
+      --accent-4: #ffd84d;
+      --shadow: 0 24px 60px rgba(66, 82, 134, 0.16);
+      --radius: 24px;
+      --radius-sm: 16px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Hiragino Sans", "Yu Gothic UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(91, 103, 255, 0.17), transparent 26%),
+        radial-gradient(circle at top right, rgba(255, 122, 89, 0.18), transparent 25%),
+        linear-gradient(180deg, #eef3ff 0%, #fbfcff 48%, #eef8f7 100%);
+      line-height: 1.7;
+    }
+
+    a { color: inherit; }
+
+    .page-shell {
+      width: min(calc(100% - 28px), var(--max));
+      margin: 0 auto;
+      padding-bottom: 72px;
+    }
+
+    .hero {
+      padding: 32px 0 28px;
+    }
+
+    .hero-panel,
+    .section-card,
+    .practice-shell,
+    .question-shell,
+    .footer-panel,
+    .stats-card,
+    .mode-card,
+    .roadmap-card,
+    .grammar-card,
+    .bubble,
+    .update-card {
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(14px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-panel {
+      overflow: hidden;
+      position: relative;
+      padding: clamp(24px, 4vw, 48px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .hero-panel::after {
+      content: "";
+      position: absolute;
+      inset: auto -90px -90px auto;
+      width: 260px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 216, 77, 0.82), rgba(255, 216, 77, 0));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(91, 103, 255, 0.1);
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 0.9rem;
+      letter-spacing: 0.03em;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    .hero h1 {
+      margin-top: 18px;
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-copy {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 64ch;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .button,
+    button,
+    select {
+      font: inherit;
+    }
+
+    .button,
+    .option-button,
+    .mini-button,
+    .submit-button,
+    .next-button {
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      min-width: 168px;
+    }
+
+    .button.primary {
+      background: linear-gradient(135deg, var(--accent), #7682ff);
+      color: #fff;
+      box-shadow: 0 18px 32px rgba(91, 103, 255, 0.28);
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--ink);
+      border: 1px solid rgba(91, 103, 255, 0.14);
+    }
+
+    .button:hover,
+    .option-button:hover,
+    .mini-button:hover,
+    .submit-button:hover,
+    .next-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero-visual {
+      position: relative;
+      display: grid;
+      gap: 14px;
+    }
+
+    .bubble {
+      padding: 18px;
+      border-radius: 22px;
+    }
+
+    .bubble strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .bubble small {
+      display: block;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .bubble.japanese {
+      background: linear-gradient(135deg, rgba(255, 216, 77, 0.32), rgba(255, 122, 89, 0.18));
+    }
+
+    .bubble.english {
+      background: linear-gradient(135deg, rgba(91, 103, 255, 0.18), rgba(25, 184, 166, 0.16));
+    }
+
+    .diagram-row {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .diagram-track {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .diagram-chip {
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-weight: 800;
+      text-align: center;
+      color: #24304a;
+      background: #fff;
+      border: 1px solid rgba(76, 92, 146, 0.14);
+      font-size: 0.92rem;
+    }
+
+    .section-card {
+      padding: 28px;
+      margin-top: 26px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.55rem, 3vw, 2.3rem);
+      line-height: 1.15;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      max-width: 72ch;
+    }
+
+    .quick-grid,
+    .roadmap-grid,
+    .grammar-grid,
+    .mode-grid,
+    .stats-grid,
+    .update-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .quick-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .quick-card,
+    .roadmap-card,
+    .grammar-card,
+    .mode-card,
+    .stats-card,
+    .update-card {
+      padding: 20px;
+    }
+
+    .quick-card strong,
+    .roadmap-card strong,
+    .grammar-card strong,
+    .mode-card strong,
+    .stats-card strong,
+    .update-card strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .quick-card p,
+    .roadmap-card p,
+    .grammar-card p,
+    .mode-card p,
+    .stats-card p,
+    .update-card p,
+    .roadmap-card li,
+    .grammar-card li {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .roadmap-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .roadmap-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 100%;
+    }
+
+    .roadmap-card::before {
+      content: attr(data-level);
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      font-weight: 900;
+      font-size: 0.86rem;
+      color: rgba(31, 36, 64, 0.28);
+    }
+
+    .roadmap-card ul,
+    .grammar-card ul {
+      padding-left: 18px;
+      margin: 12px 0 0;
+    }
+
+    .tag-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      background: rgba(91, 103, 255, 0.08);
+      color: var(--accent);
+    }
+
+    .grammar-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .structure-demo {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(242,246,255,0.92));
+      border: 1px solid var(--line);
+    }
+
+    .structure-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .structure-pill {
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .pill-topic { background: rgba(255, 122, 89, 0.18); }
+    .pill-subject { background: rgba(91, 103, 255, 0.18); }
+    .pill-verb { background: rgba(25, 184, 166, 0.2); }
+    .pill-rest { background: rgba(255, 216, 77, 0.26); }
+
+    .level-guide-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .level-guide {
+      border: 1px solid rgba(76, 92, 146, 0.14);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.92);
+      overflow: hidden;
+    }
+
+    .level-guide summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      font-weight: 900;
+    }
+
+    .level-guide summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .level-guide summary span {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .level-guide summary small {
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .level-guide summary::after {
+      content: "+";
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(91, 103, 255, 0.1);
+      color: var(--accent);
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .level-guide[open] summary::after {
+      content: "−";
+    }
+
+    .level-guide__body {
+      padding: 0 20px 20px;
+      display: grid;
+      gap: 12px;
+      color: var(--muted);
+    }
+
+    .level-guide__body p {
+      color: var(--muted);
+    }
+
+    .level-guide__body ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .practice-shell {
+      margin-top: 26px;
+      padding: 28px;
+    }
+
+    .mode-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-bottom: 18px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    label.control {
+      display: grid;
+      gap: 8px;
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 0.96rem;
+    }
+
+    select {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(76, 92, 146, 0.2);
+      background: rgba(255,255,255,0.92);
+      color: var(--ink);
+    }
+
+    .mini-button {
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: rgba(91, 103, 255, 0.1);
+      color: var(--accent);
+      font-weight: 800;
+      align-self: end;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-bottom: 22px;
+    }
+
+    .stats-card span {
+      display: block;
+      font-size: 1.9rem;
+      line-height: 1;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .question-shell {
+      padding: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,0.95));
+      border: 1px solid rgba(76, 92, 146, 0.14);
+    }
+
+    .question-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .stacked-labels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 0.83rem;
+      font-weight: 800;
+      background: rgba(31, 36, 64, 0.06);
+      color: var(--ink);
+    }
+
+    .question-title {
+      font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .question-lead {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .option-button {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      width: 100%;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(76, 92, 146, 0.14);
+      background: #fff;
+      text-align: left;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .option-button.selected {
+      border-color: rgba(91, 103, 255, 0.42);
+      background: rgba(91, 103, 255, 0.09);
+      box-shadow: 0 12px 24px rgba(91, 103, 255, 0.12);
+    }
+
+    .option-button.correct {
+      border-color: rgba(25, 184, 166, 0.45);
+      background: rgba(25, 184, 166, 0.12);
+    }
+
+    .option-button.wrong {
+      border-color: rgba(255, 122, 89, 0.45);
+      background: rgba(255, 122, 89, 0.1);
+    }
+
+    .option-index {
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(31, 36, 64, 0.06);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .submit-button {
+      padding: 14px 18px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent), #7581ff);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .next-button {
+      padding: 14px 18px;
+      border-radius: 16px;
+      background: rgba(25, 184, 166, 0.14);
+      color: #17796f;
+      font-weight: 900;
+    }
+
+    .helper-note,
+    .feedback,
+    .review-panel {
+      margin-top: 16px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(76, 92, 146, 0.14);
+    }
+
+    .helper-note {
+      background: rgba(255, 216, 77, 0.18);
+      color: #6e5a00;
+    }
+
+    .feedback {
+      background: rgba(91, 103, 255, 0.08);
+    }
+
+    .feedback.correct {
+      background: rgba(25, 184, 166, 0.12);
+      color: #146a61;
+    }
+
+    .feedback.wrong {
+      background: rgba(255, 122, 89, 0.12);
+      color: #9f3f2d;
+    }
+
+    .review-panel {
+      background: rgba(255,255,255,0.86);
+      display: grid;
+      gap: 12px;
+      color: var(--muted);
+    }
+
+    .review-panel strong {
+      color: var(--ink);
+    }
+
+    .muted-small {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    dialog {
+      border: none;
+      border-radius: 26px;
+      padding: 0;
+      width: min(760px, calc(100% - 24px));
+      box-shadow: 0 36px 80px rgba(27, 32, 60, 0.3);
+    }
+
+    dialog::backdrop {
+      background: rgba(12, 18, 40, 0.55);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
+      padding: 26px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .close-button {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background: rgba(31, 36, 64, 0.08);
+      font-size: 1.1rem;
+      font-weight: 900;
+    }
+
+    .modal-sections {
+      display: grid;
+      gap: 14px;
+    }
+
+    .modal-sections section {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(76, 92, 146, 0.14);
+    }
+
+    .update-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .footer-panel {
+      margin-top: 28px;
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1060px) {
+      .hero-panel,
+      .roadmap-grid,
+      .grammar-grid,
+      .quick-grid,
+      .stats-grid,
+      .controls,
+      .update-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .mode-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .roadmap-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page-shell {
+        width: min(calc(100% - 18px), var(--max));
+      }
+
+      .section-card,
+      .practice-shell,
+      .question-shell,
+      .footer-panel {
+        padding: 20px;
+      }
+
+      .quick-grid,
+      .roadmap-grid,
+      .grammar-grid,
+      .stats-grid,
+      .controls,
+      .update-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .diagram-track {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero-actions,
+      .action-row {
+        flex-direction: column;
+      }
+
+      .button,
+      .submit-button,
+      .next-button,
+      .mini-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero-panel">
+        <div>
+          <span class="eyebrow">英検5級 → 2級 / 静的サイト / 解説モードつき</span>
+          <h1>英語を「丸暗記」ではなく、<br>日本語との違いごと見える化して身につける。</h1>
+          <p class="hero-copy">
+            このサイトは、英検5級レベルの基礎から2級レベルの読解・英作文発想までを、
+            <strong>視覚的な解説モード</strong>と、<strong>1問ずつ反復できる演習モード</strong>で学べるようにした静的学習サイトです。
+            Unityアプリの設計感覚に寄せて、「主語はゲームオブジェクト」「動詞は Update 関数の中心処理」のように説明します。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#practice">すぐ1問ずつ練習する</a>
+            <a class="button secondary" href="#explain">解説モードから始める</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="日本語と英語の構造比較">
+          <div class="bubble japanese">
+            <strong>日本語の感覚: 気持ちや場面から後ろで確定しやすい</strong>
+            <div class="diagram-row">
+              <div class="diagram-track">
+                <span class="diagram-chip">きのう</span>
+                <span class="diagram-chip">わたしは</span>
+                <span class="diagram-chip">公園で</span>
+                <span class="diagram-chip">遊んだ</span>
+              </div>
+            </div>
+            <small>話し手の視点で、情報をあとから積み重ねても通じやすい。</small>
+          </div>
+          <div class="bubble english">
+            <strong>英語の感覚: 主語 + 動詞を先に固定して全体を俯瞰する</strong>
+            <div class="diagram-row">
+              <div class="diagram-track">
+                <span class="diagram-chip">I</span>
+                <span class="diagram-chip">played</span>
+                <span class="diagram-chip">in the park</span>
+                <span class="diagram-chip">yesterday</span>
+              </div>
+            </div>
+            <small>先に文の骨組みを置くので、英文は「設計図」っぽく見える。</small>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="section-card">
+      <div class="section-head">
+        <div>
+          <h2>このサイトでできること</h2>
+          <p>基礎→実戦までを飛ばさず、でも退屈にしないために、解説・比較・演習・統計を1つにまとめています。</p>
+        </div>
+      </div>
+      <div class="quick-grid">
+        <article class="quick-card">
+          <strong>1. 級別ロードマップ</strong>
+          <p>5級の be 動詞から、2級レベルの長文・意見表明まで段階的に整理しています。</p>
+        </article>
+        <article class="quick-card">
+          <strong>2. 解説モード</strong>
+          <p>日本語と英語の語順や視点の違いを、図・色・比喩つきで楽しく理解できます。</p>
+        </article>
+        <article class="quick-card">
+          <strong>3. 反復演習モード</strong>
+          <p>3回は答えや解説を見ながら練習し、4回目で何も見ずに解く設計です。</p>
+        </article>
+        <article class="quick-card">
+          <strong>4. 実戦モード</strong>
+          <p>最初から完全に見ずに解き、1問ごとに詳しいポップアップ解説で復習できます。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-card" id="roadmap">
+      <div class="section-head">
+        <div>
+          <h2>級別ロードマップ</h2>
+          <p>英検の各級目安を参考に、「どこまで覚えると次へ進めるか」を見える化しました。語彙・文法・読解の伸び方も並べています。</p>
+        </div>
+      </div>
+      <div class="roadmap-grid">
+        <article class="roadmap-card" data-level="5級">
+          <span class="tag-line">基礎の土台</span>
+          <strong>5級: 英語の最初の設計図を覚える</strong>
+          <p>be動詞 / 一般動詞 / 疑問詞 / can / 現在進行形。短い文を正しい順番で置く力を作る段階。</p>
+          <ul>
+            <li>主語 + 動詞の骨組みを毎回意識する</li>
+            <li>家族・学校・食べ物など身近な語彙を固める</li>
+            <li>Yes/No疑問文と WH疑問文に慣れる</li>
+          </ul>
+        </article>
+        <article class="roadmap-card" data-level="4級">
+          <span class="tag-line">時制が広がる</span>
+          <strong>4級: 過去・未来・比較で話を広げる</strong>
+          <p>過去形 / 未来表現 / 比較級 / 不定詞 / 接続詞。理由や予定を言えるようにする段階。</p>
+          <ul>
+            <li>いつの話かを時制で固定する</li>
+            <li>because / when / if で文をつなぐ</li>
+            <li>予定・希望・比較を自然に言う</li>
+          </ul>
+        </article>
+        <article class="roadmap-card" data-level="3級">
+          <span class="tag-line">中学完成</span>
+          <strong>3級: 説明する英語に進化する</strong>
+          <p>現在完了 / 受動態 / 関係代名詞 / 間接疑問 / 短い英作文。理由を添えて答える段階。</p>
+          <ul>
+            <li>情報を1文でまとめる感覚を育てる</li>
+            <li>だれが何をされたかを受動態で捉える</li>
+            <li>25〜35語で自分の考えを書く準備をする</li>
+          </ul>
+        </article>
+        <article class="roadmap-card" data-level="準2級">
+          <span class="tag-line">高校中級</span>
+          <strong>準2級: 論理のつながりを追う</strong>
+          <p>関係副詞 / 仮定法の入口 / 長めの読解 / まとまった英作文。言いたいことを段落で整理する段階。</p>
+          <ul>
+            <li>文どうしの関係を接続表現で読む</li>
+            <li>50語前後で理由を2つ並べて書く</li>
+            <li>日常から社会寄りテーマへ広げる</li>
+          </ul>
+        </article>
+        <article class="roadmap-card" data-level="2級">
+          <span class="tag-line">高校卒業</span>
+          <strong>2級: 社会的テーマを俯瞰して語る</strong>
+          <p>抽象語彙 / 論説読解 / 要点把握 / 80〜100語の意見英作文。根拠を組み立てて伝える段階。</p>
+          <ul>
+            <li>環境・教育・技術などの文章に慣れる</li>
+            <li>賛成/反対と理由を論理的に配置する</li>
+            <li>長い1文でも主語・動詞を見失わない</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-card" id="explain">
+      <div class="section-head">
+        <div>
+          <h2>解説モード: 日本語の主観と、英語の俯瞰構造を楽しく理解する</h2>
+          <p>英語が苦しくなる原因は、「単語を知らない」だけではなく、文の組み立て方の前提が日本語と違うことにあります。ここを図で掴むと、問題演習が一気に楽になります。</p>
+        </div>
+      </div>
+      <div class="grammar-grid">
+        <article class="grammar-card">
+          <span class="tag-line">構造の違い</span>
+          <strong>英語は「カメラを先に固定」する言語</strong>
+          <p>英語はまず誰の話か（主語）と何をする/どうであるか（動詞）を決めてから、場所・時間・理由を足します。</p>
+          <ul>
+            <li>Unityでいうと、まず GameObject と main script を置く</li>
+            <li>そのあとに position / effect / log を足すイメージ</li>
+            <li>だから文の前半が崩れると全部崩れやすい</li>
+          </ul>
+        </article>
+        <article class="grammar-card">
+          <span class="tag-line">be動詞と一般動詞</span>
+          <strong>「状態」か「動作」かでエンジンが変わる</strong>
+          <p><strong>I am happy.</strong> は状態、<strong>I play tennis.</strong> は動作。英語は1文1エンジンが基本なので、be動詞と一般動詞を同時に主役にしません。</p>
+          <ul>
+            <li>状態 = Inspector に表示される現在値</li>
+            <li>動作 = 実際に走るメソッド</li>
+            <li>主語に合わせた形変化を毎回確認する</li>
+          </ul>
+        </article>
+        <article class="grammar-card">
+          <span class="tag-line">時制の感覚</span>
+          <strong>時制は「いつのセーブデータを見るか」</strong>
+          <p>現在形はふだん設定、過去形は過去ログ、現在完了は「今に影響が残る履歴」。ただの和訳ではなく時間軸で覚えると崩れません。</p>
+          <ul>
+            <li>played = 昨日終わったイベント</li>
+            <li>have played = 履歴が今の状態にもつながる</li>
+            <li>will play = 未来イベントの予定</li>
+          </ul>
+        </article>
+      </div>
+      <div class="structure-demo" aria-label="文構造の比較図">
+        <div>
+          <strong>日本語の並び</strong>
+          <div class="structure-line">
+            <span class="structure-pill pill-topic">きのう</span>
+            <span class="structure-pill pill-topic">わたしは</span>
+            <span class="structure-pill pill-rest">図書館で</span>
+            <span class="structure-pill pill-verb">勉強した</span>
+          </div>
+        </div>
+        <div>
+          <strong>英語の並び</strong>
+          <div class="structure-line">
+            <span class="structure-pill pill-subject">I</span>
+            <span class="structure-pill pill-verb">studied</span>
+            <span class="structure-pill pill-rest">in the library</span>
+            <span class="structure-pill pill-rest">yesterday</span>
+          </div>
+        </div>
+        <p class="muted-small">英語は <strong>主語 + 動詞</strong> を先に確定してから後ろへ拡張するので、「まず何が起きる文か」を先に決めるのがコツです。</p>
+      </div>
+      <div class="level-guide-list" aria-label="各級の事前解説">
+        <details class="level-guide" open>
+          <summary><span>5級の先読みガイド<small>最初の英文の骨組みを作る級</small></span></summary>
+          <div class="level-guide__body">
+            <p>5級では、<strong>主語 + 動詞</strong> を崩さず置くことが最優先です。be動詞と一般動詞の区別、疑問詞、can、現在進行形を「短い文で必ず言える」状態にします。</p>
+            <ul>
+              <li>最初に覚える軸: I / you / he / she / they に応じた be動詞</li>
+              <li>つまずきやすい点: 三単現の s、疑問文での語順変化</li>
+              <li>プログラム比喩: GameObject を置いて、何をする script か決める段階</li>
+            </ul>
+          </div>
+        </details>
+        <details class="level-guide">
+          <summary><span>4級の先読みガイド<small>時制と比較で話を広げる級</small></span></summary>
+          <div class="level-guide__body">
+            <p>4級では、現在だけでなく<strong>過去・未来・比較</strong>が増えます。「いつの話か」「何と比べているか」を文の中で明確にする感覚が大事です。</p>
+            <ul>
+              <li>最初に覚える軸: yesterday / tomorrow / than などの時間・比較の合図</li>
+              <li>つまずきやすい点: go → went のような不規則変化、more + 形容詞</li>
+              <li>プログラム比喩: 現在ログだけでなく、過去ログと未来スケジュールも扱う段階</li>
+            </ul>
+          </div>
+        </details>
+        <details class="level-guide">
+          <summary><span>3級の先読みガイド<small>説明する英語へ進む級</small></span></summary>
+          <div class="level-guide__body">
+            <p>3級では、単文を言うだけでなく、<strong>理由を添える・説明を後ろから足す</strong>力が必要です。現在完了、受動態、関係代名詞、短い英作文の発想が入ってきます。</p>
+            <ul>
+              <li>最初に覚える軸: have + 過去分詞、be + 過去分詞、because で理由追加</li>
+              <li>つまずきやすい点: 日本語は前から修飾、英語は後ろから説明する場面が増える</li>
+              <li>プログラム比喩: オブジェクト宣言後に補足コンポーネントを後付けする段階</li>
+            </ul>
+          </div>
+        </details>
+        <details class="level-guide">
+          <summary><span>準2級の先読みガイド<small>長めの読解と論理のつながりを追う級</small></span></summary>
+          <div class="level-guide__body">
+            <p>準2級では、単語や文法だけでなく、<strong>文と文の関係</strong>を読む力が大きく伸びます。however や for example のような接続の信号が重要になります。</p>
+            <ul>
+              <li>最初に覚える軸: 対比・具体例・理由の接続語を見て段落の流れをつかむ</li>
+              <li>つまずきやすい点: 1文ごとの和訳に引っ張られて、全体の論理を見失うこと</li>
+              <li>プログラム比喩: 単発の関数ではなく、複数処理の流れ全体を読む段階</li>
+            </ul>
+          </div>
+        </details>
+        <details class="level-guide">
+          <summary><span>2級の先読みガイド<small>社会テーマを俯瞰して意見を組み立てる級</small></span></summary>
+          <div class="level-guide__body">
+            <p>2級では、環境・教育・技術などのテーマで、<strong>要点をつかみ、自分の意見と理由を組み立てる</strong>ことが求められます。語彙だけでなく論理の骨組みが重要です。</p>
+            <ul>
+              <li>最初に覚える軸: 賛成/反対 → 理由1 → 理由2 の並べ方</li>
+              <li>つまずきやすい点: 単語の意味は分かっても、要旨と立場を取り違えること</li>
+              <li>プログラム比喩: 実装詳細よりも、設計判断と根拠をレビューで説明する段階</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="practice-shell" id="practice">
+      <div class="section-head">
+        <div>
+          <h2>演習モード: 1問ずつ、見ながら育てる / 見ずに試す</h2>
+          <p>級・出題順・学習モードを切り替えながら進めます。各問題には、答え・理由・日本語との違い・プログラミング比喩つきの詳しい解説があります。</p>
+        </div>
+      </div>
+
+      <div class="mode-grid">
+        <article class="mode-card">
+          <strong>反復モード（学習モード）</strong>
+          <p>同じ問題は <strong>1〜3回目まで解説を自由に見てOK</strong>。4回目だけ完全に見ずに解きます。理解→定着の流れを1問単位で回します。</p>
+        </article>
+        <article class="mode-card">
+          <strong>実戦モード（完全ブラインド）</strong>
+          <p>最初から答えも解説も見ずに解くモードです。提出後にだけ、ポップアップで詳しい解説を開けます。</p>
+        </article>
+      </div>
+
+      <div class="controls">
+        <label class="control">学習モード
+          <select id="modeSelect">
+            <option value="guided">反復モード（3回まで見てOK → 4回目でブラインド）</option>
+            <option value="exam">実戦モード（最初から完全ブラインド）</option>
+          </select>
+        </label>
+        <label class="control">出題順
+          <select id="orderSelect">
+            <option value="random">ランダム</option>
+            <option value="sequential">全問を順番に網羅</option>
+          </select>
+        </label>
+        <label class="control">級フィルター
+          <select id="levelSelect">
+            <option value="all">全級まとめて</option>
+            <option value="5級">5級</option>
+            <option value="4級">4級</option>
+            <option value="3級">3級</option>
+            <option value="準2級">準2級</option>
+            <option value="2級">2級</option>
+          </select>
+        </label>
+        <button class="mini-button" id="resetProgressButton" type="button">学習履歴をこの端末でリセット</button>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stats-card">
+          <span id="totalQuestionsStat">0</span>
+          <strong>対象問題数</strong>
+          <p>今のフィルター条件に合う問題数です。</p>
+        </article>
+        <article class="stats-card">
+          <span id="attemptsStat">0</span>
+          <strong>総挑戦数</strong>
+          <p>この端末で記録された挑戦回数です。</p>
+        </article>
+        <article class="stats-card">
+          <span id="accuracyStat">0%</span>
+          <strong>正答率</strong>
+          <p>提出済みの問題から計算した正答率です。</p>
+        </article>
+        <article class="stats-card">
+          <span id="cycleStat">-</span>
+          <strong>今の周回状態</strong>
+          <p>反復モードでは 1〜4 回目のどこにいるかが分かります。</p>
+        </article>
+      </div>
+
+      <section class="question-shell" aria-live="polite">
+        <div class="question-top">
+          <div>
+            <div class="stacked-labels">
+              <span class="pill" id="questionLevelPill">-</span>
+              <span class="pill" id="questionCategoryPill">-</span>
+              <span class="pill" id="questionPhasePill">-</span>
+            </div>
+          </div>
+          <p class="muted-small" id="questionPositionLabel">-</p>
+        </div>
+        <h3 class="question-title" id="questionTitle">問題を読み込み中...</h3>
+        <p class="question-lead" id="questionLead"></p>
+        <div class="options" id="options"></div>
+        <div class="action-row">
+          <button class="submit-button" id="submitButton" type="button">この答えで提出する</button>
+          <button class="mini-button" id="explainButton" type="button">答えと詳しい解説を見る</button>
+          <button class="next-button" id="nextButton" type="button">次の1問へ</button>
+        </div>
+        <div class="helper-note" id="helperNote"></div>
+        <div class="feedback" id="feedbackBox">まだ回答していません。選択肢を選んで提出すると、その場で結果が出ます。</div>
+        <div class="review-panel" id="reviewPanel">
+          <div><strong>答え:</strong> <span id="inlineAnswer">-</span></div>
+          <div><strong>ポイント:</strong> <span id="inlinePoint">-</span></div>
+          <div><strong>日本語との違い:</strong> <span id="inlineCompare">-</span></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="section-card">
+      <div class="section-head">
+        <div>
+          <h2>学習に使う問題設計</h2>
+          <p>英検の各級でよく問われる範囲をもとに、5級から2級までのオリジナル問題を収録しています。転載過去問ではなく、級別傾向に合わせて作った練習問題です。</p>
+        </div>
+      </div>
+      <div class="quick-grid">
+        <article class="quick-card">
+          <strong>5級〜4級</strong>
+          <p>be動詞 / 一般動詞 / 疑問文 / 過去形 / 比較 / 未来表現を中心に、英文の骨組みを習得します。</p>
+        </article>
+        <article class="quick-card">
+          <strong>3級</strong>
+          <p>受動態 / 現在完了 / 関係代名詞 / 間接疑問 / 理由づけの表現を練習します。</p>
+        </article>
+        <article class="quick-card">
+          <strong>準2級</strong>
+          <p>長めの会話・説明文・つながり表現・英作文の発想につながる問題を増やしています。</p>
+        </article>
+        <article class="quick-card">
+          <strong>2級</strong>
+          <p>環境・教育・テクノロジーなど社会的テーマの語彙と論理展開を扱います。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-card" id="updates">
+      <div class="section-head">
+        <div>
+          <h2>公開サイトの更新履歴</h2>
+          <p>内部の進捗メモとは分けて、公開サイト側に見せる変更だけを載せています。</p>
+        </div>
+      </div>
+      <div class="update-grid">
+        <article class="update-card">
+          <strong>2026-04-01 / 初版公開</strong>
+          <p>級別ロードマップ、解説モード、2種類の演習モード、ランダム/網羅の出題切り替えを追加しました。</p>
+        </article>
+        <article class="update-card">
+          <strong>2026-04-01 / 解説強化</strong>
+          <p>各問題に、答え・理由・日本語との違い・プログラミング比喩をポップアップで表示できるようにしました。</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer-panel">
+      英語を「難しい記号」ではなく「構造が見える設計図」として学ぶための、GitHub Pages 向け静的学習サイトです。
+    </footer>
+  </div>
+
+  <dialog id="explanationDialog">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <p class="tag-line" id="modalLevel">-</p>
+          <h3 id="modalTitle">詳しい解説</h3>
+        </div>
+        <button class="close-button" id="closeDialogButton" type="button" aria-label="閉じる">×</button>
+      </div>
+      <div class="modal-sections">
+        <section>
+          <strong>正解</strong>
+          <p id="modalAnswer"></p>
+        </section>
+        <section>
+          <strong>なぜその答えになる？</strong>
+          <p id="modalExplanation"></p>
+        </section>
+        <section>
+          <strong>日本語と比べるとどう違う？</strong>
+          <p id="modalCompare"></p>
+        </section>
+        <section>
+          <strong>Unity / プログラミング比喩</strong>
+          <p id="modalAnalogy"></p>
+        </section>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const questionBank = [
+      {
+        id: "g5-01",
+        level: "5級",
+        category: "be動詞",
+        prompt: "My sister ___ happy today.",
+        lead: "「今日、わたしの姉はうれしいです。」に合う語を選びましょう。",
+        choices: ["am", "is", "are", "be"],
+        answer: 1,
+        point: "主語が My sister なので、be動詞は is です。",
+        explanation: "be動詞は主語の人数と人称で形が変わります。My sister は三人称単数なので is を使います。",
+        compare: "日本語では『姉はうれしい』で動詞の形が主語に引っ張られませんが、英語は文の最初で主語に合わせてエンジンを変えます。",
+        analogy: "Unityで言えば、GameObject が single object なら 1体用のコンポーネント設定を使う感じです。複数体用の are は使いません。"
+      },
+      {
+        id: "g5-02",
+        level: "5級",
+        category: "一般動詞",
+        prompt: "Ken ___ soccer after school.",
+        lead: "『ケンは放課後にサッカーをします。』に合う語を選びましょう。",
+        choices: ["play", "plays", "playing", "to play"],
+        answer: 1,
+        point: "三人称単数現在なので play に s を付けて plays。",
+        explanation: "主語が Ken のような三人称単数で現在形なら、一般動詞に s / es を付けます。",
+        compare: "日本語では『する』がそのままですが、英語では主語が he/she/人名 のとき動詞が少し変化します。",
+        analogy: "毎フレーム呼ばれる Update に、単体オブジェクト用のフラグが立つと plays になるイメージです。"
+      },
+      {
+        id: "g5-03",
+        level: "5級",
+        category: "疑問詞",
+        prompt: "___ is your bag? — It is on the chair.",
+        lead: "場所をたずねる疑問詞を選びましょう。",
+        choices: ["What", "Where", "Who", "When"],
+        answer: 1,
+        point: "答えが場所なので Where。",
+        explanation: "on the chair は場所の情報です。場所を聞くときは Where を使います。",
+        compare: "日本語は文末の『どこですか』で分かりますが、英語は文頭の疑問詞で質問の種類を固定します。",
+        analogy: "APIリクエストで endpoint を最初に決めるのと同じで、Where が『位置情報 API』を宣言しています。"
+      },
+      {
+        id: "g5-04",
+        level: "5級",
+        category: "助動詞 can",
+        prompt: "I ___ swim very well.",
+        lead: "『私はとても上手に泳げます。』に合う語を選びましょう。",
+        choices: ["can", "am", "do", "have"],
+        answer: 0,
+        point: "『〜できる』は can。",
+        explanation: "能力を表すときは助動詞 can を使い、その後ろは動詞の原形 swim になります。",
+        compare: "日本語は『泳げる』と語尾変化で済みますが、英語は can + swim の2パーツで作ります。",
+        analogy: "can は『このメソッドを呼び出せる権限がある』フラグのようなものです。"
+      },
+      {
+        id: "g5-05",
+        level: "5級",
+        category: "現在進行形",
+        prompt: "They ___ lunch now.",
+        lead: "『彼らは今昼食を食べています。』に合う形を選びましょう。",
+        choices: ["eat", "ate", "are eating", "eating"],
+        answer: 2,
+        point: "now があるので進行中の are eating。",
+        explanation: "『今している最中』は be動詞 + 動詞ing で表します。They に合う be動詞は are です。",
+        compare: "日本語の『食べている』に近いですが、英語は are と eating をセットで置く必要があります。",
+        analogy: "Coroutine が今まさに走っている状態を are eating で表しているイメージです。"
+      },
+      {
+        id: "g5-06",
+        level: "5級",
+        category: "命令文",
+        prompt: "___ the window, please.",
+        lead: "『どうぞ窓を開けてください。』に合う語を選びましょう。",
+        choices: ["Opens", "Open", "Opening", "Opened"],
+        answer: 1,
+        point: "命令文は動詞の原形で始めます。",
+        explanation: "命令文は主語 you が省略され、動詞の原形で始まります。",
+        compare: "日本語では『開けてください』と丁寧な形にしますが、英語は Open ... please の順で作れます。",
+        analogy: "関数名をそのまま呼ぶ感じで、Open() を直接実行するイメージです。"
+      },
+      {
+        id: "g4-01",
+        level: "4級",
+        category: "過去形",
+        prompt: "We ___ to the zoo last Sunday.",
+        lead: "『私たちはこの前の日曜日に動物園へ行きました。』に合う語を選びましょう。",
+        choices: ["go", "went", "goes", "gone"],
+        answer: 1,
+        point: "last Sunday があるので過去形 went。",
+        explanation: "go の過去形は不規則変化で went です。時を表す語が過去なら動詞も過去形にします。",
+        compare: "日本語では『行きました』だけで済みますが、英語は last Sunday と went をセットで時制一致させます。",
+        analogy: "保存済みログを読むので、現在の go() ではなく過去ログ用の went レコードを使う感じです。"
+      },
+      {
+        id: "g4-02",
+        level: "4級",
+        category: "未来表現",
+        prompt: "I ___ visit my grandmother tomorrow.",
+        lead: "『明日祖母を訪ねるつもりです。』に合う語を選びましょう。",
+        choices: ["was", "will", "did", "has"],
+        answer: 1,
+        point: "未来の予定なので will。",
+        explanation: "tomorrow は未来を示すので、will + 動詞原形で表すのが自然です。",
+        compare: "日本語の『行くつもり』は補助表現で出せますが、英語は will を先に置いて未来モードを宣言します。",
+        analogy: "明日実行予定のジョブをスケジュールキューに積むのが will です。"
+      },
+      {
+        id: "g4-03",
+        level: "4級",
+        category: "比較級",
+        prompt: "This math test is ___ than the last one.",
+        lead: "『今回の数学のテストは前回より難しい。』に合う語を選びましょう。",
+        choices: ["difficult", "more difficult", "most difficult", "difficulty"],
+        answer: 1,
+        point: "than があるので比較級 more difficult。",
+        explanation: "長めの形容詞 difficult は difficulter ではなく more difficult を使います。",
+        compare: "日本語は『より難しい』と前に語を足しますが、英語は形容詞の前に more を置いて比較を作ります。",
+        analogy: "性能比較で benchmark score が前回より高い、とフラグ付けするのが more difficult の感覚です。"
+      },
+      {
+        id: "g4-04",
+        level: "4級",
+        category: "不定詞",
+        prompt: "I want ___ a new game this weekend.",
+        lead: "『今週末、新しいゲームを買いたいです。』に合う形を選びましょう。",
+        choices: ["buy", "to buy", "buying", "bought"],
+        answer: 1,
+        point: "want の後ろは to + 動詞。",
+        explanation: "want to do は『〜したい』の基本形です。want buying とは言いません。",
+        compare: "日本語は『買いたい』で一語にまとまりますが、英語では want と to buy に役割が分かれます。",
+        analogy: "want は『要求キューに追加』、to buy は『次に呼ぶ関数名』です。"
+      },
+      {
+        id: "g4-05",
+        level: "4級",
+        category: "接続詞 because",
+        prompt: "I stayed home ___ it was raining.",
+        lead: "『雨が降っていたので、家にいました。』に合う語を選びましょう。",
+        choices: ["but", "or", "because", "if"],
+        answer: 2,
+        point: "原因・理由なので because。",
+        explanation: "because は『なぜそうしたか』という理由を後ろに置く接続詞です。",
+        compare: "日本語の『ので』に近いですが、英語では because のあとに主語 + 動詞の文を続けます。",
+        analogy: "エラーログの because は『この処理が走った原因』を紐づけるフィールドです。"
+      },
+      {
+        id: "g4-06",
+        level: "4級",
+        category: "動名詞",
+        prompt: "My hobby is ___ pictures.",
+        lead: "『私の趣味は写真を撮ることです。』に合う形を選びましょう。",
+        choices: ["take", "took", "taking", "to took"],
+        answer: 2,
+        point: "趣味としての『〜すること』なので taking。",
+        explanation: "be動詞のあとで活動そのものを名詞のように置くときは動名詞を使えます。",
+        compare: "日本語では『撮ること』ですが、英語では taking が名詞っぽく働きます。",
+        analogy: "実行中メソッドそのものではなく、機能名をラベル化して扱う感じです。"
+      },
+      {
+        id: "g3-01",
+        level: "3級",
+        category: "現在完了",
+        prompt: "I have ___ my homework already.",
+        lead: "『私はもう宿題を終えました。』に合う語を選びましょう。",
+        choices: ["finish", "finished", "finishing", "finishes"],
+        answer: 1,
+        point: "have + 過去分詞 finished。",
+        explanation: "現在完了は have/has + 過去分詞。already があるので『もう終わって今その状態にある』を表せます。",
+        compare: "日本語は『終えました』で過去にも見えますが、英語の現在完了は『今にも結果が残る』感覚が大事です。",
+        analogy: "ビルドが完了して、その成果物が今使える状態になっているのが have finished です。"
+      },
+      {
+        id: "g3-02",
+        level: "3級",
+        category: "受動態",
+        prompt: "This song is ___ by many students.",
+        lead: "『この歌は多くの生徒に歌われています。』に合う語を選びましょう。",
+        choices: ["sing", "sang", "sung", "sings"],
+        answer: 2,
+        point: "受動態は be + 過去分詞。sing の過去分詞は sung。",
+        explanation: "受動態は『される』側を主語にしたいときに使います。is sung で『歌われる』です。",
+        compare: "日本語も受け身を作れますが、英語は文の主役を前に出し直す感覚が強いです。",
+        analogy: "イベントを発火する側ではなく、イベントを受け取るオブジェクトを scene の主役にする感じです。"
+      },
+      {
+        id: "g3-03",
+        level: "3級",
+        category: "関係代名詞",
+        prompt: "The girl ___ is standing by the tree is my cousin.",
+        lead: "『木のそばに立っている女の子は、私のいとこです。』に合う語を選びましょう。",
+        choices: ["who", "which", "where", "when"],
+        answer: 0,
+        point: "人を説明しているので who。",
+        explanation: "関係代名詞 who は人をあとから説明するときに使います。The girl who ... で『〜している女の子』。",
+        compare: "日本語は『立っている女の子』と前から修飾しますが、英語は girl を出してから who 以下で後ろ説明します。",
+        analogy: "Prefab を先に宣言して、その後ろに who = 補足コンポーネントをアタッチする感じです。"
+      },
+      {
+        id: "g3-04",
+        level: "3級",
+        category: "間接疑問",
+        prompt: "Do you know ___ he lives?",
+        lead: "『彼がどこに住んでいるか知っていますか。』に合う語を選びましょう。",
+        choices: ["what", "where", "which", "how many"],
+        answer: 1,
+        point: "住んでいる場所をたずねるので where。",
+        explanation: "間接疑問では疑問詞のあとを平叙文語順にします。where he lives が正しい形です。",
+        compare: "日本語は『どこに住んでいるか』で自然ですが、英語は where + he lives と語順が普通の文に戻ります。",
+        analogy: "ネストしたクエリでも内部の JSON 構造は通常形式に戻すイメージです。"
+      },
+      {
+        id: "g3-05",
+        level: "3級",
+        category: "不定詞の応用",
+        prompt: "My teacher told me ___ the report by Friday.",
+        lead: "『先生は私に金曜日までにレポートを終えるように言いました。』に合う形を選びましょう。",
+        choices: ["finish", "to finish", "finishing", "finished"],
+        answer: 1,
+        point: "tell 人 to do の形。",
+        explanation: "『人に〜するように言う』は tell + 人 + to do。to finish が正解です。",
+        compare: "日本語は『終えるように』ですが、英語は told me / to finish と役割を分けます。",
+        analogy: "対象オブジェクト me に対して、次に呼ぶメソッド to finish を渡す感じです。"
+      },
+      {
+        id: "g3-06",
+        level: "3級",
+        category: "英作文の発想",
+        prompt: "I like studying English ___ I can talk with people from other countries.",
+        lead: "理由として自然な接続語を選びましょう。",
+        choices: ["because", "if", "though", "before"],
+        answer: 0,
+        point: "理由を続けるので because。",
+        explanation: "英作文では『自分の意見 + because + 理由』が基本です。シンプルでも理由があると点になりやすいです。",
+        compare: "日本語の作文でも『なぜなら』で理由を足しますが、英語は because を使うと構造がはっきりします。",
+        analogy: "仕様書に『採用理由』の欄を because で直結するイメージです。"
+      },
+      {
+        id: "p2-01",
+        level: "準2級",
+        category: "関係副詞",
+        prompt: "This is the park ___ we first met.",
+        lead: "『ここは私たちが初めて会った公園です。』に合う語を選びましょう。",
+        choices: ["who", "where", "which", "why"],
+        answer: 1,
+        point: "場所を表す先行詞 park を受けるので where。",
+        explanation: "the park という場所を受けて『そこで会った』と説明するので関係副詞 where が自然です。",
+        compare: "日本語は『会った公園』と前からかけますが、英語は park where ... と後ろ説明です。",
+        analogy: "scene を宣言してから、where 以下でその scene 内イベントを定義する感じです。"
+      },
+      {
+        id: "p2-02",
+        level: "準2級",
+        category: "仮定法の入口",
+        prompt: "If I ___ more free time, I would learn Spanish too.",
+        lead: "『もっと自由な時間があれば、スペイン語も学ぶのに。』に合う語を選びましょう。",
+        choices: ["have", "had", "will have", "am having"],
+        answer: 1,
+        point: "仮定法過去の基本形 If I had ... , I would ...",
+        explanation: "今の事実と少し離れた『もし〜なら』を表すので、時制は過去形 had を使います。",
+        compare: "日本語では『あれば』だけで出せますが、英語は if 節を過去形、主節を would で組みます。",
+        analogy: "存在しないテスト環境を if(hadFreeTime) で仮想実行する分岐です。"
+      },
+      {
+        id: "p2-03",
+        level: "準2級",
+        category: "長文読解の接続",
+        prompt: "Many students use online videos for study. ___, they still need time to practice by themselves.",
+        lead: "文の流れに合う語を選びましょう。",
+        choices: ["However", "For example", "Because", "Maybe"],
+        answer: 0,
+        point: "前文を受けつつ対比するので However。",
+        explanation: "動画を使うことは便利だが、それでも自分で練習が必要、という逆向きの流れなので However が最適です。",
+        compare: "日本語の『しかし』に近く、英語では段落の論理をつなぐ信号として強く働きます。",
+        analogy: "処理成功ログのあとで例外条件を示す else ブロックの入り口が However です。"
+      },
+      {
+        id: "p2-04",
+        level: "準2級",
+        category: "語彙",
+        prompt: "The museum is popular because visitors can learn about local ___ there.",
+        lead: "『その博物館は、訪れた人が地元の〜について学べるので人気です。』に合う語を選びましょう。",
+        choices: ["history", "machine", "careful", "suddenly"],
+        answer: 0,
+        point: "博物館で学ぶ内容として自然なのは history。",
+        explanation: "museum と local の組み合わせから、地域の歴史を学べるという意味が自然です。",
+        compare: "日本語でも文脈で名詞を選びますが、英語では前後の名詞どうしの相性を読む力が重要です。",
+        analogy: "オブジェクト名だけでなく、その scene にふさわしい component を選ぶ感覚です。"
+      },
+      {
+        id: "p2-05",
+        level: "準2級",
+        category: "会話表現",
+        prompt: "A: I finally finished my science project. B: ___",
+        lead: "会話として最も自然な返事を選びましょう。",
+        choices: ["That sounds great!", "No, I am not.", "At the station.", "Three times a week."],
+        answer: 0,
+        point: "相手の達成に対する自然な反応は That sounds great!",
+        explanation: "相手が何かをやり終えた報告に対しては、ねぎらいや評価を返すのが自然です。",
+        compare: "日本語の『それはよかったね！』に近い反応です。質問への返答型ではない点がポイントです。",
+        analogy: "ビルド成功通知に対して status OK を返すような確認レスポンスです。"
+      },
+      {
+        id: "p2-06",
+        level: "準2級",
+        category: "英作文の理由づけ",
+        prompt: "I think school trips are important ___ students can learn outside the classroom.",
+        lead: "意見の理由として自然な語を選びましょう。",
+        choices: ["because", "unless", "during", "without"],
+        answer: 0,
+        point: "主張の理由を言うので because。",
+        explanation: "準2級以上の英作文では、主張のあとに because で理由を足すのが基本の型です。",
+        compare: "日本語でも『なぜなら』で理由を足しますが、英語は because の後ろを完全な文にするのが大切です。",
+        analogy: "設計レビューで decision の直後に rationale を付けるのが because 節です。"
+      },
+      {
+        id: "g2-01",
+        level: "2級",
+        category: "社会語彙",
+        prompt: "Many companies are trying to reduce energy ___ in their offices.",
+        lead: "『多くの会社はオフィスでのエネルギー〜を減らそうとしている。』に合う語を選びましょう。",
+        choices: ["consumption", "decision", "tradition", "invitation"],
+        answer: 0,
+        point: "energy consumption = エネルギー消費。",
+        explanation: "環境・企業活動の文脈で reduce energy consumption は頻出の自然な組み合わせです。",
+        compare: "日本語でも『消費を減らす』が自然で、英語では reduce と consumption のコロケーションを覚えると強いです。",
+        analogy: "アプリのメモリ使用量を最適化して resource consumption を下げるイメージです。"
+      },
+      {
+        id: "g2-02",
+        level: "2級",
+        category: "長文読解",
+        prompt: "Some people worry that AI will replace human workers. Others argue that it will create new kinds of jobs. The writer's main point is that AI ___",
+        lead: "要旨として最も自然な続きを選びましょう。",
+        choices: ["will end all work soon", "has only bad effects", "brings both risks and opportunities", "is already perfect"],
+        answer: 2,
+        point: "対立する意見を並べているので、両面があるという要旨。",
+        explanation: "2つの立場を紹介している文章では、どちらか一方だけでなく『両面がある』が主旨になることが多いです。",
+        compare: "日本語の評論文でも『一方で〜、他方で〜』はバランス要旨になります。英語では Others argue that ... が合図です。",
+        analogy: "新技術導入レビューでメリットとリスクを並べ、総論として trade-off があるとまとめる感じです。"
+      },
+      {
+        id: "g2-03",
+        level: "2級",
+        category: "論理展開",
+        prompt: "The city planted more trees, and as a result, summer temperatures in some areas became slightly lower. In this sentence, 'as a result' means ___.",
+        lead: "表現の意味として最も近いものを選びましょう。",
+        choices: ["for instance", "therefore", "in my opinion", "at first"],
+        answer: 1,
+        point: "as a result = その結果 therefore。",
+        explanation: "原因のあとに結果を述べるつなぎ語なので therefore とほぼ同じ役割です。",
+        compare: "日本語の『その結果』に相当し、段落の論理を追ううえで重要な標識です。",
+        analogy: "処理チェーンのログで、前の関数実行により therefore 次の状態になったと示すタグです。"
+      },
+      {
+        id: "g2-04",
+        level: "2級",
+        category: "意見表明",
+        prompt: "To improve communication in global teams, managers should encourage employees to ask questions ___ they feel unsure.",
+        lead: "『不安に感じたときはいつでも質問するよう促すべきだ。』に合う語を選びましょう。",
+        choices: ["whenever", "although", "unless", "beside"],
+        answer: 0,
+        point: "『〜するときはいつでも』なので whenever。",
+        explanation: "whenever は『〜するときはいつでも』を表し、一般的な方針や習慣を書く英文でよく使われます。",
+        compare: "日本語では『不安に感じたらいつでも』と条件っぽく言えますが、英語では whenever で柔らかく反復可能性を出せます。",
+        analogy: "例外が発生するたび whenever uncertain, raiseQuestion() を呼ぶ運用ルールです。"
+      },
+      {
+        id: "g2-05",
+        level: "2級",
+        category: "語彙推測",
+        prompt: "The new library program was successful because it was designed to be accessible to a wide range of residents. Here, 'accessible' is closest in meaning to ___.",
+        lead: "文脈から語の意味を選びましょう。",
+        choices: ["easy to use", "full of danger", "very expensive", "hidden from view"],
+        answer: 0,
+        point: "accessible = 利用しやすい / アクセスしやすい。",
+        explanation: "a wide range of residents とあるので、多くの住民が使いやすい・近づきやすいという意味が自然です。",
+        compare: "日本語カタカナの『アクセシブル』より、文脈で『使いやすさ』まで含めて読むのが大切です。",
+        analogy: "UI/UXで accessibility を高め、幅広いユーザーが迷わず使えるようにする状態です。"
+      },
+      {
+        id: "g2-06",
+        level: "2級",
+        category: "英作文の骨組み",
+        prompt: "I agree that students should learn basic programming at school because ___.",
+        lead: "理由として最も自然な続き方を選びましょう。",
+        choices: ["it helps them solve problems logically", "the classroom is on the third floor", "my friend has a blue pen", "it was raining yesterday"],
+        answer: 0,
+        point: "主張に直接つながる理由を選ぶ。",
+        explanation: "2級の英作文では、主張との論理的なつながりがある理由を選ぶ必要があります。『論理的に問題解決できる』は主張に直結します。",
+        compare: "日本語作文でも関係ない例を入れると説得力が落ちます。英語は because の後ろの論理一致がより重要です。",
+        analogy: "要件定義の decision に対し、実装上のメリットが一致している rationale を付けるイメージです。"
+      }
+    ];
+
+    const levelOrder = ["5級", "4級", "3級", "準2級", "2級"];
+    const storageKey = "learn-my-about-eiken-progress-v1";
+
+    const state = {
+      mode: "guided",
+      order: "random",
+      level: "all",
+      currentQuestion: null,
+      selectedChoice: null,
+      hasAnswered: false,
+      poolIndex: 0,
+      progress: loadProgress()
+    };
+
+    const elements = {
+      modeSelect: document.getElementById("modeSelect"),
+      orderSelect: document.getElementById("orderSelect"),
+      levelSelect: document.getElementById("levelSelect"),
+      resetProgressButton: document.getElementById("resetProgressButton"),
+      totalQuestionsStat: document.getElementById("totalQuestionsStat"),
+      attemptsStat: document.getElementById("attemptsStat"),
+      accuracyStat: document.getElementById("accuracyStat"),
+      cycleStat: document.getElementById("cycleStat"),
+      questionLevelPill: document.getElementById("questionLevelPill"),
+      questionCategoryPill: document.getElementById("questionCategoryPill"),
+      questionPhasePill: document.getElementById("questionPhasePill"),
+      questionPositionLabel: document.getElementById("questionPositionLabel"),
+      questionTitle: document.getElementById("questionTitle"),
+      questionLead: document.getElementById("questionLead"),
+      options: document.getElementById("options"),
+      submitButton: document.getElementById("submitButton"),
+      explainButton: document.getElementById("explainButton"),
+      nextButton: document.getElementById("nextButton"),
+      helperNote: document.getElementById("helperNote"),
+      feedbackBox: document.getElementById("feedbackBox"),
+      reviewPanel: document.getElementById("reviewPanel"),
+      inlineAnswer: document.getElementById("inlineAnswer"),
+      inlinePoint: document.getElementById("inlinePoint"),
+      inlineCompare: document.getElementById("inlineCompare"),
+      explanationDialog: document.getElementById("explanationDialog"),
+      closeDialogButton: document.getElementById("closeDialogButton"),
+      modalLevel: document.getElementById("modalLevel"),
+      modalTitle: document.getElementById("modalTitle"),
+      modalAnswer: document.getElementById("modalAnswer"),
+      modalExplanation: document.getElementById("modalExplanation"),
+      modalCompare: document.getElementById("modalCompare"),
+      modalAnalogy: document.getElementById("modalAnalogy")
+    };
+
+    function loadProgress() {
+      try {
+        const raw = localStorage.getItem(storageKey);
+        return raw ? JSON.parse(raw) : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveProgress() {
+      localStorage.setItem(storageKey, JSON.stringify(state.progress));
+    }
+
+    function getProgress(questionId) {
+      return state.progress[questionId] || { attempts: 0, correct: 0 };
+    }
+
+    function setProgress(questionId, nextValue) {
+      state.progress[questionId] = nextValue;
+      saveProgress();
+    }
+
+    function filteredQuestions() {
+      const filtered = questionBank.filter((question) => {
+        return state.level === "all" || question.level === state.level;
+      });
+
+      if (state.order === "sequential") {
+        return filtered.slice().sort((a, b) => {
+          const levelDiff = levelOrder.indexOf(a.level) - levelOrder.indexOf(b.level);
+          return levelDiff !== 0 ? levelDiff : a.id.localeCompare(b.id);
+        });
+      }
+
+      return filtered;
+    }
+
+    function pickNextQuestion() {
+      const pool = filteredQuestions();
+      if (pool.length === 0) {
+        state.currentQuestion = null;
+        return;
+      }
+
+      if (state.order === "sequential") {
+        state.currentQuestion = pool[state.poolIndex % pool.length];
+        state.poolIndex = (state.poolIndex + 1) % pool.length;
+      } else {
+        const next = pool[Math.floor(Math.random() * pool.length)];
+        state.currentQuestion = next;
+      }
+
+      state.selectedChoice = null;
+      state.hasAnswered = false;
+    }
+
+    function attemptPhase(question) {
+      const progress = getProgress(question.id);
+      if (state.mode === "exam") {
+        return { label: "実戦モード / 常にブラインド", preview: false, cycle: "実戦" };
+      }
+
+      const stage = (progress.attempts % 4) + 1;
+      const preview = stage <= 3;
+      return {
+        label: preview ? `反復モード / ${stage}回目（見ながらOK）` : "反復モード / 4回目（見ずに挑戦）",
+        preview,
+        cycle: `${stage}/4周目`
+      };
+    }
+
+    function updateStats() {
+      const pool = filteredQuestions();
+      const progressList = Object.values(state.progress);
+      const totalAttempts = progressList.reduce((sum, entry) => sum + (entry.attempts || 0), 0);
+      const totalCorrect = progressList.reduce((sum, entry) => sum + (entry.correct || 0), 0);
+      const accuracy = totalAttempts ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
+
+      elements.totalQuestionsStat.textContent = String(pool.length);
+      elements.attemptsStat.textContent = String(totalAttempts);
+      elements.accuracyStat.textContent = `${accuracy}%`;
+
+      if (state.currentQuestion) {
+        elements.cycleStat.textContent = attemptPhase(state.currentQuestion).cycle;
+      } else {
+        elements.cycleStat.textContent = "-";
+      }
+    }
+
+    function renderQuestion() {
+      const question = state.currentQuestion;
+      const pool = filteredQuestions();
+      if (!question) {
+        elements.questionTitle.textContent = "条件に合う問題がありません。";
+        elements.questionLead.textContent = "級フィルターを変更してみてください。";
+        elements.options.innerHTML = "";
+        return;
+      }
+
+      const phase = attemptPhase(question);
+      const questionIndex = state.order === "sequential"
+        ? pool.findIndex((entry) => entry.id === question.id) + 1
+        : "ランダム";
+
+      elements.questionLevelPill.textContent = question.level;
+      elements.questionCategoryPill.textContent = question.category;
+      elements.questionPhasePill.textContent = phase.label;
+      elements.questionPositionLabel.textContent = state.order === "sequential"
+        ? `${questionIndex} / ${pool.length} 問目`
+        : `${pool.length}問からランダム出題中`;
+      elements.questionTitle.textContent = question.prompt;
+      elements.questionLead.textContent = question.lead;
+
+      elements.options.innerHTML = "";
+      question.choices.forEach((choice, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "option-button";
+        if (state.selectedChoice === index) {
+          button.classList.add("selected");
+        }
+        if (state.hasAnswered && index === question.answer) {
+          button.classList.add("correct");
+        }
+        if (state.hasAnswered && state.selectedChoice === index && index !== question.answer) {
+          button.classList.add("wrong");
+        }
+        button.innerHTML = `<span class="option-index">${index + 1}</span><span>${choice}</span>`;
+        button.addEventListener("click", () => {
+          if (state.hasAnswered) return;
+          state.selectedChoice = index;
+          renderQuestion();
+        });
+        elements.options.appendChild(button);
+      });
+
+      elements.helperNote.textContent = phase.preview
+        ? "この問題は今は 1〜3 回目なので、答えや解説を見ながら進めて OK です。わからなければ提出前に『答えと詳しい解説を見る』を押してください。"
+        : "この問題は 4 回目または実戦モードです。まずは何も見ずに解いてから、提出後に復習しましょう。";
+
+      const previewAllowed = phase.preview || state.hasAnswered;
+      elements.explainButton.disabled = !previewAllowed;
+      elements.explainButton.style.opacity = previewAllowed ? "1" : "0.55";
+      elements.inlineAnswer.textContent = previewAllowed ? question.choices[question.answer] : "提出後に表示されます";
+      elements.inlinePoint.textContent = previewAllowed ? question.point : "提出後に表示されます";
+      elements.inlineCompare.textContent = previewAllowed ? question.compare : "提出後に表示されます";
+      elements.reviewPanel.style.display = previewAllowed ? "grid" : "none";
+
+      if (!state.hasAnswered) {
+        elements.feedbackBox.className = "feedback";
+        elements.feedbackBox.textContent = "まだ回答していません。選択肢を選んで提出すると、その場で結果が出ます。";
+      }
+
+      updateStats();
+    }
+
+    function submitAnswer() {
+      const question = state.currentQuestion;
+      if (!question) return;
+      if (state.hasAnswered) return;
+      if (state.selectedChoice === null) {
+        elements.feedbackBox.className = "feedback wrong";
+        elements.feedbackBox.textContent = "まずは選択肢を1つ選んでください。";
+        return;
+      }
+
+      const progress = getProgress(question.id);
+      const correct = state.selectedChoice === question.answer;
+      const nextProgress = {
+        attempts: progress.attempts + 1,
+        correct: progress.correct + (correct ? 1 : 0)
+      };
+      setProgress(question.id, nextProgress);
+
+      state.hasAnswered = true;
+      const answerText = question.choices[question.answer];
+      elements.feedbackBox.className = `feedback ${correct ? "correct" : "wrong"}`;
+      elements.feedbackBox.textContent = correct
+        ? `正解です！ 答えは「${answerText}」。${question.point}`
+        : `今回は不正解です。正解は「${answerText}」。${question.point}`;
+
+      renderQuestion();
+    }
+
+    function showExplanation() {
+      const question = state.currentQuestion;
+      if (!question) return;
+      const phase = attemptPhase(question);
+      if (!phase.preview && !state.hasAnswered) return;
+
+      elements.modalLevel.textContent = `${question.level} / ${question.category}`;
+      elements.modalTitle.textContent = question.prompt;
+      elements.modalAnswer.textContent = question.choices[question.answer];
+      elements.modalExplanation.textContent = question.explanation;
+      elements.modalCompare.textContent = question.compare;
+      elements.modalAnalogy.textContent = question.analogy;
+      elements.explanationDialog.showModal();
+    }
+
+    function nextQuestion() {
+      pickNextQuestion();
+      renderQuestion();
+    }
+
+    function handleControlChange() {
+      state.mode = elements.modeSelect.value;
+      state.order = elements.orderSelect.value;
+      state.level = elements.levelSelect.value;
+      state.poolIndex = 0;
+      nextQuestion();
+    }
+
+    function resetProgress() {
+      const confirmed = window.confirm("この端末に保存された学習履歴をリセットします。よろしいですか？");
+      if (!confirmed) return;
+      state.progress = {};
+      saveProgress();
+      state.poolIndex = 0;
+      nextQuestion();
+    }
+
+    elements.modeSelect.addEventListener("change", handleControlChange);
+    elements.orderSelect.addEventListener("change", handleControlChange);
+    elements.levelSelect.addEventListener("change", handleControlChange);
+    elements.submitButton.addEventListener("click", submitAnswer);
+    elements.explainButton.addEventListener("click", showExplanation);
+    elements.nextButton.addEventListener("click", nextQuestion);
+    elements.resetProgressButton.addEventListener("click", resetProgress);
+    elements.closeDialogButton.addEventListener("click", () => elements.explanationDialog.close());
+    elements.explanationDialog.addEventListener("click", (event) => {
+      const rect = elements.explanationDialog.getBoundingClientRect();
+      const inDialog = rect.top <= event.clientY && event.clientY <= rect.bottom
+        && rect.left <= event.clientX && event.clientX <= rect.right;
+      if (!inDialog) {
+        elements.explanationDialog.close();
+      }
+    });
+
+    nextQuestion();
+  </script>
+</body>
+</html>
