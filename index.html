@@ -371,6 +371,80 @@
     .pill-verb { background: rgba(25, 184, 166, 0.2); }
     .pill-rest { background: rgba(255, 216, 77, 0.26); }
 
+    .level-guide-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .level-guide {
+      border: 1px solid rgba(76, 92, 146, 0.14);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.92);
+      overflow: hidden;
+    }
+
+    .level-guide summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      font-weight: 900;
+    }
+
+    .level-guide summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .level-guide summary span {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .level-guide summary small {
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .level-guide summary::after {
+      content: "+";
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(91, 103, 255, 0.1);
+      color: var(--accent);
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .level-guide[open] summary::after {
+      content: "−";
+    }
+
+    .level-guide__body {
+      padding: 0 20px 20px;
+      display: grid;
+      gap: 12px;
+      color: var(--muted);
+    }
+
+    .level-guide__body p {
+      color: var(--muted);
+    }
+
+    .level-guide__body ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
     .practice-shell {
       margin-top: 26px;
       padding: 28px;
@@ -902,6 +976,63 @@
           </div>
         </div>
         <p class="muted-small">英語は <strong>主語 + 動詞</strong> を先に確定してから後ろへ拡張するので、「まず何が起きる文か」を先に決めるのがコツです。</p>
+      </div>
+      <div class="level-guide-list" aria-label="各級の事前解説">
+        <details class="level-guide" open>
+          <summary><span>5級の先読みガイド<small>最初の英文の骨組みを作る級</small></span></summary>
+          <div class="level-guide__body">
+            <p>5級では、<strong>主語 + 動詞</strong> を崩さず置くことが最優先です。be動詞と一般動詞の区別、疑問詞、can、現在進行形を「短い文で必ず言える」状態にします。</p>
+            <ul>
+              <li>最初に覚える軸: I / you / he / she / they に応じた be動詞</li>
+              <li>つまずきやすい点: 三単現の s、疑問文での語順変化</li>
+              <li>プログラム比喩: GameObject を置いて、何をする script か決める段階</li>
+            </ul>
+          </div>
+        </details>
+        <details class="level-guide">
+          <summary><span>4級の先読みガイド<small>時制と比較で話を広げる級</small></span></summary>
+          <div class="level-guide__body">
+            <p>4級では、現在だけでなく<strong>過去・未来・比較</strong>が増えます。「いつの話か」「何と比べているか」を文の中で明確にする感覚が大事です。</p>
+            <ul>
+              <li>最初に覚える軸: yesterday / tomorrow / than などの時間・比較の合図</li>
+              <li>つまずきやすい点: go → went のような不規則変化、more + 形容詞</li>
+              <li>プログラム比喩: 現在ログだけでなく、過去ログと未来スケジュールも扱う段階</li>
+            </ul>
+          </div>
+        </details>
+        <details class="level-guide">
+          <summary><span>3級の先読みガイド<small>説明する英語へ進む級</small></span></summary>
+          <div class="level-guide__body">
+            <p>3級では、単文を言うだけでなく、<strong>理由を添える・説明を後ろから足す</strong>力が必要です。現在完了、受動態、関係代名詞、短い英作文の発想が入ってきます。</p>
+            <ul>
+              <li>最初に覚える軸: have + 過去分詞、be + 過去分詞、because で理由追加</li>
+              <li>つまずきやすい点: 日本語は前から修飾、英語は後ろから説明する場面が増える</li>
+              <li>プログラム比喩: オブジェクト宣言後に補足コンポーネントを後付けする段階</li>
+            </ul>
+          </div>
+        </details>
+        <details class="level-guide">
+          <summary><span>準2級の先読みガイド<small>長めの読解と論理のつながりを追う級</small></span></summary>
+          <div class="level-guide__body">
+            <p>準2級では、単語や文法だけでなく、<strong>文と文の関係</strong>を読む力が大きく伸びます。however や for example のような接続の信号が重要になります。</p>
+            <ul>
+              <li>最初に覚える軸: 対比・具体例・理由の接続語を見て段落の流れをつかむ</li>
+              <li>つまずきやすい点: 1文ごとの和訳に引っ張られて、全体の論理を見失うこと</li>
+              <li>プログラム比喩: 単発の関数ではなく、複数処理の流れ全体を読む段階</li>
+            </ul>
+          </div>
+        </details>
+        <details class="level-guide">
+          <summary><span>2級の先読みガイド<small>社会テーマを俯瞰して意見を組み立てる級</small></span></summary>
+          <div class="level-guide__body">
+            <p>2級では、環境・教育・技術などのテーマで、<strong>要点をつかみ、自分の意見と理由を組み立てる</strong>ことが求められます。語彙だけでなく論理の骨組みが重要です。</p>
+            <ul>
+              <li>最初に覚える軸: 賛成/反対 → 理由1 → 理由2 の並べ方</li>
+              <li>つまずきやすい点: 単語の意味は分かっても、要旨と立場を取り違えること</li>
+              <li>プログラム比喩: 実装詳細よりも、設計判断と根拠をレビューで説明する段階</li>
+            </ul>
+          </div>
+        </details>
       </div>
     </section>
 
