@@ -457,7 +457,7 @@
 
     .controls {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 14px;
       margin-bottom: 20px;
     }
@@ -1078,6 +1078,11 @@
             <option value="2級">2級</option>
           </select>
         </label>
+        <label class="control">カテゴリ
+          <select id="categorySelect">
+            <option value="all">全カテゴリ</option>
+          </select>
+        </label>
         <button class="mini-button" id="resetProgressButton" type="button">学習履歴をこの端末でリセット</button>
       </div>
 
@@ -1175,6 +1180,10 @@
         <article class="update-card">
           <strong>2026-04-01 / 解説強化</strong>
           <p>各問題に、答え・理由・日本語との違い・プログラミング比喩をポップアップで表示できるようにしました。</p>
+        </article>
+        <article class="update-card">
+          <strong>2026-08-04 / 問題数を大幅増加・カテゴリフィルター追加</strong>
+          <p>各級9問ずつ追加し、全30問から75問へ拡充しました。カテゴリ別フィルターも追加し、文法項目を絞った集中練習ができるようになりました。</p>
         </article>
       </div>
     </section>
@@ -1605,6 +1614,596 @@
         explanation: "2級の英作文では、主張との論理的なつながりがある理由を選ぶ必要があります。『論理的に問題解決できる』は主張に直結します。",
         compare: "日本語作文でも関係ない例を入れると説得力が落ちます。英語は because の後ろの論理一致がより重要です。",
         analogy: "要件定義の decision に対し、実装上のメリットが一致している rationale を付けるイメージです。"
+      },
+      // ════ 5級 追加問題 ════
+      {
+        id: "g5-07",
+        level: "5級",
+        category: "所有格",
+        prompt: "___ name is Tom.",
+        lead: "「彼の名前はトムです。」に合う語を選びましょう。",
+        choices: ["He", "His", "Him", "Himself"],
+        answer: 1,
+        point: "名詞を修飾する所有格は His。",
+        explanation: "所有格（his/her/my など）は名詞の前に置いて「〜の」を表します。He は主語、Him は目的語で名詞を修飾できません。",
+        compare: "日本語の『彼の』は位置が変わりませんが、英語は主語（he）・目的語（him）・所有格（his）と役割ごとに形が変わります。",
+        analogy: "オブジェクトのプロパティ参照 object.name のうち、所有格は . の前の owner 部分です。"
+      },
+      {
+        id: "g5-08",
+        level: "5級",
+        category: "There is/are",
+        prompt: "___ a book on the desk.",
+        lead: "「机の上に本が1冊あります。」に合う語句を選びましょう。",
+        choices: ["There is", "There are", "It is", "They are"],
+        answer: 0,
+        point: "a book は単数なので There is。",
+        explanation: "「〜がある」と存在を表すときは There is/are を使います。後ろが単数なら is、複数なら are です。",
+        compare: "日本語の「ある」は主語の数に関係ありませんが、英語は単複で is/are が変わります。",
+        analogy: "シーンにオブジェクトが1つ存在するか確認する if (count == 1) のようなイメージです。"
+      },
+      {
+        id: "g5-09",
+        level: "5級",
+        category: "場所の前置詞",
+        prompt: "The cat is ___ the box.",
+        lead: "「猫は箱の中にいます。」に合う語を選びましょう。",
+        choices: ["on", "in", "under", "by"],
+        answer: 1,
+        point: "中にいるので in。",
+        explanation: "in は「〜の中に」、on は「〜の上（接触）」、under は「〜の下」、by は「〜のそば」です。",
+        compare: "日本語では「中に」と後ろに置きますが、英語では名詞の前に前置詞を置きます。",
+        analogy: "コンテナ内部のコンポーネントを取得する container.Find() のような位置指定です。"
+      },
+      {
+        id: "g5-10",
+        level: "5級",
+        category: "複数形",
+        prompt: "I have two ___.",
+        lead: "「私は犬を2匹飼っています。」に合う語を選びましょう。",
+        choices: ["dog", "dogs", "dogies", "dog's"],
+        answer: 1,
+        point: "2つ以上なので dogs（複数形）。",
+        explanation: "英語では数えられる名詞が2つ以上のとき複数形にします。dog → dogs と語末に -s を付けます。",
+        compare: "日本語では「犬2匹」と数詞で表しますが、英語は名詞自体の形が変わります。",
+        analogy: "配列（Array）は要素が複数あるときの型 — 単体は変数、複数は dogs のような配列として扱います。"
+      },
+      {
+        id: "g5-11",
+        level: "5級",
+        category: "How many",
+        prompt: "___ oranges do you have?",
+        lead: "「あなたはオレンジをいくつ持っていますか。」に合う語句を選びましょう。",
+        choices: ["How much", "How many", "How old", "How long"],
+        answer: 1,
+        point: "数えられる名詞の個数を聞くのは How many。",
+        explanation: "How many + 複数名詞で数を尋ねます。How much は量（不可算名詞）や値段、How old は年齢を尋ねます。",
+        compare: "日本語は「いくつ」で名詞の種類を区別しませんが、英語は数えられるか否かで How many / How much が変わります。",
+        analogy: "配列の .length を取得するか、数値型の .value を取得するかの使い分けに似ています。"
+      },
+      {
+        id: "g5-12",
+        level: "5級",
+        category: "Do/Does疑問文",
+        prompt: "___ your brother like soccer?",
+        lead: "「あなたのお兄さんはサッカーが好きですか。」に合う語を選びましょう。",
+        choices: ["Do", "Does", "Is", "Are"],
+        answer: 1,
+        point: "三人称単数 your brother なので Does。",
+        explanation: "一般動詞の疑問文は do/does を文頭に置きます。主語が三人称単数なら Does、I/you/複数なら Do です。",
+        compare: "日本語は「好きですか」で主語に関係なく同じ形ですが、英語は主語の人称・数で Does/Do が変わります。",
+        analogy: "三人称用のメソッドオーバーロードが呼ばれるイメージで、Does が三人称用 dispatcher です。"
+      },
+      {
+        id: "g5-13",
+        level: "5級",
+        category: "否定文",
+        prompt: "I ___ like spicy food.",
+        lead: "「私は辛い食べ物が好きではありません。」に合う語を選びましょう。",
+        choices: ["not", "don't", "no", "isn't"],
+        answer: 1,
+        point: "一般動詞 like の否定は don't。",
+        explanation: "一般動詞を否定するときは do not（don't）を動詞の前に置きます。not だけでは動詞を否定できません。",
+        compare: "日本語の「好きではない」に近いですが、英語では don't という否定の助動詞が動詞の前に必要です。",
+        analogy: "フラグを false に設定する !flag と同様に、don't は動詞に否定の ! フラグを立てます。"
+      },
+      {
+        id: "g5-14",
+        level: "5級",
+        category: "時刻の前置詞",
+        prompt: "School starts ___ 8:30.",
+        lead: "「学校は8時30分に始まります。」に合う語を選びましょう。",
+        choices: ["in", "on", "at", "by"],
+        answer: 2,
+        point: "時刻の前は at。",
+        explanation: "時刻には at を使います。at 8:30 で「8時30分に」です。in は月・年・季節、on は曜日・日付に使います。",
+        compare: "日本語では時刻の後ろに「に」を置きますが、英語では時刻の前に at を置きます。",
+        analogy: "タイムスタンプの特定時点を指定するとき timestamp.at("08:30") のように正確な点を示すのが at です。"
+      },
+      {
+        id: "g5-15",
+        level: "5級",
+        category: "月・季節の前置詞",
+        prompt: "My birthday is ___ March.",
+        lead: "「私の誕生日は3月です。」に合う語を選びましょう。",
+        choices: ["at", "on", "in", "for"],
+        answer: 2,
+        point: "月・季節の前は in。",
+        explanation: "月・年・季節・時間帯（朝・夜）の前には in を使います。in March で「3月に」です。",
+        compare: "日本語では「3月に」と後ろに置きますが、英語では in を名詞の前に置きます。",
+        analogy: "フォルダ（コンテナ）の中にファイルがある構造で、in March は「3月というコンテナの中」を示します。"
+      },
+      // ════ 4級 追加問題 ════
+      {
+        id: "g4-07",
+        level: "4級",
+        category: "過去進行形",
+        prompt: "She ___ a book when I called her.",
+        lead: "「私が電話したとき、彼女は本を読んでいました。」に合う語句を選びましょう。",
+        choices: ["read", "reads", "was reading", "is reading"],
+        answer: 2,
+        point: "過去のある時点で進行中 → was reading。",
+        explanation: "過去進行形は was/were + 動詞ing で「そのとき〜していた」を表します。when 節の過去の一点で続いていた行動に使います。",
+        compare: "日本語の「読んでいた」に相当しますが、英語では was と reading の2部品が必要です。",
+        analogy: "非同期処理が途中で別のイベントに割り込まれた状態 — was reading が「途中実行中」を示します。"
+      },
+      {
+        id: "g4-08",
+        level: "4級",
+        category: "助動詞 should",
+        prompt: "You ___ wear a helmet when you ride a bike.",
+        lead: "「自転車に乗るときはヘルメットをつけるべきです。」に合う語を選びましょう。",
+        choices: ["can", "should", "will", "would"],
+        answer: 1,
+        point: "義務・推奨は should。",
+        explanation: "should は「〜すべき・〜した方がいい」という推奨を表します。must は絶対的な義務、can は能力・許可です。",
+        compare: "日本語の「べき」は文末に来ますが、英語では should が動詞の前に来て推奨モードを宣言します。",
+        analogy: "コードレビューのコメント「should refactor」のように、推奨レベルの指示が should です。"
+      },
+      {
+        id: "g4-09",
+        level: "4級",
+        category: "接続詞 if",
+        prompt: "___ you are free, please help me.",
+        lead: "「もし暇なら、手伝ってください。」に合う語を選びましょう。",
+        choices: ["When", "If", "Because", "But"],
+        answer: 1,
+        point: "条件「もし〜なら」は if。",
+        explanation: "if は「もし〜なら」という条件、when は「〜のとき」という時を表します。仮定の条件なので if が正解です。",
+        compare: "日本語の「もし」と「とき」は区別して使いますが、英語でも if と when は明確に使い分けます。",
+        analogy: "if文は条件分岐そのもの — if (you.isFree) のようにコード上の条件式に直訳できます。"
+      },
+      {
+        id: "g4-10",
+        level: "4級",
+        category: "最上級",
+        prompt: "Mt. Fuji is the ___ mountain in Japan.",
+        lead: "「富士山は日本で一番高い山です。」に合う語を選びましょう。",
+        choices: ["high", "higher", "highest", "most high"],
+        answer: 2,
+        point: "一番〜は最上級 highest（the をつける）。",
+        explanation: "最上級は「〜の中で一番〜」を表します。1音節の形容詞は -est を付けます。必ず the と一緒に使います。",
+        compare: "日本語の「一番」は前に置くだけですが、英語は high → highest と語尾が変化し、the が必要です。",
+        analogy: "配列の最大値を返す Math.max() のように、複数の中から極値を選ぶ操作が最上級です。"
+      },
+      {
+        id: "g4-11",
+        level: "4級",
+        category: "have to",
+        prompt: "I ___ finish my homework by tomorrow.",
+        lead: "「私は明日までに宿題を終わらせなければなりません。」に合う語句を選びましょう。",
+        choices: ["can", "will", "have to", "want to"],
+        answer: 2,
+        point: "〜しなければならない = have to。",
+        explanation: "have to + 動詞原形で「〜しなければならない」という義務を表します。must とほぼ同じ意味です。",
+        compare: "日本語の「〜なければならない」は文末ですが、英語は have to が動詞の前に来て義務を明示します。",
+        analogy: "タスクキューに required フラグが立ったアイテムが have to で表す義務です。"
+      },
+      {
+        id: "g4-12",
+        level: "4級",
+        category: "how to",
+        prompt: "Can you show me ___ use this app?",
+        lead: "「このアプリの使い方を教えてもらえますか。」に合う語句を選びましょう。",
+        choices: ["what to", "how to", "where to", "when to"],
+        answer: 1,
+        point: "方法・やり方 = how to。",
+        explanation: "how to + 動詞原形で「〜のやり方・使い方」を表します。what to は「何を〜か」、where to は「どこで〜か」です。",
+        compare: "日本語の「使い方」は名詞化されますが、英語では how to use と動詞を使ったフレーズになります。",
+        analogy: "クラスのメソッド呼び出し方を確認する API ドキュメントが how to use に相当します。"
+      },
+      {
+        id: "g4-13",
+        level: "4級",
+        category: "so...that",
+        prompt: "The box was so heavy ___ I couldn't lift it.",
+        lead: "「その箱はとても重くて、持ち上げられませんでした。」に合う語を選びましょう。",
+        choices: ["but", "that", "and", "because"],
+        answer: 1,
+        point: "so + 形容詞 + that で「とても〜なので〜だ」。",
+        explanation: "so...that は「非常に〜なので〜だ」という結果を表す構文です。形容詞・副詞の前に so を置きます。",
+        compare: "日本語の「〜すぎて〜できない」に近いですが、英語は so...that の枠組みに当てはめます。",
+        analogy: "閾値を超えたとき別の処理に分岐する if (weight > limit) → result のような条件→結果の流れです。"
+      },
+      {
+        id: "g4-14",
+        level: "4級",
+        category: "感嘆文",
+        prompt: "___ a beautiful picture this is!",
+        lead: "「これは何て美しい絵なんでしょう！」に合う語を選びましょう。",
+        choices: ["How", "What", "So", "Such"],
+        answer: 1,
+        point: "What + a/an + 形容詞 + 名詞 で感嘆文。",
+        explanation: "感嘆文は What（+ a/an + 形容詞 + 名詞）または How（+ 形容詞/副詞）で作ります。名詞を含むときは What を使います。",
+        compare: "日本語の「なんて〜だ」は一種類ですが、英語は名詞があれば What、形容詞・副詞だけなら How を選びます。",
+        analogy: "想定外の値を見つけたときのデバッグ出力 console.log('What a value!') のような感嘆処理です。"
+      },
+      {
+        id: "g4-15",
+        level: "4級",
+        category: "some/any",
+        prompt: "Do you have ___ milk in the fridge?",
+        lead: "「冷蔵庫に牛乳はありますか。」に合う語を選びましょう。",
+        choices: ["some", "any", "many", "few"],
+        answer: 1,
+        point: "疑問文・否定文では any を使う。",
+        explanation: "疑問文・否定文では any を使います。some は肯定文でよく使います。milk は不可算名詞なので many/few は使えません。",
+        compare: "日本語では「少し」や「いくらか」だけで済みますが、英語は肯定・疑問・否定によって some/any が変わります。",
+        analogy: "疑問の if 文では null チェックが必要なように、疑問文では any を使って「存在するか」を確認します。"
+      },
+      // ════ 3級 追加問題 ════
+      {
+        id: "g3-07",
+        level: "3級",
+        category: "不定詞（目的）",
+        prompt: "I went to the store ___ buy some bread.",
+        lead: "「パンを買うために店に行きました。」に合う語を選びましょう。",
+        choices: ["for", "to", "so", "and"],
+        answer: 1,
+        point: "目的「〜するために」は to + 動詞原形。",
+        explanation: "不定詞の副詞的用法（目的）は to + 動詞原形で「〜するために」を表します。for は名詞の前に使います。",
+        compare: "日本語の「買うために」は文末側に来ますが、英語は went の後ろに to buy と目的を追加します。",
+        analogy: "関数に callback を渡すとき go(to: buy) のように目的先を注入するイメージです。"
+      },
+      {
+        id: "g3-08",
+        level: "3級",
+        category: "現在分詞修飾",
+        prompt: "The boy ___ by the window is my brother.",
+        lead: "「窓のそばに立っている男の子は私の弟です。」に合う語を選びましょう。",
+        choices: ["stand", "stands", "standing", "stood"],
+        answer: 2,
+        point: "進行中の動作で名詞を後ろから修飾 → standing（現在分詞）。",
+        explanation: "現在分詞（動詞ing）が名詞を後ろから修飾します。The boy standing by the window で「窓のそばに立っている男の子」です。",
+        compare: "日本語では「立っている男の子」と前から修飾しますが、英語は名詞の後ろから分詞で説明を足します。",
+        analogy: "オブジェクトにタグを後付けするように、名詞に対して .standing フィルターを後置するイメージです。"
+      },
+      {
+        id: "g3-09",
+        level: "3級",
+        category: "接続詞 although",
+        prompt: "___ it was raining, we went for a walk.",
+        lead: "「雨が降っていたけれど、散歩に出かけました。」に合う語を選びましょう。",
+        choices: ["Because", "Although", "If", "So"],
+        answer: 1,
+        point: "逆接「〜だけれど」= although / though。",
+        explanation: "although（= though）は「〜にもかかわらず」という逆接の接続詞です。文頭にも文中にも使えます。",
+        compare: "日本語の「けれど」に近いですが、英語の although は節の前に置き、論理の対比をはっきり宣言します。",
+        analogy: "例外処理でエラーが起きても処理を続行する finally { walk() } のような逆接の継続です。"
+      },
+      {
+        id: "g3-10",
+        level: "3級",
+        category: "現在完了（経験）",
+        prompt: "Have you ever ___ sushi?",
+        lead: "「寿司を食べたことはありますか。」に合う語を選びましょう。",
+        choices: ["eat", "eating", "ate", "eaten"],
+        answer: 3,
+        point: "have + 過去分詞 eaten で経験を表す。",
+        explanation: "経験の現在完了は have/has + 過去分詞です。eat の過去分詞は eaten。ever は「今までに」という意味を添えます。",
+        compare: "日本語の「食べたことがある」は語末の変化だけですが、英語は have と eaten の2パーツで作ります。",
+        analogy: "ゲームの実績（Achievement）システムで ever_eaten_sushi フラグが true になった状態が have eaten です。"
+      },
+      {
+        id: "g3-11",
+        level: "3級",
+        category: "関係代名詞 which",
+        prompt: "This is the book ___ I bought yesterday.",
+        lead: "「これは昨日私が買った本です。」に合う語を選びましょう。",
+        choices: ["who", "which", "whom", "whose"],
+        answer: 1,
+        point: "物 book を先行詞にする関係代名詞は which。",
+        explanation: "関係代名詞 which は物・事柄を先行詞にするときに使います。who は人、whose は所有を表すときです。",
+        compare: "日本語は「買った本」と前から修飾しますが、英語は book の後ろに which 節を続けて説明します。",
+        analogy: "データベースで WHERE 句を使って特定の book レコードを指定するのが which の働きです。"
+      },
+      {
+        id: "g3-12",
+        level: "3級",
+        category: "while",
+        prompt: "He fell asleep ___ he was watching the movie.",
+        lead: "「映画を見ている間に、彼は眠ってしまいました。」に合う語を選びましょう。",
+        choices: ["during", "while", "although", "unless"],
+        answer: 1,
+        point: "「〜している間に」= while（後ろに主語＋動詞）。",
+        explanation: "while は「〜している間」という同時進行を表します。during は名詞の前に使います（during the movie）。",
+        compare: "日本語の「〜している間に」に対応しますが、英語は while の後ろに主語 + 動詞の節が必要です。",
+        analogy: "マルチスレッドで2つの処理が並行動作している状態 — while (thread1.isRunning) { thread2.run() } に相当します。"
+      },
+      {
+        id: "g3-13",
+        level: "3級",
+        category: "会話表現 May I",
+        prompt: "___ I use your phone?",
+        lead: "「あなたの電話を使ってもいいですか。」という丁寧な表現に合う語を選びましょう。",
+        choices: ["Can", "May", "Should", "Must"],
+        answer: 1,
+        point: "丁寧に許可を求める = May I。",
+        explanation: "May I は「〜してもよいですか」と丁寧に許可を求める表現です。Can I よりも改まった場面で使います。",
+        compare: "日本語の「使ってもいいですか」に近いですが、英語は May と Can で丁寧さのレベルが変わります。",
+        analogy: "アクセス権を要求するパーミッションリクエストが May I — 適切な権限申請フローです。"
+      },
+      {
+        id: "g3-14",
+        level: "3級",
+        category: "語彙（派生語）",
+        prompt: "It was very ___ outside, so I put on a coat.",
+        lead: "「外はとても寒かったので、コートを着ました。」に合う語を選びましょう。",
+        choices: ["cold", "coldly", "coldness", "colder than"],
+        answer: 0,
+        point: "be動詞の後ろは形容詞 cold。",
+        explanation: "be動詞（was）の後ろには形容詞を置きます。coldly は副詞、coldness は名詞で、ここには合いません。",
+        compare: "日本語では「寒かった」と動詞的に表しますが、英語は was（be動詞）+ cold（形容詞）と役割が分かれます。",
+        analogy: "型チェックで be動詞の後ろは形容詞型を期待する — 型ミスマッチが起きないよう cold を選びます。"
+      },
+      {
+        id: "g3-15",
+        level: "3級",
+        category: "as...as比較",
+        prompt: "Tom is ___ tall ___ his father.",
+        lead: "「トムはお父さんと同じくらい背が高いです。」に合う語句を選びましょう。",
+        choices: ["so...that", "as...as", "more...than", "too...to"],
+        answer: 1,
+        point: "同じくらい〜 = as + 形容詞 + as。",
+        explanation: "as...as は「〜と同じくらい…だ」という同等比較を表します。差がない場合に使います。",
+        compare: "日本語の「と同じくらい」に相当しますが、英語は as を形容詞の前後に置く構文を使います。",
+        analogy: "2つの変数が等しいか確認する if (a === b) のような等値比較が as...as の感覚です。"
+      },
+      // ════ 準2級 追加問題 ════
+      {
+        id: "p2-07",
+        level: "準2級",
+        category: "仮定法過去（発展）",
+        prompt: "If I ___ a car, I would drive to school every day.",
+        lead: "「もし車があれば、毎日学校まで運転するのに。」に合う語を選びましょう。",
+        choices: ["have", "had", "have had", "will have"],
+        answer: 1,
+        point: "現実にはない仮定（仮定法過去）= had。",
+        explanation: "仮定法過去は「今は実現していない」という非現実の仮定を表します。If + 過去形, would + 動詞原形 の形です。",
+        compare: "日本語の「あれば」は条件も仮定も同じ形ですが、英語は動詞を過去形にして非現実を明示します。",
+        analogy: "テストコードの mock 設定のように、実際には存在しないオブジェクトを仮に存在するとして扱う仮定法です。"
+      },
+      {
+        id: "p2-08",
+        level: "準2級",
+        category: "関係副詞 when",
+        prompt: "I remember the day ___ we first met.",
+        lead: "「私たちが初めて会った日のことを覚えています。」に合う語を選びましょう。",
+        choices: ["which", "where", "when", "that"],
+        answer: 2,
+        point: "時を表す先行詞 day に続く関係副詞 = when。",
+        explanation: "関係副詞 when は時を表す名詞（day, time, year など）を先行詞にします。where は場所、which は物・事柄です。",
+        compare: "日本語は「初めて会った日」と前から修飾しますが、英語は day の後ろに when 節を続けます。",
+        analogy: "スケジューラーで特定のタイムスタンプにトリガーを設定する on(when: date, do: action) の感覚です。"
+      },
+      {
+        id: "p2-09",
+        level: "準2級",
+        category: "現在完了（継続）",
+        prompt: "She has ___ in this city for ten years.",
+        lead: "「彼女はこの街に10年間住んでいます。」に合う語を選びましょう。",
+        choices: ["live", "lived", "living", "lives"],
+        answer: 1,
+        point: "継続の現在完了 has + 過去分詞 lived。",
+        explanation: "for ten years のような継続期間があれば、現在完了の継続用法 has/have + 過去分詞 を使います。",
+        compare: "日本語の「住んでいます」は現在形に見えますが、英語では今まで続いてきた状態を has lived で表します。",
+        analogy: "プロセスが起動してからの経過時間を記録する uptime のように、開始点から今まで続く状態が現在完了継続です。"
+      },
+      {
+        id: "p2-10",
+        level: "準2級",
+        category: "語彙（接尾辞 -ful/-less）",
+        prompt: "This medicine can be ___ if taken in large amounts.",
+        lead: "「大量に服用すると、この薬は危険になりえます。」に合う語を選びましょう。",
+        choices: ["harmful", "harmless", "harming", "harmed"],
+        answer: 0,
+        point: "危険・害をなす = harmful（harm + -ful）。",
+        explanation: "harmful は「害になる・危険な」を意味します。-ful は「〜でいっぱいの」という接尾辞。harmless は「無害」です。",
+        compare: "日本語は「有害な」「無害な」と別の語ですが、英語は harm に -ful/-less を付けて意味を反転できます。",
+        analogy: "Boolean フラグで isHarmful(true/false) を切り替えるように、-ful/-less は意味の on/off スイッチです。"
+      },
+      {
+        id: "p2-11",
+        level: "準2級",
+        category: "論理接続詞",
+        prompt: "Sales have dropped significantly. ___, the company is planning to expand.",
+        lead: "「売り上げが大幅に落ちた。それにもかかわらず、会社は拡大を計画している。」の流れに合う語を選びましょう。",
+        choices: ["Therefore", "Nevertheless", "Moreover", "For example"],
+        answer: 1,
+        point: "逆の結果を導く接続詞 = Nevertheless（にもかかわらず）。",
+        explanation: "Nevertheless は「それにもかかわらず」という逆接の接続詞です。Therefore は結果、Moreover は追加情報を示します。",
+        compare: "日本語の「にもかかわらず」や「それでも」に相当しますが、英語では文の冒頭に置いて論理の方向を宣言します。",
+        analogy: "例外が発生しても処理を続行する catch ブロックの後の処理 — Nevertheless は「エラー後も続く」シグナルです。"
+      },
+      {
+        id: "p2-12",
+        level: "準2級",
+        category: "接続詞 unless",
+        prompt: "___ you study hard, you won't pass the exam.",
+        lead: "「一生懸命勉強しないと、試験に合格しません。」に合う語を選びましょう。",
+        choices: ["If", "Unless", "Although", "Because"],
+        answer: 1,
+        point: "「〜しない限り」= unless（= if ... not）。",
+        explanation: "unless は「〜しない限り」という条件を表し、if not とほぼ同じ意味です。unless you study = if you don't study です。",
+        compare: "日本語の「しないと」に相当しますが、英語は unless が not の意味を内包した接続詞です。",
+        analogy: "ガード節のように、条件が満たされなければ早期リターンする unless (condition) return; の発想と同じです。"
+      },
+      {
+        id: "p2-13",
+        level: "準2級",
+        category: "分詞構文",
+        prompt: "___ in Tokyo, she knows the city very well.",
+        lead: "「東京に住んでいるので、彼女は街をよく知っています。」に合う語句を選びましょう。",
+        choices: ["Living", "Lived", "To live", "Because lives"],
+        answer: 0,
+        point: "理由を表す分詞構文 → 動詞ing で文頭に置く。",
+        explanation: "分詞構文は接続詞を省いて動詞ing で副詞節を短くした表現です。Living in Tokyo = Because she lives in Tokyo。",
+        compare: "日本語では「東京に住んでいるので」とそのまま言えますが、英語は分詞構文で主語・接続詞を省略して簡潔にします。",
+        analogy: "ラムダ式のように明示的な関数定義を省いて inline で処理を記述するのが分詞構文の感覚です。"
+      },
+      {
+        id: "p2-14",
+        level: "準2級",
+        category: "会話表現（丁寧な断り）",
+        prompt: "A: Would you like some more coffee? B: ___, thank you.",
+        lead: "「もう少しコーヒーはいかがですか。」に対する自然な断りの表現はどれでしょう。",
+        choices: ["Yes, please", "No, I'm fine", "I cannot", "Never mind"],
+        answer: 1,
+        point: "丁寧な断りは No, I'm fine（thank you 付き）。",
+        explanation: "Would you like...? への丁寧な断りは No, thank you. や No, I'm fine, thank you. が自然です。I cannot は能力の否定なので不自然です。",
+        compare: "日本語では「結構です」が婉曲な断りになりますが、英語も No だけでなく thank you を添えて丁寧に断ります。",
+        analogy: "API レスポンスで null を返すのではなく、graceful な 204 No Content を返す — 丁寧なハンドリングです。"
+      },
+      {
+        id: "p2-15",
+        level: "準2級",
+        category: "語彙推測（文脈）",
+        prompt: "The project was ___ after only two months due to lack of funding.",
+        lead: "「資金不足により、プロジェクトはわずか2か月で中止されました。」に合う語を選びましょう。",
+        choices: ["abandoned", "advertised", "approved", "advanced"],
+        answer: 0,
+        point: "中止・放棄 = abandoned（abandon の過去分詞）。",
+        explanation: "abandon は「〜を放棄する・中止する」という意味です。due to lack of funding（資金不足のため）という文脈と合います。",
+        compare: "日本語の「中止する」に相当しますが、英語は文脈（due to funding）から意味を類推する語彙力が大切です。",
+        analogy: "デプロイが途中で失敗してロールバックされた状態 — pipeline.abandoned() のようなイメージです。"
+      },
+      // ════ 2級 追加問題 ════
+      {
+        id: "g2-07",
+        level: "2級",
+        category: "強調構文",
+        prompt: "It was ___ that broke the window.",
+        lead: "「窓を割ったのは彼だ。」（強調構文）に合う語を選びましょう。",
+        choices: ["he", "him", "his", "himself"],
+        answer: 0,
+        point: "強調構文 It is/was ... that ... の強調部分は主格 he。",
+        explanation: "強調構文 It is/was + 強調したい部分 + that + 残り の形です。強調したいのが主語のとき、主格（he）を使います。",
+        compare: "日本語の「窓を割ったのは彼だ」は「の」で強調を作りますが、英語は It was...that という枠組みで強調します。",
+        analogy: "ログのハイライト機能のように特定のフィールドに焦点を当てる — It was...that 構文は強調フィルターです。"
+      },
+      {
+        id: "g2-08",
+        level: "2級",
+        category: "仮定法過去完了",
+        prompt: "If I ___ harder, I would have passed the test.",
+        lead: "「もっと一生懸命勉強していたら、試験に合格していたのに。」に合う語句を選びましょう。",
+        choices: ["studied", "had studied", "have studied", "study"],
+        answer: 1,
+        point: "過去の非現実仮定 = If + had + 過去分詞。",
+        explanation: "仮定法過去完了は「過去にそうだったら（実際は違った）」を表します。If + had + 過去分詞, would have + 過去分詞 の形です。",
+        compare: "日本語の「していたら」は一語で済みますが、英語は had studied と would have passed の2つの完了形が対応します。",
+        analogy: "git revert のように、過去のコミット（行動）を巻き戻して別の結果を仮定するのが仮定法過去完了です。"
+      },
+      {
+        id: "g2-09",
+        level: "2級",
+        category: "複合関係詞",
+        prompt: "___ you do, make sure you stay safe.",
+        lead: "「何をするにしても、安全でいてください。」に合う語を選びましょう。",
+        choices: ["Whoever", "Whatever", "Wherever", "Whenever"],
+        answer: 1,
+        point: "「何を〜しても」= Whatever。",
+        explanation: "複合関係詞は whatever（何でも）、whoever（誰でも）、wherever（どこでも）などがあります。行動・物事に使うのは whatever です。",
+        compare: "日本語の「何をするにしても」に対応しますが、英語は whatever が「何でも」という譲歩の意味を一語で担います。",
+        analogy: "switch文の default ケースのように、どんな入力が来ても処理する catch-all が whatever の感覚です。"
+      },
+      {
+        id: "g2-10",
+        level: "2級",
+        category: "論旨把握（逆接）",
+        prompt: "Technology improves efficiency ___ it also creates new social problems.",
+        lead: "「技術は効率を高めるが、新たな社会問題も生み出す。」の文脈に合う接続語を選びましょう。",
+        choices: ["because", "although", "so", "if"],
+        answer: 1,
+        point: "逆接・譲歩 although で「〜だが」という両面を示す。",
+        explanation: "although は「〜にもかかわらず・〜だが」という逆接を表します。2級の長文では筆者が両面を示すときこのパターンが頻出です。",
+        compare: "日本語の「〜が」「一方で」に相当しますが、英語は although で論理の転換をはっきり宣言します。",
+        analogy: "コードレビューで pros と cons を両方挙げるとき — although は「長所を認めつつ欠点も示す」中立的な論法です。"
+      },
+      {
+        id: "g2-11",
+        level: "2級",
+        category: "環境語彙",
+        prompt: "Carbon ___ is one of the biggest causes of climate change.",
+        lead: "「二酸化炭素の排出は気候変動の最大の原因の一つです。」に合う語を選びましょう。",
+        choices: ["emission", "omission", "admission", "commission"],
+        answer: 0,
+        point: "排出（ガスなどを放出）= emission。",
+        explanation: "emission は「排出・放出」を意味します。carbon emission で「炭素排出」。omission は省略、admission は入場・承認です。",
+        compare: "日本語では「排出」の一語ですが、英語は -mission で終わる類似語が多く、文脈から区別する必要があります。",
+        analogy: "ログの emit() メソッドのように、emission はデータ（ガス）を外部に出力するイベントです。"
+      },
+      {
+        id: "g2-12",
+        level: "2級",
+        category: "英作文（反論）",
+        prompt: "Some say online learning is always better. The strongest counter-argument is ___.",
+        lead: "「オンライン学習の方が常に優れている」への最も有効な反論はどれでしょう。",
+        choices: ["It lacks face-to-face interaction", "Computers are expensive", "The internet is fast", "Teachers like online tools"],
+        answer: 0,
+        point: "反論はオンライン学習の本質的な欠点に直接言及するものを選ぶ。",
+        explanation: "英作文の反論では、主張の弱点や対立する事実を示す必要があります。face-to-face interaction の欠如はオンライン学習の直接的な問題点です。",
+        compare: "日本語の作文でも根拠と主張が噛み合うことが大切ですが、英語の反論では論理的な対比が採点ポイントになります。",
+        analogy: "ユニットテストの境界値テストのように、反論は主張が破綻するエッジケースを突くものを選びます。"
+      },
+      {
+        id: "g2-13",
+        level: "2級",
+        category: "-ed/-ing形容詞",
+        prompt: "He was ___ to find out the truth.",
+        lead: "「彼は真実を知って驚きました。」に合う語を選びましょう。",
+        choices: ["surprising", "surprised", "surprise", "to surprise"],
+        answer: 1,
+        point: "感情を感じる人には -ed 形（surprised）を使う。",
+        explanation: "感情を表す形容詞は、人が感じるときは -ed 形（surprised, excited）、物事がその感情を引き起こすときは -ing 形（surprising, exciting）を使います。",
+        compare: "日本語では「驚いた」と一語ですが、英語は感じる側（人）か引き起こす側（物事）かで語尾が変わります。",
+        analogy: "Observer パターンで、イベントを受信するオブジェクトが surprised（-ed）、イベントを発生させるのが surprising（-ing）です。"
+      },
+      {
+        id: "g2-14",
+        level: "2級",
+        category: "アカデミック動詞",
+        prompt: "Scientists need to ___ their findings before publication.",
+        lead: "「科学者は発表前に研究結果を検証する必要があります。」に合う語を選びましょう。",
+        choices: ["verify", "vary", "vanish", "venture"],
+        answer: 0,
+        point: "検証する = verify。",
+        explanation: "verify は「〜を確認・検証する」という意味です。vary は「変化する」、vanish は「消える」、venture は「〜に踏み切る」です。",
+        compare: "日本語の「検証する」に相当しますが、英語ではスペルが似た単語（vary/verify）の区別が2級では問われます。",
+        analogy: "CI/CD でビルド前に lint と test を通す verify ステップそのものです。"
+      },
+      {
+        id: "g2-15",
+        level: "2級",
+        category: "慣用表現",
+        prompt: "Despite the heavy rain, the event was held as ___.",
+        lead: "「大雨にもかかわらず、イベントは予定通り開催されました。」に合う語を選びましょう。",
+        choices: ["planned", "possible", "prevented", "postponed"],
+        answer: 0,
+        point: "予定通り = as planned。",
+        explanation: "as planned で「計画通りに・予定通りに」という慣用的な表現です。despite（〜にもかかわらず）の後ろに逆接の結果が続きます。",
+        compare: "日本語の「予定通り」を as planned と表現するのは英語特有の慣用句で、2級では知っておく必要があります。",
+        analogy: "スプリント計画通りにリリースが完了した状態 — deployed as planned のような慣用表現です。"
       }
     ];
 
@@ -1615,6 +2214,7 @@
       mode: "guided",
       order: "random",
       level: "all",
+      category: "all",
       currentQuestion: null,
       selectedChoice: null,
       hasAnswered: false,
@@ -1626,6 +2226,7 @@
       modeSelect: document.getElementById("modeSelect"),
       orderSelect: document.getElementById("orderSelect"),
       levelSelect: document.getElementById("levelSelect"),
+      categorySelect: document.getElementById("categorySelect"),
       resetProgressButton: document.getElementById("resetProgressButton"),
       totalQuestionsStat: document.getElementById("totalQuestionsStat"),
       attemptsStat: document.getElementById("attemptsStat"),
@@ -1681,7 +2282,9 @@
 
     function filteredQuestions() {
       const filtered = questionBank.filter((question) => {
-        return state.level === "all" || question.level === state.level;
+        const levelMatch = state.level === "all" || question.level === state.level;
+        const catMatch = state.category === "all" || question.category === state.category;
+        return levelMatch && catMatch;
       });
 
       if (state.order === "sequential") {
@@ -1865,6 +2468,7 @@
       state.mode = elements.modeSelect.value;
       state.order = elements.orderSelect.value;
       state.level = elements.levelSelect.value;
+      state.category = elements.categorySelect.value;
       state.poolIndex = 0;
       nextQuestion();
     }
@@ -1880,7 +2484,11 @@
 
     elements.modeSelect.addEventListener("change", handleControlChange);
     elements.orderSelect.addEventListener("change", handleControlChange);
-    elements.levelSelect.addEventListener("change", handleControlChange);
+    elements.levelSelect.addEventListener("change", () => {
+      elements.categorySelect.value = "all";
+      handleControlChange();
+    });
+    elements.categorySelect.addEventListener("change", handleControlChange);
     elements.submitButton.addEventListener("click", submitAnswer);
     elements.explainButton.addEventListener("click", showExplanation);
     elements.nextButton.addEventListener("click", nextQuestion);
@@ -1894,6 +2502,20 @@
         elements.explanationDialog.close();
       }
     });
+
+    function populateCategories() {
+      const seen = new Set();
+      questionBank.forEach(q => {
+        if (!seen.has(q.category)) {
+          seen.add(q.category);
+          const opt = document.createElement("option");
+          opt.value = q.category;
+          opt.textContent = q.category;
+          elements.categorySelect.appendChild(opt);
+        }
+      });
+    }
+    populateCategories();
 
     nextQuestion();
   </script>
